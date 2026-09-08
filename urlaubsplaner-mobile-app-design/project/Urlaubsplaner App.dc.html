@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet"><style>body{margin:0;background:#e8ebe7;font-family:-apple-system,system-ui,sans-serif}a{color:#2A5A80}a:hover{color:#173247}</style></helmet>
+
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div style="position:relative;height:100%;overflow:hidden;background:#F1F4F1;font-family:-apple-system,system-ui,sans-serif;color:#173247;user-select:none">
+
+  <sc-if value="{{ isPlan }}" hint-placeholder-val="{{ true }}">
+  <div style="position:absolute;top:0;left:0;right:0;bottom:83px;overflow:auto">
+    <div style="padding:58px 16px 0">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px">
+        <div>
+          <div style="font-family:Newsreader,Georgia,serif;font-size:30px;font-weight:600;line-height:1.05;letter-spacing:-.01em">{{ monthName }} {{ year }}</div>
+          <div style="font-size:12px;color:#8FA3AD;margin-top:3px;font-weight:500">{{ landName }}</div>
+        </div>
+        <div style="display:flex;gap:6px">
+          <div onClick="{{ prevMonth }}" style="width:34px;height:34px;border-radius:11px;background:#fff;border:1px solid #D7DFDA;display:grid;place-items:center;font-size:15px;color:#4C6577;cursor:pointer">‹</div>
+          <div onClick="{{ nextMonth }}" style="width:34px;height:34px;border-radius:11px;background:#fff;border:1px solid #D7DFDA;display:grid;place-items:center;font-size:15px;color:#4C6577;cursor:pointer">›</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+        <div onClick="{{ goBloecke }}" style="background:#fff;border:1px solid #D7DFDA;border-radius:12px;padding:9px 11px 10px;cursor:pointer">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:6px">
+            <span style="font-size:12px;font-weight:600;color:#2F6B4F">{{ n1 }}</span>
+            <span style="font-size:11px;color:#4C6577"><b style="color:#173247">{{ used1 }}</b> / {{ q1 }}</span>
+          </div>
+          <div style="height:6px;border-radius:4px;background:#EDF1EE;margin-top:7px;overflow:hidden"><span style="display:block;height:100%;width:{{ pct1 }};background:#2F6B4F"></span></div>
+        </div>
+        <div onClick="{{ goBloecke }}" style="background:#fff;border:1px solid #D7DFDA;border-radius:12px;padding:9px 11px 10px;cursor:pointer">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:6px">
+            <span style="font-size:12px;font-weight:600;color:#2A5A80">{{ n2 }}</span>
+            <span style="font-size:11px;color:#4C6577"><b style="color:#173247">{{ used2 }}</b> / {{ q2 }}</span>
+          </div>
+          <div style="height:6px;border-radius:4px;background:#EDF1EE;margin-top:7px;overflow:hidden"><span style="display:block;height:100%;width:{{ pct2 }};background:#2A5A80"></span></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin:16px 0 5px">
+        <span style="font-size:10px;font-weight:700;color:#8FA3AD;text-align:center;letter-spacing:.04em">MO</span>
+        <span style="font-size:10px;font-weight:700;color:#8FA3AD;text-align:center;letter-spacing:.04em">DI</span>
+        <span style="font-size:10px;font-weight:700;color:#8FA3AD;text-align:center;letter-spacing:.04em">MI</span>
+        <span style="font-size:10px;font-weight:700;color:#8FA3AD;text-align:center;letter-spacing:.04em">DO</span>
+        <span style="font-size:10px;font-weight:700;color:#8FA3AD;text-align:center;letter-spacing:.04em">FR</span>
+        <span style="font-size:10px;font-weight:700;color:#8FA3AD;text-align:center;letter-spacing:.04em">SA</span>
+        <span style="font-size:10px;font-weight:700;color:#8FA3AD;text-align:center;letter-spacing:.04em">SO</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;touch-action:none">
+        <sc-for list="{{ cells }}" as="c" hint-placeholder-count="42">
+          <div onPointerDown="{{ c.down }}" onPointerEnter="{{ c.enter }}" style="height:52px;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:{{ c.bg }};color:{{ c.fg }};border:{{ c.border }};box-sizing:border-box;cursor:{{ c.cursor }};touch-action:none">
+            <span style="font-size:15px;font-weight:600;line-height:1">{{ c.num }}</span>
+            <span style="font-size:7.5px;font-weight:700;line-height:1.15;letter-spacing:.02em;text-align:center;padding:0 1px">{{ c.tag }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:7px 13px;margin-top:12px">
+        <sc-for list="{{ legend }}" as="l" hint-placeholder-count="6">
+          <span style="display:flex;align-items:center;gap:5px;font-size:10.5px;color:#4C6577;font-weight:500"><span style="width:10px;height:10px;border-radius:3px;background:{{ l.swatch }}"></span>{{ l.label }}</span>
+        </sc-for>
+      </div>
+      <div style="display:flex;align-items:baseline;justify-content:space-between;margin:18px 0 8px">
+        <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#8FA3AD;text-transform:uppercase">Blöcke im {{ monthName }}</span>
+        <span onClick="{{ goBloecke }}" style="font-size:11.5px;font-weight:600;color:#2A5A80;cursor:pointer">alle Blöcke</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1px;background:#D7DFDA;border-radius:13px;overflow:hidden;margin-bottom:18px">
+        <sc-for list="{{ monthBlocks }}" as="b" hint-placeholder-count="2">
+          <div style="display:flex;align-items:center;gap:11px;background:#fff;padding:11px 13px">
+            <span style="width:6px;height:28px;border-radius:3px;background:{{ b.swatch }};flex:none"></span>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:13.5px;font-weight:600">{{ b.range }}</div>
+              <div style="font-size:11px;color:#8FA3AD;margin-top:1px">{{ b.who }}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:13px;font-weight:700">{{ b.len }} frei</div>
+              <div style="font-size:10.5px;color:#8FA3AD;margin-top:1px">{{ b.cost }}</div>
+            </div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ noMonthBlocks }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#fff;padding:14px 13px;font-size:12.5px;color:#8FA3AD">Noch nichts geplant — über die Werktage ziehen.</div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isJahr }}" hint-placeholder-val="{{ false }}">
+  <div style="position:absolute;top:0;left:0;right:0;bottom:83px;overflow:auto">
+    <div style="padding:58px 16px 20px">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between">
+        <div>
+          <div style="font-family:Newsreader,Georgia,serif;font-size:30px;font-weight:600;line-height:1.05">Jahr {{ year }}</div>
+          <div style="font-size:12px;color:#8FA3AD;margin-top:3px;font-weight:500">{{ n1 }} &amp; {{ n2 }} · {{ landName }}</div>
+        </div>
+        <div style="display:flex;gap:6px">
+          <div onClick="{{ prevYear }}" style="width:34px;height:34px;border-radius:11px;background:#fff;border:1px solid #D7DFDA;display:grid;place-items:center;font-size:15px;color:#4C6577;cursor:pointer">‹</div>
+          <div onClick="{{ nextYear }}" style="width:34px;height:34px;border-radius:11px;background:#fff;border:1px solid #D7DFDA;display:grid;place-items:center;font-size:15px;color:#4C6577;cursor:pointer">›</div>
+        </div>
+      </div>
+      <div style="background:#173247;color:#fff;border-radius:16px;padding:14px 16px 15px;margin-top:14px">
+        <div style="font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#9FB6C4">Längste gemeinsame Strecke</div>
+        <div style="display:flex;align-items:baseline;gap:9px;margin-top:6px">
+          <span style="font-family:Newsreader,Georgia,serif;font-size:38px;font-weight:600;line-height:1">{{ topLen }}</span>
+          <span style="font-size:14px;font-weight:600;padding-bottom:4px">Tage frei</span>
+          <span style="flex:1"></span>
+          <span style="font-size:13px;color:#C6D5DE;padding-bottom:4px">{{ topRange }}</span>
+        </div>
+        <div style="display:flex;gap:2px;margin-top:12px">
+          <sc-for list="{{ topStrip }}" as="s" hint-placeholder-count="11">
+            <span style="flex:1;height:8px;border-radius:2px;background:{{ s.bg }}"></span>
+          </sc-for>
+        </div>
+        <div style="font-size:11px;color:#9FB6C4;margin-top:8px">{{ topCost }}</div>
+      </div>
+      <div style="background:#fff;border:1px solid #D7DFDA;border-radius:16px;padding:13px 12px 14px;margin-top:16px;display:flex;flex-direction:column;gap:5px">
+        <sc-for list="{{ yearRows }}" as="r" hint-placeholder-count="12">
+          <div onClick="{{ r.open }}" style="display:flex;align-items:center;gap:7px;cursor:pointer">
+            <span style="width:24px;font-size:9.5px;font-weight:700;color:{{ r.labelColor }};letter-spacing:.04em">{{ r.label }}</span>
+            <div style="display:flex;gap:1.5px">
+              <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="31">
+                <span style="width:9px;height:15px;border-radius:2px;background:{{ c.bg }};box-shadow:{{ c.ring }}"></span>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:12px">
+        <sc-for list="{{ legend }}" as="l" hint-placeholder-count="6">
+          <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#4C6577;font-weight:500"><span style="width:11px;height:11px;border-radius:3px;background:{{ l.swatch }}"></span>{{ l.label }}</span>
+        </sc-for>
+      </div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#8FA3AD;text-transform:uppercase;margin:18px 0 8px">Gemeinsam frei</div>
+      <div style="display:flex;flex-direction:column;gap:1px;background:#D7DFDA;border-radius:13px;overflow:hidden">
+        <sc-for list="{{ sharedList }}" as="b" hint-placeholder-count="3">
+          <div onClick="{{ b.open }}" style="display:flex;align-items:center;gap:11px;background:#fff;padding:11px 13px;cursor:pointer">
+            <span style="width:6px;height:26px;border-radius:3px;background:linear-gradient(#2F6B4F,#2A5A80);flex:none"></span>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:13.5px;font-weight:600">{{ b.range }}</div>
+              <div style="font-size:11px;color:#8FA3AD;margin-top:1px">{{ b.cost }}</div>
+            </div>
+            <span style="font-family:Newsreader,Georgia,serif;font-size:19px;font-weight:600">{{ b.len }}</span>
+          </div>
+        </sc-for>
+        <sc-if value="{{ noShared }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#fff;padding:14px 13px;font-size:12.5px;color:#8FA3AD">Noch keine gemeinsamen Tage geplant.</div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isBloecke }}" hint-placeholder-val="{{ false }}">
+  <div style="position:absolute;top:0;left:0;right:0;bottom:83px;overflow:auto">
+    <div style="padding:58px 16px 20px">
+      <div style="font-family:Newsreader,Georgia,serif;font-size:30px;font-weight:600;line-height:1.05">Blöcke &amp; Konto</div>
+      <div style="font-size:12px;color:#8FA3AD;margin-top:3px;font-weight:500">{{ year }} · {{ blockCount }} geplante Blöcke</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px">
+        <div style="background:#fff;border:1px solid #D7DFDA;border-radius:16px;padding:14px 12px 13px;display:flex;flex-direction:column;align-items:center;gap:10px">
+          <div style="width:112px;height:112px;border-radius:50%;background:{{ ring1 }};display:grid;place-items:center">
+            <div style="width:84px;height:84px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center">
+              <span style="font-family:Newsreader,Georgia,serif;font-size:29px;font-weight:600;line-height:1">{{ left1 }}</span>
+              <span style="font-size:9.5px;font-weight:700;letter-spacing:.06em;color:#8FA3AD;text-transform:uppercase">offen</span>
+            </div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:14px;font-weight:700;color:{{ c1 }}">{{ n1 }}</div>
+            <div style="font-size:11px;color:#4C6577;margin-top:2px">{{ used1 }} von {{ q1 }} verplant</div>
+          </div>
+        </div>
+        <div style="background:#fff;border:1px solid #D7DFDA;border-radius:16px;padding:14px 12px 13px;display:flex;flex-direction:column;align-items:center;gap:10px">
+          <div style="width:112px;height:112px;border-radius:50%;background:{{ ring2 }};display:grid;place-items:center">
+            <div style="width:84px;height:84px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center">
+              <span style="font-family:Newsreader,Georgia,serif;font-size:29px;font-weight:600;line-height:1">{{ left2 }}</span>
+              <span style="font-size:9.5px;font-weight:700;letter-spacing:.06em;color:#8FA3AD;text-transform:uppercase">offen</span>
+            </div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:14px;font-weight:700;color:{{ c2 }}">{{ n2 }}</div>
+            <div style="font-size:11px;color:#4C6577;margin-top:2px">{{ used2 }} von {{ q2 }} verplant</div>
+          </div>
+        </div>
+      </div>
+      <sc-if value="{{ restWarn }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:center;gap:11px;background:#FBF3E6;border:1px solid #E4CFA6;border-radius:14px;padding:12px 13px;margin-top:12px">
+          <span style="width:26px;height:26px;border-radius:8px;background:#C97A33;color:#FFF9F1;font-size:14px;font-weight:700;display:grid;place-items:center;flex:none">!</span>
+          <span style="font-size:12px;line-height:1.45;color:#6B5A2E">{{ restWarnText }}</span>
+        </div>
+      </sc-if>
+      <div style="display:flex;gap:5px;background:#E7ECE8;border-radius:11px;padding:3px;margin-top:14px">
+        <sc-for list="{{ filters }}" as="f" hint-placeholder-count="3">
+          <span onClick="{{ f.pick }}" style="flex:1;text-align:center;font-size:12.5px;font-weight:{{ f.weight }};color:{{ f.color }};padding:8px 0;border-radius:9px;background:{{ f.bg }};box-shadow:{{ f.shadow }};cursor:pointer">{{ f.label }}</span>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1px;background:#D7DFDA;border-radius:14px;overflow:hidden;margin-top:12px">
+        <sc-for list="{{ blockList }}" as="b" hint-placeholder-count="5">
+          <div onClick="{{ b.open }}" style="display:flex;align-items:center;gap:11px;background:#fff;padding:12px 13px;cursor:pointer">
+            <span style="width:6px;height:32px;border-radius:3px;background:{{ b.swatch }};flex:none"></span>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:13.5px;font-weight:600">{{ b.range }}</div>
+              <div style="font-size:11px;color:#8FA3AD;margin-top:2px">{{ b.who }}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:13px;font-weight:700">{{ b.cost }}</div>
+              <div style="font-size:10.5px;color:#8FA3AD;margin-top:1px">{{ b.len }} frei</div>
+            </div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ noBlocks }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#fff;padding:14px 13px;font-size:12.5px;color:#8FA3AD">Keine Blöcke für diese Auswahl.</div>
+        </sc-if>
+      </div>
+      <div style="background:#fff;border:1px solid #D7DFDA;border-radius:14px;padding:13px 14px;margin-top:12px;display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#8FA3AD;text-transform:uppercase">Bilanz {{ year }}</div>
+        <sc-for list="{{ balance }}" as="r" hint-placeholder-count="4">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+            <span style="font-size:13px;color:#4C6577">{{ r.label }}</span>
+            <span style="font-size:13px;font-weight:600">{{ r.value }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isDienste }}" hint-placeholder-val="{{ false }}">
+  <div style="position:absolute;top:0;left:0;right:0;bottom:83px;overflow:auto">
+    <div style="padding:58px 16px 20px">
+      <div style="font-family:Newsreader,Georgia,serif;font-size:30px;font-weight:600;line-height:1.05">Dienste</div>
+      <div style="font-size:12px;color:#8FA3AD;margin-top:3px;font-weight:500">Wochenende · Feiertag · Bereitschaft</div>
+      <div style="display:flex;align-items:center;gap:10px;background:#E7ECE8;border:1px dashed #B8C7BF;border-radius:12px;padding:11px 13px;margin-top:14px">
+        <span style="font-size:15px">☞</span>
+        <span style="font-size:11.5px;line-height:1.45;color:#4C6577">Im Kalender auf einen Tag tippen: <b style="color:#173247">Wochenende</b> und <b style="color:#173247">Feiertag</b> öffnen den Dienst-Dialog, an Werktagen steht die <b style="color:#173247">Bereitschaft</b> im Eintragen-Sheet. Ob Sa+So zusammen oder einzeln — und wie Bereitschaft läuft — legt jede Person unter <b style="color:#173247">Mehr</b> selbst fest.</span>
+      </div>
+      <sc-for list="{{ dutySections }}" as="s" hint-placeholder-count="2">
+        <div style="margin-top:20px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
+            <span style="width:11px;height:11px;border-radius:3px;background:{{ s.color }}"></span>
+            <span style="font-size:15px;font-weight:700">{{ s.name }}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+            <sc-for list="{{ s.stats }}" as="st" hint-placeholder-count="3">
+              <div style="background:#fff;border:1px solid #D7DFDA;border-radius:12px;padding:10px 11px">
+                <div style="font-size:9.5px;font-weight:700;letter-spacing:.04em;color:#8FA3AD;text-transform:uppercase;line-height:1.25">{{ st.label }}</div>
+                <div style="display:flex;align-items:baseline;gap:3px;margin-top:5px">
+                  <span style="font-family:Newsreader,Georgia,serif;font-size:22px;font-weight:600;line-height:1">{{ st.value }}</span>
+                  <span style="font-size:11px;color:#8FA3AD">{{ st.of }}</span>
+                </div>
+                <div style="height:5px;border-radius:3px;background:#EDF1EE;margin-top:7px;overflow:hidden"><span style="display:block;height:100%;width:{{ st.pct }};background:{{ st.color }}"></span></div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:1px;background:#D7DFDA;border-radius:13px;overflow:hidden;margin-top:9px">
+            <sc-for list="{{ s.rows }}" as="r" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:11px;background:#fff;padding:11px 13px">
+                <span style="width:6px;height:26px;border-radius:3px;background:{{ r.color }};flex:none"></span>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:13.5px;font-weight:600">{{ r.range }}</div>
+                  <div style="font-size:11px;color:#8FA3AD;margin-top:1px">{{ r.kind }}</div>
+                </div>
+                <span onClick="{{ r.remove }}" style="width:26px;height:26px;border-radius:50%;background:#F1F4F1;color:#8FA3AD;font-size:13px;display:grid;place-items:center;flex:none;cursor:pointer">✕</span>
+              </div>
+            </sc-for>
+            <sc-if value="{{ s.empty }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#fff;padding:13px;font-size:12.5px;color:#8FA3AD">Noch keine Dienste eingetragen.</div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isMehr }}" hint-placeholder-val="{{ false }}">
+  <div style="position:absolute;top:0;left:0;right:0;bottom:83px;overflow:auto">
+    <div style="padding:58px 16px 20px">
+      <div style="font-family:Newsreader,Georgia,serif;font-size:30px;font-weight:600;line-height:1.05">Mehr</div>
+      <div style="font-size:12px;color:#8FA3AD;margin-top:3px;font-weight:500">Alles lokal auf diesem Gerät</div>
+      <sc-for list="{{ menuGroups }}" as="g" hint-placeholder-count="3">
+        <div style="margin-top:20px">
+          <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#8FA3AD;text-transform:uppercase;margin-bottom:8px">{{ g.title }}</div>
+          <div style="display:flex;flex-direction:column;gap:1px;background:#D7DFDA;border-radius:14px;overflow:hidden">
+            <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="3">
+              <div onClick="{{ r.tap }}" style="display:flex;align-items:center;gap:11px;background:#fff;padding:13px 14px;cursor:pointer">
+                <span style="width:26px;height:26px;border-radius:8px;background:{{ r.iconBg }};color:{{ r.iconFg }};font-size:12.5px;font-weight:700;display:grid;place-items:center;flex:none">{{ r.icon }}</span>
+                <span style="flex:1;font-size:14.5px;font-weight:500;color:{{ r.labelColor }}">{{ r.label }}</span>
+                <span style="font-size:13px;color:#8FA3AD">{{ r.value }}</span>
+                <span style="font-size:15px;color:#C9D4CE">›</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+      <div style="font-size:11px;line-height:1.6;color:#8FA3AD;margin-top:18px">Feiertage werden je Bundesland berechnet. Schulferien ohne Gewähr — bitte selbst prüfen.</div>
+    </div>
+  </div>
+  </sc-if>
+
+  <div style="position:absolute;bottom:0;left:0;right:0;display:flex;align-items:flex-start;padding:9px 4px 26px;background:rgba(247,249,247,.92);backdrop-filter:blur(18px);border-top:1px solid rgba(23,50,71,.1)">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+      <div onClick="{{ t.pick }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer">
+        <div style="width:24px;height:24px;color:{{ t.color }}">{{ t.icon }}</div>
+        <span style="font-size:10px;font-weight:600;color:{{ t.color }}">{{ t.label }}</span>
+      </div>
+    </sc-for>
+  </div>
+
+  <sc-if value="{{ sheetOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeSheet }}" style="position:absolute;inset:0;background:rgba(23,50,71,.32);backdrop-filter:blur(1px)"></div>
+    <div style="position:absolute;left:0;right:0;bottom:0;background:#F7F9F7;border-radius:22px 22px 0 0;box-shadow:0 -14px 40px rgba(23,50,71,.22);padding:9px 16px 30px;display:flex;flex-direction:column;gap:13px;max-height:82%;overflow:auto">
+      <span style="width:38px;height:5px;border-radius:3px;background:#C9D4CE;align-self:center;flex:none"></span>
+      <div>
+        <div style="font-family:Newsreader,Georgia,serif;font-size:21px;font-weight:600;line-height:1.15">{{ sheetTitle }}</div>
+        <div style="font-size:12.5px;color:#4C6577;margin-top:3px">{{ sheetSub }}</div>
+      </div>
+      <div style="display:flex;gap:5px;background:#E7ECE8;border-radius:11px;padding:3px">
+        <sc-for list="{{ sheetModes }}" as="m" hint-placeholder-count="3">
+          <span onClick="{{ m.pick }}" style="flex:1;text-align:center;font-size:12.5px;font-weight:{{ m.weight }};color:{{ m.color }};padding:8px 0;border-radius:9px;background:{{ m.bg }};box-shadow:{{ m.shadow }};cursor:pointer">{{ m.label }}</span>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1px;background:#D7DFDA;border-radius:13px;overflow:hidden">
+        <sc-for list="{{ sheetRows }}" as="r" hint-placeholder-count="3">
+          <div onClick="{{ r.pick }}" style="display:flex;align-items:center;gap:11px;background:{{ r.rowBg }};padding:12px 13px;cursor:{{ r.cursor }};opacity:{{ r.opacity }}">
+            <span style="width:16px;height:16px;border-radius:5px;background:{{ r.swatch }};flex:none"></span>
+            <span style="flex:1;font-size:14.5px;font-weight:600">{{ r.label }}</span>
+            <span style="font-size:12.5px;color:#8FA3AD">{{ r.note }}</span>
+            <span style="width:20px;height:20px;border-radius:50%;background:{{ r.markBg }};border:{{ r.markBorder }};color:#fff;font-size:12px;display:grid;place-items:center;flex:none">{{ r.mark }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <sc-if value="{{ vacDutyShow }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ vacDuty.pick }}" style="display:flex;align-items:center;gap:11px;background:#fff;border:1px solid #D7DFDA;border-radius:13px;padding:12px 13px;cursor:pointer">
+          <span style="width:16px;height:16px;border-radius:5px;background:{{ vacDuty.swatch }};flex:none"></span>
+          <span style="flex:1;font-size:14.5px;font-weight:600">{{ vacDuty.label }}</span>
+          <span style="font-size:12px;color:#8FA3AD">{{ vacDuty.note }}</span>
+          <span style="width:20px;height:20px;border-radius:50%;background:{{ vacDuty.markBg }};border:{{ vacDuty.markBorder }};color:#fff;font-size:12px;display:grid;place-items:center;flex:none">{{ vacDuty.mark }}</span>
+        </div>
+      </sc-if>
+      <div onClick="{{ sheetConfirm }}" style="background:{{ confirmBg }};color:#fff;border-radius:13px;padding:14px;text-align:center;font-size:15.5px;font-weight:600;cursor:pointer">{{ confirmLabel }}</div>
+      <sc-if value="{{ canClear }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ sheetClear }}" style="text-align:center;font-size:14px;font-weight:600;color:#A5432C;padding:2px 0 4px;cursor:pointer">Eintrag entfernen</div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ subOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeSub }}" style="position:absolute;inset:0;background:rgba(23,50,71,.32);backdrop-filter:blur(1px)"></div>
+    <div style="position:absolute;left:0;right:0;bottom:0;top:16%;background:#F7F9F7;border-radius:22px 22px 0 0;box-shadow:0 -14px 40px rgba(23,50,71,.22);display:flex;flex-direction:column">
+      <div style="flex:none;padding:9px 16px 12px;display:flex;flex-direction:column;gap:10px">
+        <span style="width:38px;height:5px;border-radius:3px;background:#C9D4CE;align-self:center"></span>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="flex:1">
+            <div style="font-family:Newsreader,Georgia,serif;font-size:21px;font-weight:600;line-height:1.15">{{ subTitle }}</div>
+            <div style="font-size:12px;color:#8FA3AD;margin-top:2px">{{ subSub }}</div>
+          </div>
+          <span onClick="{{ closeSub }}" style="font-size:14.5px;font-weight:600;color:#2A5A80;cursor:pointer">Fertig</span>
+        </div>
+      </div>
+      <div style="flex:1;min-height:0;overflow:auto;padding:0 16px 30px">
+        <sc-if value="{{ subIsPdf }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <div style="height:521px;overflow:hidden;border-radius:8px;border:1px solid #D7DFDA;background:#fff;box-shadow:0 2px 8px rgba(23,50,71,.1)">
+              <div style="width:560px;height:794px;transform:scale(0.6554);transform-origin:top left;background:#fff;box-sizing:border-box;padding:22px 20px 18px;display:flex;flex-direction:column;gap:9px;color:#173247">
+                <div style="display:flex;align-items:flex-end;justify-content:space-between;border-bottom:1.5px solid #173247;padding-bottom:6px">
+                  <div>
+                    <div style="font-family:Newsreader,Georgia,serif;font-size:17px;font-weight:600;line-height:1.1">Urlaubsübersicht {{ year }} — {{ pdfScopeName }}</div>
+                    <div style="font-size:7.5px;color:#4C6577;margin-top:2px">{{ pdfMeta }}</div>
+                  </div>
+                  <div style="display:flex;gap:7px">
+                    <sc-for list="{{ legend }}" as="l" hint-placeholder-count="6">
+                      <span style="display:flex;align-items:center;gap:3px;font-size:6.5px;color:#4C6577"><span style="width:7px;height:7px;border-radius:2px;background:{{ l.swatch }}"></span>{{ l.label }}</span>
+                    </sc-for>
+                  </div>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:9px 10px">
+                  <sc-for list="{{ pdfMonths }}" as="mo" hint-placeholder-count="12">
+                    <div style="display:flex;flex-direction:column;gap:2px">
+                      <div style="font-family:Newsreader,Georgia,serif;font-size:10.5px;font-weight:600;line-height:1.2">{{ mo.label }}</div>
+                      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px">
+                        <span style="font-size:5.5px;font-weight:700;color:#8FA3AD;text-align:center">M</span>
+                        <span style="font-size:5.5px;font-weight:700;color:#8FA3AD;text-align:center">D</span>
+                        <span style="font-size:5.5px;font-weight:700;color:#8FA3AD;text-align:center">M</span>
+                        <span style="font-size:5.5px;font-weight:700;color:#8FA3AD;text-align:center">D</span>
+                        <span style="font-size:5.5px;font-weight:700;color:#8FA3AD;text-align:center">F</span>
+                        <span style="font-size:5.5px;font-weight:700;color:#8FA3AD;text-align:center">S</span>
+                        <span style="font-size:5.5px;font-weight:700;color:#8FA3AD;text-align:center">S</span>
+                      </div>
+                      <sc-for list="{{ mo.weeks }}" as="wk" hint-placeholder-count="6">
+                        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px">
+                          <sc-for list="{{ wk }}" as="dy" hint-placeholder-count="7">
+                            <span style="height:12px;border-radius:2px;background:{{ dy.bg }};color:{{ dy.fg }};border:{{ dy.border }};box-sizing:border-box;font-size:7px;font-weight:600;display:flex;align-items:center;justify-content:center;line-height:1">{{ dy.num }}</span>
+                          </sc-for>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:2px;border-top:1px solid #D7DFDA;padding-top:7px">
+                  <div style="display:flex;flex-direction:column;gap:3px">
+                    <div style="font-size:7px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#4C6577">Urlaubsblöcke</div>
+                    <sc-for list="{{ pdfBlocks }}" as="b" hint-placeholder-count="6">
+                      <div style="display:flex;align-items:center;gap:4px;border-bottom:.5px solid #E4EAE6;padding-bottom:2px">
+                        <span style="width:3px;height:9px;border-radius:1px;background:{{ b.swatch }};flex:none"></span>
+                        <span style="flex:1;font-size:7.5px;font-weight:600;white-space:nowrap">{{ b.range }}</span>
+                        <span style="font-size:6.5px;color:#8FA3AD;white-space:nowrap">{{ b.who }}</span>
+                        <span style="font-size:7px;font-weight:700;white-space:nowrap">{{ b.cost }}</span>
+                        <span style="font-size:6.5px;color:#8FA3AD;white-space:nowrap">{{ b.len }}</span>
+                      </div>
+                    </sc-for>
+                    <sc-if value="{{ pdfNoBlocks }}" hint-placeholder-val="{{ false }}">
+                      <div style="font-size:7px;color:#8FA3AD">Keine Urlaubstage ausgewählt.</div>
+                    </sc-if>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:3px">
+                    <div style="font-size:7px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#4C6577">Dienste</div>
+                    <sc-for list="{{ pdfDuties }}" as="d" hint-placeholder-count="6">
+                      <div style="display:flex;align-items:center;gap:4px;border-bottom:.5px solid #E4EAE6;padding-bottom:2px">
+                        <span style="width:3px;height:9px;border-radius:1px;background:{{ d.color }};flex:none"></span>
+                        <span style="flex:1;font-size:7.5px;font-weight:600;white-space:nowrap">{{ d.range }}</span>
+                        <span style="font-size:6.5px;color:#8FA3AD;white-space:nowrap">{{ d.name }}</span>
+                        <span style="font-size:7px;font-weight:700;white-space:nowrap">{{ d.kind }}</span>
+                      </div>
+                    </sc-for>
+                    <sc-if value="{{ pdfNoDuties }}" hint-placeholder-val="{{ false }}">
+                      <div style="font-size:7px;color:#8FA3AD">Keine Dienste eingetragen.</div>
+                    </sc-if>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="font-size:11px;color:#8FA3AD;line-height:1.5">A4 Hochformat · 3 Monate nebeneinander, Wochen Mo–So untereinander · Urlaubsblöcke und Dienste darunter auf derselben Seite.</div>
+          </div>
+        </sc-if>
+        <div style="display:flex;flex-direction:column;gap:1px;background:#D7DFDA;border-radius:14px;overflow:hidden;margin-top:12px">
+          <sc-for list="{{ subRows }}" as="r" hint-placeholder-count="6">
+            <div style="background:#fff;padding:11px 12px;display:flex;flex-direction:column;gap:9px">
+              <div onClick="{{ r.tap }}" style="display:flex;align-items:center;gap:10px;cursor:pointer">
+                <span onClick="{{ r.swatchTap }}" style="width:24px;height:24px;border-radius:7px;background:{{ r.swatch }};flex:none;display:{{ r.swatchShow }};box-shadow:inset 0 0 0 1px rgba(0,0,0,.14)"></span>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:14px;font-weight:{{ r.weight }};color:{{ r.color }}">{{ r.label }}</div>
+                  <div style="font-size:11px;color:#8FA3AD;margin-top:1px;display:{{ r.subShow }}">{{ r.sub }}</div>
+                </div>
+                <span onClick="{{ r.mark2Tap }}" style="width:30px;height:30px;border-radius:9px;background:#EDF1EE;color:#173247;font-size:17px;font-weight:700;display:{{ r.mark2Show }};place-items:center;flex:none;cursor:pointer">{{ r.mark2 }}</span>
+                <span style="font-size:14px;font-weight:600;color:#173247;min-width:20px;text-align:center">{{ r.value }}</span>
+                <span onClick="{{ r.markTap }}" style="font-size:16px;color:{{ r.markColor }};font-weight:700;min-width:24px;text-align:center;cursor:pointer">{{ r.mark }}</span>
+              </div>
+              <div style="display:{{ r.choicesShow }};flex-wrap:wrap;gap:6px">
+                <sc-for list="{{ r.choices }}" as="ch" hint-placeholder-count="4">
+                  <span onClick="{{ ch.pick }}" style="background:{{ ch.bg }};color:{{ ch.fg }};border:{{ ch.border }};border-radius:999px;padding:7px 12px;font-size:12px;font-weight:{{ ch.weight }};cursor:pointer">{{ ch.label }}</span>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+          <sc-if value="{{ subEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fff;padding:14px;font-size:12.5px;color:#8FA3AD">{{ subEmptyText }}</div>
+          </sc-if>
+        </div>
+        <sc-if value="{{ hasRows2 }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:18px">
+            <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#8FA3AD;text-transform:uppercase;margin-bottom:8px">{{ subRows2Title }}</div>
+            <div style="display:flex;flex-direction:column;gap:1px;background:#D7DFDA;border-radius:14px;overflow:hidden">
+              <sc-for list="{{ subRows2 }}" as="r" hint-placeholder-count="5">
+                <div onClick="{{ r.tap }}" style="display:flex;align-items:center;gap:10px;background:#fff;padding:11px 12px;cursor:pointer">
+                  <span onClick="{{ r.swatchTap }}" style="width:24px;height:24px;border-radius:7px;background:{{ r.swatch }};flex:none;display:{{ r.swatchShow }};box-shadow:inset 0 0 0 1px rgba(0,0,0,.14)"></span>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-size:14px;font-weight:{{ r.weight }};color:{{ r.color }}">{{ r.label }}</div>
+                    <div style="font-size:11px;color:#8FA3AD;margin-top:1px;display:{{ r.subShow }}">{{ r.sub }}</div>
+                  </div>
+                  <span style="font-size:13px;color:#8FA3AD">{{ r.value }}</span>
+                  <span onClick="{{ r.markTap }}" style="font-size:16px;color:{{ r.markColor }};font-weight:700;min-width:24px;text-align:center;cursor:pointer">{{ r.mark }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ subHasAdd }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:12px">
+            <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#8FA3AD;text-transform:uppercase;margin-bottom:8px">{{ subAddTitle }}</div>
+            <div style="display:flex;flex-wrap:wrap;gap:7px">
+              <sc-for list="{{ subAddChips }}" as="c" hint-placeholder-count="4">
+                <span onClick="{{ c.tap }}" style="display:flex;align-items:center;gap:6px;background:#fff;border:1px solid #D7DFDA;border-radius:999px;padding:8px 13px;font-size:12.5px;font-weight:600;cursor:pointer"><span style="width:10px;height:10px;border-radius:3px;background:{{ c.swatch }}"></span>{{ c.label }}</span>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ subNote }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:11px;line-height:1.6;color:#8FA3AD;margin-top:14px">{{ subNoteText }}</div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ editorOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ editorCancel }}" style="position:absolute;inset:0;background:rgba(23,50,71,.42)"></div>
+    <div style="position:absolute;left:0;right:0;bottom:0;top:9%;background:#F7F9F7;border-radius:22px 22px 0 0;box-shadow:0 -14px 40px rgba(23,50,71,.28);display:flex;flex-direction:column">
+      <div style="flex:none;padding:9px 16px 11px;display:flex;flex-direction:column;gap:9px;border-bottom:1px solid #E4EAE6">
+        <span style="width:38px;height:5px;border-radius:3px;background:#C9D4CE;align-self:center"></span>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span onClick="{{ editorCancel }}" style="font-size:14.5px;font-weight:600;color:#4C6577;cursor:pointer">Abbrechen</span>
+          <div style="flex:1;text-align:center;min-width:0">
+            <div style="font-family:Newsreader,Georgia,serif;font-size:17px;font-weight:600;line-height:1.15">{{ editorTitle }}</div>
+            <div style="font-size:10.5px;color:#8FA3AD;margin-top:1px">{{ editorSub }}</div>
+          </div>
+          <span onClick="{{ editorSave }}" style="font-size:14.5px;font-weight:700;color:#2A5A80;cursor:pointer">Speichern</span>
+        </div>
+      </div>
+      <div style="flex:1;min-height:0;overflow:auto;padding:14px 16px 30px;display:flex;flex-direction:column;gap:15px">
+        <div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#8FA3AD;text-transform:uppercase;margin-bottom:7px">Bezeichnung</div>
+          <input value="{{ editorName }}" onChange="{{ editorSetName }}" placeholder="z. B. Sommerferien" style="width:100%;box-sizing:border-box;font-family:-apple-system,system-ui,sans-serif;font-size:16px;font-weight:500;padding:12px 13px;border-radius:12px;border:1px solid #D7DFDA;background:#fff;color:#173247;outline:none" />
+        </div>
+        <sc-if value="{{ editorIsCat }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#8FA3AD;text-transform:uppercase;margin-bottom:7px">Farbe</div>
+            <div onClick="{{ editorPickColor }}" style="display:flex;align-items:center;gap:11px;background:#fff;border:1px solid #D7DFDA;border-radius:12px;padding:11px 12px;cursor:pointer">
+              <span style="width:26px;height:26px;border-radius:8px;background:{{ editorColor }};box-shadow:inset 0 0 0 1px rgba(0,0,0,.14);flex:none"></span>
+              <span style="flex:1;font-size:14.5px;font-weight:600">{{ editorColor }}</span>
+              <span style="font-size:15px;color:#C9D4CE">›</span>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ editorIsEvent }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#8FA3AD;text-transform:uppercase;margin-bottom:7px">Kategorie</div>
+            <div style="display:flex;flex-wrap:wrap;gap:7px">
+              <sc-for list="{{ editorCats }}" as="c" hint-placeholder-count="4">
+                <span onClick="{{ c.pick }}" style="display:flex;align-items:center;gap:6px;background:{{ c.bg }};color:{{ c.fg }};border:{{ c.border }};border-radius:999px;padding:8px 13px;font-size:12.5px;font-weight:{{ c.weight }};cursor:pointer"><span style="width:10px;height:10px;border-radius:3px;background:{{ c.swatch }}"></span>{{ c.label }}</span>
+              </sc-for>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#8FA3AD;text-transform:uppercase;margin-bottom:7px">Wiederholung</div>
+            <div style="display:flex;gap:7px">
+              <sc-for list="{{ editorYearly }}" as="o" hint-placeholder-count="2">
+                <span onClick="{{ o.pick }}" style="flex:1;text-align:center;background:{{ o.bg }};color:{{ o.fg }};border:{{ o.border }};border-radius:11px;padding:10px 0;font-size:12.5px;font-weight:{{ o.weight }};cursor:pointer">{{ o.label }}</span>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ editorHasDates }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px">
+              <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#8FA3AD;text-transform:uppercase">Zeitraum</span>
+              <span style="font-size:12.5px;font-weight:600;color:#173247">{{ editorRange }}</span>
+            </div>
+            <div style="display:flex;gap:7px;margin-bottom:11px">
+              <sc-for list="{{ editorTabs }}" as="t" hint-placeholder-count="2">
+                <span onClick="{{ t.pick }}" style="flex:1;text-align:center;background:{{ t.bg }};color:{{ t.fg }};border:{{ t.border }};border-radius:11px;padding:10px 0;font-size:12.5px;font-weight:{{ t.weight }};cursor:pointer">{{ t.label }}</span>
+              </sc-for>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-bottom:12px">
+              <sc-for list="{{ editorMonths }}" as="m" hint-placeholder-count="12">
+                <span onClick="{{ m.pick }}" style="text-align:center;background:{{ m.bg }};color:{{ m.fg }};border:{{ m.border }};border-radius:9px;padding:8px 0;font-size:12px;font-weight:{{ m.weight }};cursor:pointer">{{ m.label }}</span>
+              </sc-for>
+            </div>
+            <div style="font-size:11px;color:#8FA3AD;margin-bottom:7px">{{ editorDayTitle }}</div>
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px">
+              <sc-for list="{{ editorDays }}" as="d" hint-placeholder-count="31">
+                <span onClick="{{ d.pick }}" style="text-align:center;background:{{ d.bg }};color:{{ d.fg }};border:{{ d.border }};border-radius:9px;padding:9px 0;font-size:13px;font-weight:{{ d.weight }};cursor:pointer">{{ d.num }}</span>
+              </sc-for>
+            </div>
+            <sc-if value="{{ editorWrap }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:11px;color:#6B5A2E;background:#FBF3E6;border:1px solid #E4CFA6;border-radius:10px;padding:9px 11px;margin-top:11px;line-height:1.45">Der Zeitraum läuft über den Jahreswechsel und wird am Jahresende fortgesetzt.</div>
+            </sc-if>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ pickerOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ pickerClose }}" style="position:absolute;inset:0;background:rgba(23,50,71,.46)"></div>
+    <div style="position:absolute;left:0;right:0;bottom:0;background:#F7F9F7;border-radius:22px 22px 0 0;box-shadow:0 -14px 40px rgba(23,50,71,.3);padding:9px 16px 30px;display:flex;flex-direction:column;gap:13px">
+      <span style="width:38px;height:5px;border-radius:3px;background:#C9D4CE;align-self:center"></span>
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <div style="flex:1;min-width:0">
+          <div style="font-family:Newsreader,Georgia,serif;font-size:20px;font-weight:600;line-height:1.15">Farbe wählen</div>
+          <div style="font-size:12px;color:#8FA3AD;margin-top:2px">{{ pickerLabel }}</div>
+        </div>
+        <span onClick="{{ pickerClose }}" style="font-size:14.5px;font-weight:700;color:#2A5A80;cursor:pointer">Fertig</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px">
+        <sc-for list="{{ pickerSwatches }}" as="s" hint-placeholder-count="28">
+          <span onClick="{{ s.pick }}" style="aspect-ratio:1;border-radius:10px;background:{{ s.color }};opacity:{{ s.opacity }};box-shadow:{{ s.ring }};display:grid;place-items:center;color:#fff;font-size:13px;font-weight:700;cursor:pointer">{{ s.mark }}</span>
+        </sc-for>
+      </div>
+      <div style="font-size:11px;color:#8FA3AD;line-height:1.5">Ausgegraute Farben sind schon vergeben — jede Farbe kann nur einmal verwendet werden. Antippen zeigt, wofür sie belegt ist.</div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;right:16px;bottom:100px;background:#173247;color:#fff;border-radius:13px;padding:12px 14px;font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(23,50,71,.28)">{{ toastText }}</div>
+  </sc-if>
+
+</div>
+</x-import>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:402,&quot;height&quot;:874},&quot;p1Name&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Anna&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Personen&quot;},&quot;p2Name&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Jonas&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Personen&quot;},&quot;startTab&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;plan&quot;,&quot;jahr&quot;,&quot;bloecke&quot;,&quot;dienste&quot;,&quot;mehr&quot;],&quot;default&quot;:&quot;plan&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Ansicht&quot;}}">
+const STATES = [['BW','Baden-Württemberg'],['BY','Bayern'],['BE','Berlin'],['BB','Brandenburg'],['HB','Bremen'],['HH','Hamburg'],['HE','Hessen'],['MV','Mecklenburg-Vorpommern'],['NI','Niedersachsen'],['NW','Nordrhein-Westfalen'],['RP','Rheinland-Pfalz'],['SL','Saarland'],['SN','Sachsen'],['ST','Sachsen-Anhalt'],['SH','Schleswig-Holstein'],['TH','Thüringen']];
+const EXTRA = {BW:['k3','fl','ah'],BY:['k3','fl','mh','ah'],BE:['ft'],BB:['rf'],HB:['rf'],HH:['rf'],HE:['fl'],MV:['ft','rf'],NI:['rf'],NW:['fl','ah'],RP:['fl','ah'],SL:['fl','mh','ah'],SN:['fl','rf','bb'],ST:['k3','rf'],SH:['rf'],TH:['fl','rf','wk']};
+const HN = {nj:['Neujahr','Neujahr'],k3:['Dreikönige','Heilige Drei Könige'],ft:['Frauentag','Internationaler Frauentag'],kf:['Karfreitag','Karfreitag'],om:['Ostermontag','Ostermontag'],ta:['1. Mai','Tag der Arbeit'],ch:['Himmelfahrt','Christi Himmelfahrt'],pm:['Pfingsten','Pfingstmontag'],fl:['Fronleichnam','Fronleichnam'],mh:['Mariä Himmelf.','Mariä Himmelfahrt'],wk:['Weltkindertag','Weltkindertag'],te:['Einheit','Tag der Deutschen Einheit'],rf:['Reformation','Reformationstag'],ah:['Allerheiligen','Allerheiligen'],bb:['Buß- & Bettag','Buß- und Bettag'],w1:['1. Weihn.','1. Weihnachtsfeiertag'],w2:['2. Weihn.','2. Weihnachtsfeiertag']};
+// Schulferien-Datenbank: alle 16 Bundesländer, 2027 + 2028 (Quelle: KMK-Termine,
+// Januar-Zeiträume sind der Ausläufer der Weihnachtsferien des Vorjahres). Ohne Gewähr.
+const FLAB = {W:'Weihnachtsferien',I:'Winterferien',O:'Osterferien',P:'Pfingstferien',S:'Sommerferien',H:'Herbstferien',F:'Ferientag'};
+const FER_DB = {
+  BW:{2027:'1-1,1-9,W|3-25,3-25,F|3-30,4-3,O|5-18,5-29,P|7-29,9-11,S|11-2,11-6,H|12-23,12-31,W',
+      2028:'1-1,1-8,W|4-13,4-13,F|4-18,4-22,O|6-6,6-17,P|7-27,9-9,S|10-30,11-3,H|12-23,12-31,W'},
+  BY:{2027:'1-1,1-8,W|2-8,2-12,I|3-22,4-2,O|5-18,5-28,P|8-2,9-13,S|11-2,11-5,H|12-24,12-31,W',
+      2028:'1-1,1-7,W|2-28,3-3,I|4-10,4-21,O|6-6,6-16,P|7-31,9-11,S|10-30,11-3,H|12-23,12-31,W'},
+  BE:{2027:'1-1,1-2,W|2-1,2-6,I|3-22,4-2,O|5-7,5-7,F|5-18,5-19,P|7-1,8-14,S|10-11,10-23,H|12-22,12-31,W',
+      2028:'1-31,2-5,I|4-10,4-22,O|5-26,5-26,F|6-1,6-2,P|7-1,8-12,S|10-2,10-14,H|12-22,12-31,W'},
+  BB:{2027:'1-1,1-2,W|2-1,2-6,I|3-22,4-3,O|5-18,5-18,P|7-1,8-14,S|10-11,10-23,H|12-23,12-31,W',
+      2028:'1-31,2-5,I|4-10,4-22,O|6-29,8-12,S|10-2,10-14,H|12-22,12-31,W'},
+  HB:{2027:'1-1,1-9,W|2-1,2-2,I|3-22,4-3,O|5-7,5-7,F|5-18,5-18,P|7-8,8-18,S|10-18,10-30,H|12-23,12-31,W',
+      2028:'1-1,1-8,W|1-31,2-1,I|4-10,4-22,O|5-26,5-26,F|6-6,6-6,P|7-20,8-30,S|10-23,11-4,H|12-27,12-31,W'},
+  HH:{2027:'1-1,1-1,W|1-29,1-29,I|3-1,3-12,O|5-7,5-14,P|7-1,8-11,S|10-11,10-22,H|12-20,12-31,W',
+      2028:'1-28,1-28,I|3-6,3-17,O|5-22,5-26,P|7-3,8-11,S|10-2,10-13,H|10-30,10-30,F|12-18,12-29,W'},
+  HE:{2027:'1-1,1-12,W|3-22,4-2,O|6-28,8-6,S|10-4,10-16,H|12-23,12-31,W',
+      2028:'1-1,1-11,W|4-3,4-14,O|7-3,8-11,S|10-9,10-20,H|12-27,12-31,W'},
+  MV:{2027:'1-1,1-2,W|2-8,2-19,I|3-24,4-2,O|5-7,5-7,F|5-14,5-18,P|7-5,8-14,S|10-14,10-23,H|12-22,12-31,W',
+      2028:'1-1,1-4,W|2-7,2-18,I|4-12,4-21,O|5-26,5-26,F|6-2,6-6,P|6-26,8-5,S|10-23,10-28,H|12-21,12-31,W'},
+  NI:{2027:'1-1,1-9,W|2-1,2-2,I|3-22,4-3,O|5-7,5-7,F|5-18,5-18,P|7-8,8-18,S|10-16,10-30,H|12-23,12-31,W',
+      2028:'1-1,1-8,W|1-31,2-1,I|4-10,4-22,O|5-26,5-26,F|6-6,6-6,P|7-20,8-30,S|10-2,10-2,F|10-23,11-4,H|12-27,12-31,W'},
+  NW:{2027:'1-1,1-6,W|3-22,4-3,O|5-18,5-18,P|7-19,8-31,S|10-23,11-6,H|12-24,12-31,W',
+      2028:'1-1,1-8,W|4-10,4-22,O|7-10,8-22,S|10-23,11-4,H|12-21,12-31,W'},
+  RP:{2027:'1-1,1-8,W|3-22,4-2,O|6-28,8-6,S|10-4,10-15,H|12-23,12-31,W',
+      2028:'1-1,1-7,W|4-10,4-21,O|7-3,8-11,S|10-9,10-20,H|12-21,12-31,W'},
+  SL:{2027:'2-8,2-12,I|3-30,4-9,O|6-28,8-6,S|10-4,10-15,H|12-20,12-31,W',
+      2028:'2-21,2-29,I|4-12,4-21,O|7-3,8-11,S|10-9,10-20,H|12-20,12-31,W'},
+  SN:{2027:'1-1,1-2,W|2-8,2-19,I|3-26,4-2,O|5-7,5-7,F|5-15,5-18,P|7-10,8-20,S|10-11,10-23,H|12-23,12-31,W',
+      2028:'1-1,1-1,W|2-14,2-26,I|4-14,4-22,O|5-26,5-26,P|7-22,9-1,S|10-23,11-3,H|12-23,12-31,W'},
+  ST:{2027:'1-1,1-2,W|2-1,2-6,I|3-22,3-27,O|5-15,5-22,P|7-10,8-20,S|10-18,10-23,H|12-20,12-31,W',
+      2028:'2-7,2-12,I|4-10,4-22,O|6-3,6-10,P|7-22,9-1,S|10-2,10-2,F|10-30,11-3,H|12-21,12-31,W'},
+  SH:{2027:'1-1,1-6,W|3-30,4-10,O|5-7,5-7,P|7-3,8-14,S|10-11,10-23,H|12-23,12-31,W',
+      2028:'1-1,1-8,W|4-3,4-15,O|5-26,5-26,P|6-24,8-4,S|10-16,10-30,H|12-21,12-31,W'},
+  TH:{2027:'1-1,1-2,W|2-1,2-6,I|3-22,4-3,O|5-7,5-7,P|7-10,8-20,S|10-9,10-23,H|12-23,12-31,W',
+      2028:'2-7,2-12,I|4-3,4-15,O|5-26,5-26,P|7-22,9-1,S|10-23,11-3,H|12-23,12-31,W'}
+};
+function parseFer(raw){ return raw.split('|').map(e=>{ const p = e.split(','); return [p[0], p[1], FLAB[p[2]] || 'Ferien']; }); }
+const TARIF = [['heiligabend','Heiligabend',12,24],['silvester','Silvester',12,31]];
+const C = {ink:'#173247',soft:'#4C6577',faint:'#8FA3AD',line:'#D7DFDA',hol:'#C97A33',holT:'#FFF9F1',fer:'#E9DFB6',ferT:'#6B5A2E',we:'#DEE6E2',weT:'#5C6E68'};
+const MON = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+const M3 = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+const WD3 = ['Mo','Di','Mi','Do','Fr','Sa','So'];
+const CATNAME = {U:'Urlaub',R:'Resturlaub',S:'Gleittage'};
+const KEY = 'urlaubsplaner_app_v3';
+const PALETTE = ['#2F6B4F','#4C8A66','#6B9E7C','#B7D2BE','#2A5A80','#3E7CA6','#5C87A6','#B9CEDD','#6B4C9A','#8A6BB8','#9B7BC7','#C9B3E0','#B23A3A','#C4574C','#D97B7B','#E8AFA8','#C97A33','#D79A55','#E0C68C','#E9DFB6','#2A8F8F','#3FA8A0','#7ED0D0','#B5E0DC','#8A6642','#A88157','#B5566B','#CE7E90'];
+const DEFCOL = {p1U:'#2F6B4F',p1R:'#6B9E7C',p1S:'#B7D2BE',p1wd:'#6B4C9A',p1fd:'#B23A3A',p1br:'#2A8F8F',
+  p2U:'#2A5A80',p2R:'#5C87A6',p2S:'#B9CEDD',p2wd:'#9B7BC7',p2fd:'#D97B7B',p2br:'#7ED0D0'};
+const SLOTLABEL = {U:'Urlaub',R:'Resturlaub',S:'Gleittage',wd:'Wochenenddienst',fd:'Feiertagsdienst',br:'Bereitschaft'};
+
+function easter(y){const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),mo=Math.floor((h+l-7*m+114)/31),da=((h+l-7*m+114)%31)+1;return new Date(y,mo-1,da,12);}
+function add(d,n){return new Date(d.getTime()+n*864e5);}
+function bbt(y){const n=new Date(y,10,23,12);let back=((((n.getDay()+6)%7)-2)+7)%7;if(back===0)back=7;return add(n,-back);}
+function holidays(y,land){
+  const e=easter(y);
+  const all={nj:new Date(y,0,1,12),k3:new Date(y,0,6,12),ft:new Date(y,2,8,12),kf:add(e,-2),om:add(e,1),ta:new Date(y,4,1,12),ch:add(e,39),pm:add(e,50),fl:add(e,60),mh:new Date(y,7,15,12),wk:new Date(y,8,20,12),te:new Date(y,9,3,12),rf:new Date(y,9,31,12),ah:new Date(y,10,1,12),bb:bbt(y),w1:new Date(y,11,25,12),w2:new Date(y,11,26,12)};
+  const keys=['nj','kf','om','ta','ch','pm','te','w1','w2'].concat(EXTRA[land]||[]);
+  const map={};
+  keys.forEach(k=>{const d=all[k];map[(d.getMonth()+1)+'-'+d.getDate()]=k;});
+  return map;
+}
+
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    const seed = {
+      tab: 'plan', month: 5, year: 2027, land: 'SH',
+      plan: {}, wd: {p1:[],p2:[]}, fd: {p1:[],p2:[]}, br: {p1:[],p2:[]},
+      people: {
+        p1:{urlaub:30,rest:4,sonst:3,wdTarget:6,fdTarget:2,brTarget:4,wdMode:'pair',brMode:'week',brWeekStart:0,brDays:[0,3]},
+        p2:{urlaub:30,rest:0,sonst:5,wdTarget:6,fdTarget:4,brTarget:6,wdMode:'single',brMode:'single',brWeekStart:4,brDays:[0,3]}},
+      colors: Object.assign({}, DEFCOL),
+      cats: [{id:'geb',name:'Geburtstag',color:'#B5566B'},{id:'reise',name:'Reise',color:'#3E7CA6'},
+             {id:'hoch',name:'Hochzeitstag',color:'#8A6642'},{id:'event',name:'Event',color:'#C9B3E0'}],
+      events: [
+        {id:'e1',catId:'geb',label:'Geburtstag Lina',sm:3,sd:12,em:3,ed:12,yearly:true},
+        {id:'e2',catId:'reise',label:'Städtetrip Kopenhagen',sm:5,sd:11,em:5,ed:14,yearly:false},
+        {id:'e3',catId:'hoch',label:'Hochzeitstag',sm:8,sd:9,em:8,ed:9,yearly:true},
+        {id:'e4',catId:'geb',label:'Geburtstag Opa',sm:10,sd:14,em:10,ed:14,yearly:true}],
+      ferienEdits: {}, filter: 'all', drag: null, sheet: null, sub: null, editor: null, picker: null, pdfScope: 'both', toast: null
+    };
+    const put = (o, arr, cat) => arr.forEach(([a,b])=>{
+      const [sm,sd]=a.split('-').map(Number),[em,ed]=b.split('-').map(Number);
+      let d=new Date(2027,sm-1,sd,12); const end=new Date(2027,em-1,ed,12);
+      while(d<=end){ const k=(d.getMonth()+1)+'-'+d.getDate(); o[k]=o[k]||{}; o[k][cat[0]]=cat[1]; d=add(d,1); }
+    });
+    const pl = {};
+    [['5-7','5-7'],['5-10','5-14'],['7-19','7-23'],['12-27','12-30']].forEach(r=>{put(pl,[r],['p1','U']);put(pl,[r],['p2','U']);});
+    put(pl,[['3-16','3-19']],['p1','R']);
+    put(pl,[['5-24','5-28'],['10-11','10-15']],['p1','U']);
+    put(pl,[['2-8','2-12'],['5-18','5-21'],['9-6','9-8']],['p2','U']);
+    seed.plan = pl;
+    seed.wd.p1 = ['5-8','8-21'];
+    seed.fd.p2 = ['5-17','12-26'];
+    seed.br.p2 = ['3-1'];
+    let saved = null;
+    try { const raw = localStorage.getItem(KEY); if (raw) saved = JSON.parse(raw); } catch (e) {}
+    if (saved){
+      // gespeicherte Daten normalisieren (ältere Ereignis-Form war ein Array)
+      const cats = Array.isArray(saved.cats) && saved.cats.length ? saved.cats : seed.cats;
+      const fallback = cats[0].id;
+      saved.cats = cats;
+      saved.events = (Array.isArray(saved.events) ? saved.events : []).map((e,i)=>{
+        const o = Array.isArray(e)
+          ? {id:'ev'+i+'_'+e[0], catId:e[0], label:e[1], sm:Number(e[2]), sd:Number(e[3]), em:Number(e[2]), ed:Number(e[3]), yearly:false}
+          : Object.assign({}, e);
+        o.id = o.id || 'ev'+i+'_'+Date.now();
+        o.label = o.label || 'Ereignis';
+        o.sm = Number(o.sm); o.sd = Number(o.sd);
+        o.em = Number(o.em || o.sm); o.ed = Number(o.ed || o.sd);
+        o.yearly = !!o.yearly;
+        if (!cats.some(c=>c.id===o.catId)) o.catId = fallback;
+        return o;
+      }).filter(o=>o.sm >= 1 && o.sm <= 12 && o.sd >= 1 && o.sd <= 31);
+      saved.colors = Object.assign({}, DEFCOL, saved.colors || {});
+      const sp = saved.people || {};
+      saved.people = {p1: Object.assign({}, seed.people.p1, sp.p1 || {}), p2: Object.assign({}, seed.people.p2, sp.p2 || {})};
+    }
+    this.state = Object.assign(seed, saved || {}, { drag: null, sheet: null, sub: null, editor: null, picker: null, toast: null, tab: props.startTab || (saved && saved.tab) || 'plan' });
+  }
+  componentDidMount(){
+    this._up = () => { if (this.state.drag) this.endDrag(); };
+    window.addEventListener('pointerup', this._up);
+  }
+  componentWillUnmount(){ window.removeEventListener('pointerup', this._up); if (this._t) clearTimeout(this._t); }
+  persist(){
+    const s = this.state;
+    try { localStorage.setItem(KEY, JSON.stringify({tab:s.tab,month:s.month,year:s.year,land:s.land,plan:s.plan,wd:s.wd,fd:s.fd,br:s.br,people:s.people,colors:s.colors,cats:s.cats,events:s.events,ferienEdits:s.ferienEdits,filter:s.filter,pdfScope:s.pdfScope})); } catch(e){}
+  }
+  set(patch, cb){ this.setState(patch, () => { this.persist(); if (cb) cb(); }); }
+  flash(text){
+    if (this._t) clearTimeout(this._t);
+    this.setState({toast:text});
+    this._t = setTimeout(()=>this.setState({toast:null}), 2200);
+  }
+
+  names(){ return [this.props.p1Name ?? 'Anna', this.props.p2Name ?? 'Jonas']; }
+  hol(){ const k = this.state.year+this.state.land; if (this._hk !== k){ this._hk = k; this._h = holidays(this.state.year, this.state.land); } return this._h; }
+  ferien(){
+    const k = this.state.land+'_'+this.state.year;
+    const e = this.state.ferienEdits[k];
+    if (e !== undefined) return e;
+    if (this._fk !== k){
+      this._fk = k;
+      const raw = (FER_DB[this.state.land] || {})[this.state.year];
+      this._f = raw ? parseFer(raw) : [];
+    }
+    return this._f;
+  }
+  dim(m){ return new Date(this.state.year, m, 0).getDate(); }
+  dow(m,d){ return (new Date(this.state.year, m-1, d).getDay()+6)%7; }
+  info(m,d){
+    const key = m+'-'+d, h = this.hol()[key], wd = this.dow(m,d);
+    let fer = null;
+    for (const [a,b,label] of this.ferien()){
+      const [sm,sd]=a.split('-').map(Number),[em,ed]=b.split('-').map(Number);
+      const cur=m*100+d, s=sm*100+sd, e=em*100+ed;
+      if (s<=e ? (cur>=s&&cur<=e) : (cur>=s||cur<=e)) { fer = label; break; }
+    }
+    const tarif = TARIF.find(t=>t[2]===m&&t[3]===d);
+    const kind = h ? 'hol' : wd>=5 ? 'we' : 'work';
+    const entry = this.state.plan[key] || {};
+    const a = kind==='work' ? (entry.p1||null) : null;
+    const j = kind==='work' ? (entry.p2||null) : null;
+    return {key, wd, kind, h, holShort: h?HN[h][0]:'', holLong: h?HN[h][1]:'', fer, tarif, a, j,
+      wd1: kind==='we' && this.state.wd.p1.indexOf(this.wdKey('p1',m,d)) >= 0,
+      wd2: kind==='we' && this.state.wd.p2.indexOf(this.wdKey('p2',m,d)) >= 0,
+      fd1: kind==='hol' && this.state.fd.p1.includes(key), fd2: kind==='hol' && this.state.fd.p2.includes(key),
+      br1: this.inBr('p1',m,d), br2: this.inBr('p2',m,d),
+      off: kind!=='work' || (a&&j)};
+  }
+  satKey(m,d){ const dt = add(new Date(this.state.year,m-1,d,12), -1); return (dt.getMonth()+1)+'-'+dt.getDate(); }
+  wdMode(p){ return this.state.people[p].wdMode || 'pair'; }
+  brMode(p){ return this.state.people[p].brMode || 'week'; }
+  brStart(p){ const v = this.state.people[p].brWeekStart; return v == null ? 0 : Number(v); }
+  brDays(p){ const v = this.state.people[p].brDays; return (v && v.length) ? v : [0]; }
+  wdKey(p,m,d){
+    if (this.wdMode(p)==='single') return m+'-'+d;
+    return this.dow(m,d)===5 ? m+'-'+d : this.satKey(m,d);
+  }
+  brKey(p,m,d){
+    if (this.brMode(p) !== 'week') return m+'-'+d;
+    const y = this.state.year, dt = new Date(y,m-1,d,12);
+    const diff = (((dt.getDay()+6)%7) - this.brStart(p) + 7) % 7;
+    let s = add(dt,-diff);
+    if (s.getFullYear() < y) s = new Date(y,0,1,12);
+    return (s.getMonth()+1)+'-'+s.getDate();
+  }
+  brEligible(p,m,d){
+    const mode = this.brMode(p), wd = this.dow(m,d);
+    if (mode==='weekday') return wd <= 4;
+    if (mode==='custom') return this.brDays(p).indexOf(wd) >= 0;
+    return true;
+  }
+  brSpanText(p,s){
+    const mode = this.brMode(p);
+    return mode==='week' ? this.fmtLong(s)+' – '+this.fmtLong(add(s,6)) : this.fmtLong(s);
+  }
+  brKindText(p,s){
+    const mode = this.brMode(p);
+    if (mode==='week') return 'Bereitschaft · ganze Woche ab '+WD3[(s.getDay()+6)%7];
+    if (mode==='weekday') return 'Bereitschaft · Werktag';
+    if (mode==='custom') return 'Bereitschaft · '+WD3[(s.getDay()+6)%7];
+    return 'Bereitschaft · einzelner Tag';
+  }
+  inBr(p,m,d){
+    if (this.brMode(p) !== 'week') return this.state.br[p].indexOf(m+'-'+d) >= 0;
+    const t = new Date(this.state.year,m-1,d,12).getTime();
+    return this.state.br[p].some(k=>{ const [km,kd]=k.split('-').map(Number); const s=new Date(this.state.year,km-1,kd,12).getTime(); return t>=s && t<s+7*864e5; });
+  }
+  col(slot){ return (this.state.colors || {})[slot] || DEFCOL[slot]; }
+  usedColors(){
+    const [n1,n2] = this.names(), m = {};
+    ['p1','p2'].forEach((p,i)=>{ ['U','R','S','wd','fd','br'].forEach(k=>{
+      m[this.col(p+k).toUpperCase()] = (i===0?n1:n2)+' · '+SLOTLABEL[k];
+    }); });
+    (this.state.cats||[]).forEach(c=>{ m[c.color.toUpperCase()] = 'Kategorie '+c.name; });
+    m[C.hol.toUpperCase()] = 'Feiertag'; m[C.fer.toUpperCase()] = 'Schulferien';
+    return m;
+  }
+  freeColor(){
+    const used = this.usedColors();
+    return PALETTE.find(c=>!used[c.toUpperCase()]) || PALETTE[0];
+  }
+  cellPaint(i){
+    const A = i.a ? this.col('p1'+i.a) : null, J = i.j ? this.col('p2'+i.j) : null;
+    if (A && J) return {bg:`linear-gradient(135deg,${A} 50%,${J} 50%)`, fg:'#fff'};
+    if (A) return {bg:A, fg:'#fff'};
+    if (J) return {bg:J, fg:'#fff'};
+    if (i.kind==='hol'){
+      if (i.fd1 && i.fd2) return {bg:`linear-gradient(135deg,${this.col('p1fd')} 50%,${this.col('p2fd')} 50%)`, fg:'#fff'};
+      if (i.fd1) return {bg:this.col('p1fd'), fg:'#fff'};
+      if (i.fd2) return {bg:this.col('p2fd'), fg:'#fff'};
+      return {bg:C.hol, fg:C.holT};
+    }
+    if (i.kind==='we'){
+      if (i.wd1 && i.wd2) return {bg:`linear-gradient(135deg,${this.col('p1wd')} 50%,${this.col('p2wd')} 50%)`, fg:'#fff'};
+      if (i.wd1) return {bg:this.col('p1wd'), fg:'#fff'};
+      if (i.wd2) return {bg:this.col('p2wd'), fg:'#fff'};
+      return {bg:C.we, fg:C.weT};
+    }
+    if (i.fer) return {bg:C.fer, fg:C.ferT};
+    return {bg:'#fff', fg:C.ink};
+  }
+  counts(){
+    const c = {p1:{U:0,R:0,S:0}, p2:{U:0,R:0,S:0}};
+    Object.values(this.state.plan).forEach(e=>{ ['p1','p2'].forEach(p=>{ if (e[p] && c[p][e[p]]!==undefined) c[p][e[p]]++; }); });
+    return c;
+  }
+  quota(p){ const s = this.state.people[p]; return s.urlaub + s.rest + s.sonst; }
+  limits(p){ const s = this.state.people[p]; return {U:s.urlaub, R:s.rest, S:s.sonst}; }
+
+  dragSet(){
+    const dr = this.state.drag;
+    if (!dr) return new Set();
+    const [am,ad] = dr.from.split('-').map(Number), [bm,bd] = dr.to.split('-').map(Number);
+    let a = new Date(this.state.year,am-1,ad,12), b = new Date(this.state.year,bm-1,bd,12);
+    if (a > b) { const t=a; a=b; b=t; }
+    const out = new Set();
+    for (let d=a; d<=b; d=add(d,1)) out.add((d.getMonth()+1)+'-'+d.getDate());
+    return out;
+  }
+  startDrag(m,d){
+    const i = this.info(m,d);
+    if (i.kind !== 'work'){ this.openDuty(m,d); return; }
+    this.setState({drag:{from:i.key, to:i.key}});
+  }
+  overDrag(m,d){
+    if (!this.state.drag) return;
+    const i = this.info(m,d);
+    if (i.kind !== 'work') return;
+    this.setState({drag:Object.assign({}, this.state.drag, {to:i.key})});
+  }
+  endDrag(){
+    const keys = [...this.dragSet()].filter(k=>{ const [m,d]=k.split('-').map(Number); return this.info(m,d).kind==='work'; });
+    if (!keys.length){ this.setState({drag:null}); return; }
+    const has1 = keys.some(k=>(this.state.plan[k]||{}).p1), has2 = keys.some(k=>(this.state.plan[k]||{}).p2);
+    const mode = has1 && !has2 ? 'p1' : has2 && !has1 ? 'p2' : 'both';
+    this.setState({drag:null, sheet:{kind:'vac', keys, mode, cat:'U'}});
+  }
+  openDuty(m,d){
+    const i = this.info(m,d);
+    this.setState({sheet:{kind:'duty', keys:[i.key], mode:'p1', day:{m,d}}});
+  }
+  applyVac(){
+    const sh = this.state.sheet, plan = Object.assign({}, this.state.plan);
+    const targets = sh.mode==='both' ? ['p1','p2'] : [sh.mode];
+    sh.keys.forEach(k=>{ const e = Object.assign({}, plan[k]||{}); targets.forEach(p=>{ e[p]=sh.cat; }); plan[k]=e; });
+    this.set({plan, sheet:null}, ()=>this.flash(sh.keys.length+' Tage als '+CATNAME[sh.cat]+' eingetragen'));
+  }
+  clearVac(){
+    const sh = this.state.sheet, plan = Object.assign({}, this.state.plan);
+    const targets = sh.mode==='both' ? ['p1','p2'] : [sh.mode];
+    sh.keys.forEach(k=>{ const e = Object.assign({}, plan[k]||{}); targets.forEach(p=>{ delete e[p]; }); if (Object.keys(e).length) plan[k]=e; else delete plan[k]; });
+    this.set({plan, sheet:null}, ()=>this.flash('Eintrag entfernt'));
+  }
+  toggleDuty(field, key){
+    const sh = this.state.sheet, p = sh.mode==='both' ? 'p1' : sh.mode;
+    const list = this.state[field][p].slice();
+    const at = list.indexOf(key);
+    if (at >= 0) list.splice(at,1); else list.push(key);
+    this.set({[field]: Object.assign({}, this.state[field], {[p]:list})});
+  }
+  removeDuty(field, p, key){
+    const list = this.state[field][p].filter(k=>k!==key);
+    this.set({[field]: Object.assign({}, this.state[field], {[p]:list})}, ()=>this.flash('Dienst entfernt'));
+  }
+
+  yearDays(){
+    const days = [];
+    for (let m=1;m<=12;m++) for (let d=1;d<=this.dim(m);d++) days.push(Object.assign({m,d}, this.info(m,d)));
+    return days;
+  }
+  // Strecken, in denen BEIDE frei sind (für die Jahresansicht)
+  sharedRuns(){
+    const days = this.yearDays(), out = [];
+    let i = 0;
+    while (i < days.length){
+      if (!(days[i].kind!=='work' || (days[i].a && days[i].j))){ i++; continue; }
+      let j = i, both = 0;
+      while (j < days.length && (days[j].kind!=='work' || (days[j].a && days[j].j))){
+        if (days[j].a && days[j].j) both++;
+        j++;
+      }
+      if (both > 0){
+        const s = days[i], e = days[j-1];
+        out.push({len:j-i, both, m:s.m,
+          start:new Date(this.state.year,s.m-1,s.d,12), end:new Date(this.state.year,e.m-1,e.d,12)});
+      }
+      i = j;
+    }
+    return out;
+  }
+  // Strecken, in denen EINE Person frei ist — Grundlage der Blockliste
+  scopeRuns(p){
+    const days = this.yearDays(), out = [];
+    const has = x => p==='p1' ? x.a : x.j;
+    const isOff = x => x.kind!=='work' || !!has(x);
+    let i = 0;
+    while (i < days.length){
+      if (!isOff(days[i])){ i++; continue; }
+      let j = i, own = 0, c1 = 0, c2 = 0;
+      while (j < days.length && isOff(days[j])){
+        const x = days[j];
+        if (has(x)) own++;
+        if (x.a) c1++;
+        if (x.j) c2++;
+        j++;
+      }
+      if (own > 0){
+        const s = days[i], e = days[j-1];
+        out.push({len:j-i, c1, c2, m:s.m,
+          start:new Date(this.state.year,s.m-1,s.d,12), end:new Date(this.state.year,e.m-1,e.d,12)});
+      }
+      i = j;
+    }
+    return out;
+  }
+  blocks(){
+    const r1 = this.scopeRuns('p1'), r2 = this.scopeRuns('p2');
+    const id = r => r.start.getTime()+'_'+r.end.getTime();
+    const rest = new Map(r2.map(r=>[id(r), r]));
+    const out = [];
+    r1.forEach(r=>{
+      const k = id(r);
+      if (rest.has(k)){ out.push(Object.assign({}, r, {scope:'both'})); rest.delete(k); }
+      else out.push(Object.assign({}, r, {scope:'p1'}));
+    });
+    rest.forEach(r=> out.push(Object.assign({}, r, {scope:'p2'})));
+    return out.sort((a,b)=>a.start-b.start);
+  }
+  soloTally(){
+    let both = 0, only1 = 0, only2 = 0;
+    Object.values(this.state.plan).forEach(e=>{
+      if (e.p1 && e.p2) both++; else if (e.p1) only1++; else if (e.p2) only2++;
+    });
+    return {both, only1, only2};
+  }
+  fmtShort(dt){ return dt.getDate()+'. '+M3[dt.getMonth()]; }
+  fmtLong(dt){ return WD3[(dt.getDay()+6)%7]+' '+dt.getDate()+'. '+M3[dt.getMonth()]; }
+  range(a,b){ return a.getTime()===b.getTime() ? this.fmtLong(a) : this.fmtLong(a)+' – '+this.fmtLong(b); }
+  blockWho(b){
+    const [n1,n2] = this.names();
+    if (b.scope==='both') return n1+' & '+n2+' gemeinsam';
+    const own = b.scope==='p1' ? n1 : n2, other = b.scope==='p1' ? n2 : n1;
+    const shared = b.scope==='p1' ? b.c2 : b.c1;
+    return shared ? own+' · davon '+shared+' T. mit '+other : own+' allein';
+  }
+  blockCost(b){
+    if (b.scope==='both') return b.c1===b.c2 ? b.c1+' Tage je Person' : b.c1+' / '+b.c2+' Tage';
+    return (b.scope==='p1' ? b.c1 : b.c2)+' Tage';
+  }
+  blockSwatch(b){
+    if (b.scope==='both') return `linear-gradient(${this.col('p1U')},${this.col('p2U')})`;
+    return b.scope==='p1' ? this.col('p1U') : this.col('p2U');
+  }
+
+  tabIcon(kind, color){
+    const el = React.createElement;
+    const s = {width:24, height:24, viewBox:'0 0 24 24'};
+    if (kind==='plan') return el('svg', Object.assign({}, s, {fill:'none', stroke:color, strokeWidth:1.7, strokeLinecap:'round'}),
+      el('rect',{key:'r',x:3.2,y:4.8,width:17.6,height:15.4,rx:3.2}), el('path',{key:'p',d:'M3.2 9.6h17.6M8 3.4v2.6M16 3.4v2.6'}));
+    if (kind==='jahr') return el('svg', Object.assign({}, s, {fill:color}),
+      [0,1,2].flatMap(r=>[0,1,2].map(c=>el('rect',{key:r+'-'+c,x:3.4+c*6,y:4.4+r*5.4,width:5.2,height:4.4,rx:1.2}))));
+    if (kind==='bloecke') return el('svg', Object.assign({}, s, {fill:color}),
+      el('rect',{key:'a',x:3.4,y:5,width:12,height:3.6,rx:1.8}), el('rect',{key:'b',x:3.4,y:10.2,width:17.2,height:3.6,rx:1.8}), el('rect',{key:'c',x:3.4,y:15.4,width:8,height:3.6,rx:1.8}));
+    if (kind==='dienste') return el('svg', Object.assign({}, s, {fill:'none', stroke:color, strokeWidth:1.7, strokeLinecap:'round'}),
+      el('circle',{key:'c',cx:12,cy:12,r:8.4}), el('path',{key:'h',d:'M12 7.4V12l3.4 2.2'}));
+    return el('svg', Object.assign({}, s, {fill:color}),
+      el('circle',{key:'a',cx:5.6,cy:12,r:1.9}), el('circle',{key:'b',cx:12,cy:12,r:1.9}), el('circle',{key:'c',cx:18.4,cy:12,r:1.9}));
+  }
+
+  eventsOn(m,d){
+    const cur = m*100+d;
+    return this.state.events.filter(e=>{
+      const s = e.sm*100+e.sd, en = e.em*100+e.ed;
+      return s<=en ? (cur>=s && cur<=en) : (cur>=s || cur<=en);
+    });
+  }
+  catById(id){ return (this.state.cats||[]).find(c=>c.id===id) || {id:'', name:'Ereignis', color:'#B5566B'}; }
+  dayText(m,d){ return d+'. '+M3[m-1]; }
+  rangeText(sm,sd,em,ed){
+    return (sm===em && sd===ed) ? this.dayText(sm,sd) : this.dayText(sm,sd)+' – '+this.dayText(em,ed);
+  }
+  openEditor(ed){ this.set({editor:ed}); }
+  patchEditor(patch){ this.setState({editor:Object.assign({}, this.state.editor, patch)}); }
+  saveEditor(){
+    const e = this.state.editor, st = this.state;
+    if (!e) return;
+    const name = (e.name||'').trim();
+    if (e.kind==='ferien'){
+      const k = st.land+'_'+st.year, list = this.ferien().slice();
+      const entry = [e.sm+'-'+e.sd, e.em+'-'+e.ed, name || 'Ferien'];
+      if (e.idx==null) list.push(entry); else list[e.idx] = entry;
+      list.sort((a,b)=>{ const [am,ad]=a[0].split('-').map(Number),[bm,bd]=b[0].split('-').map(Number); return (am*100+ad)-(bm*100+bd); });
+      this.set({ferienEdits: Object.assign({}, st.ferienEdits, {[k]:list}), editor:null}, ()=>this.flash(entry[2]+' gespeichert'));
+    } else if (e.kind==='event'){
+      const rec = {id: e.id || 'ev'+Date.now(), catId: e.catId, label: name || 'Ereignis', sm:e.sm, sd:e.sd, em:e.em, ed:e.ed, yearly: !!e.yearly};
+      const events = e.id ? st.events.map(x=>x.id===e.id ? rec : x) : st.events.concat([rec]);
+      this.set({events, editor:null}, ()=>this.flash(rec.label+' gespeichert'));
+    } else if (e.kind==='cat'){
+      const rec = {id: e.id || 'c'+Date.now(), name: name || 'Kategorie', color: e.color};
+      const cats = e.id ? st.cats.map(x=>x.id===e.id ? rec : x) : st.cats.concat([rec]);
+      this.set({cats, editor:null}, ()=>this.flash('Kategorie '+rec.name+' gespeichert'));
+    }
+  }
+  pickColor(color){
+    const p = this.state.picker;
+    if (!p) return;
+    if (p.slot==='editor'){ this.setState({editor:Object.assign({}, this.state.editor, {color}), picker:null}); return; }
+    if (p.slot.indexOf('cat:')===0){
+      const id = p.slot.slice(4);
+      this.set({cats: this.state.cats.map(c=>c.id===id ? Object.assign({}, c, {color}) : c), picker:null}, ()=>this.flash('Farbe geändert'));
+      return;
+    }
+    this.set({colors: Object.assign({}, this.state.colors, {[p.slot]:color}), picker:null}, ()=>this.flash('Farbe geändert'));
+  }
+
+  pdfPaint(i, scope){
+    const a = scope==='p2' ? null : i.a, j = scope==='p1' ? null : i.j;
+    const A = a ? this.col('p1'+a) : null, J = j ? this.col('p2'+j) : null;
+    if (A && J) return {bg:`linear-gradient(135deg,${A} 50%,${J} 50%)`, fg:'#fff'};
+    if (A) return {bg:A, fg:'#fff'};
+    if (J) return {bg:J, fg:'#fff'};
+    if (i.kind==='hol'){
+      if (scope!=='p2' && i.fd1) return {bg:this.col('p1fd'), fg:'#fff'};
+      if (scope!=='p1' && i.fd2) return {bg:this.col('p2fd'), fg:'#fff'};
+      return {bg:C.hol, fg:C.holT};
+    }
+    if (i.kind==='we'){
+      if (scope!=='p2' && i.wd1) return {bg:this.col('p1wd'), fg:'#fff'};
+      if (scope!=='p1' && i.wd2) return {bg:this.col('p2wd'), fg:'#fff'};
+      return {bg:C.we, fg:C.weT};
+    }
+    if (i.fer) return {bg:C.fer, fg:C.ferT};
+    return {bg:'#fff', fg:C.ink};
+  }
+  pdfMonthWeeks(m, scope){
+    const off = this.dow(m,1), dim = this.dim(m), rows = [];
+    const blank = {num:'', bg:'transparent', fg:'transparent', border:'none'};
+    let row = [];
+    for (let e=0;e<off;e++) row.push(blank);
+    for (let d=1;d<=dim;d++){
+      if (row.length===7){ rows.push(row); row = []; }
+      const i = this.info(m,d), p = this.pdfPaint(i, scope);
+      row.push({num:d, bg:p.bg, fg:p.fg, border: p.bg==='#fff' ? '1px solid #E4EAE6' : '1px solid transparent'});
+    }
+    while (row.length < 7) row.push(blank);
+    rows.push(row);
+    while (rows.length < 6) rows.push([blank,blank,blank,blank,blank,blank,blank]);
+    return rows;
+  }
+  pdfDutyRows(scope){
+    const st = this.state, [n1,n2] = this.names(), y = st.year, out = [];
+    ['p1','p2'].forEach((p,idx)=>{
+      if (scope==='p1' && p==='p2') return;
+      if (scope==='p2' && p==='p1') return;
+      const name = idx===0 ? n1 : n2;
+      st.wd[p].forEach(k=>{ const [m,d]=k.split('-').map(Number), s=new Date(y,m-1,d,12), pair=this.wdMode(p)==='pair';
+        out.push({sort:s.getTime(), name, kind:'Wochenende', range: pair ? this.fmtLong(s)+' – '+this.fmtLong(add(s,1)) : this.fmtLong(s), color:this.col(p+'wd')}); });
+      st.fd[p].forEach(k=>{ const [m,d]=k.split('-').map(Number), s=new Date(y,m-1,d,12), hk=this.hol()[k];
+        out.push({sort:s.getTime(), name, kind: hk ? HN[hk][0] : 'Feiertag', range:this.fmtLong(s), color:this.col(p+'fd')}); });
+      st.br[p].forEach(k=>{ const [m,d]=k.split('-').map(Number), s=new Date(y,m-1,d,12);
+        out.push({sort:s.getTime(), name, kind:'Bereitschaft', range:this.brSpanText(p,s), color:this.col(p+'br')}); });
+    });
+    return out.sort((a,b)=>a.sort-b.sort);
+  }
+
+  renderVals(){
+    const st = this.state, [n1,n2] = this.names(), y = st.year;
+    const cnt = this.counts(), q1 = this.quota('p1'), q2 = this.quota('p2');
+    const u1 = cnt.p1.U+cnt.p1.R+cnt.p1.S, u2 = cnt.p2.U+cnt.p2.R+cnt.p2.S;
+    const pc = (v,t) => t>0 ? Math.min(1, v/t) : 0;
+    const drag = this.dragSet();
+    const landName = (STATES.find(s=>s[0]===st.land)||['','—'])[1];
+
+    // month grid
+    const cells = [];
+    const off = this.dow(st.month,1), dimM = this.dim(st.month);
+    for (let e=0;e<off;e++) cells.push({num:'',tag:'',bg:'transparent',fg:'transparent',border:'none',cursor:'default',down:null,enter:null});
+    for (let d=1;d<=dimM;d++){
+      const i = this.info(st.month,d), p = this.cellPaint(i);
+      const evs = this.eventsOn(st.month,d);
+      let tag = '';
+      if (i.kind==='hol') tag = (i.fd1||i.fd2) ? 'Dienst' : i.holShort;
+      else if (i.wd1||i.wd2) tag = 'WE-Dienst';
+      else if (i.a && i.j) tag = 'beide';
+      else if (i.a || i.j) tag = i.a ? CATNAME[i.a].slice(0,9) : CATNAME[i.j].slice(0,9);
+      else if (evs.length) tag = evs[0].label.slice(0,11);
+      else if (i.tarif) tag = i.tarif[1];
+      else if (i.br1||i.br2) tag = 'Bereitsch.';
+      const sel = drag.has(i.key);
+      cells.push({num:d, tag, bg:p.bg, fg:p.fg, cursor:'pointer',
+        border: sel ? '2px solid '+C.ink : (p.bg==='#fff' ? '1px solid '+C.line : '1px solid transparent'),
+        down: () => this.startDrag(st.month,d), enter: () => this.overDrag(st.month,d)});
+    }
+    while (cells.length % 7) cells.push({num:'',tag:'',bg:'transparent',fg:'transparent',border:'none',cursor:'default',down:null,enter:null});
+
+    // year ribbon
+    const yearRows = [];
+    for (let m=1;m<=12;m++){
+      const rc = [], dm = this.dim(m);
+      for (let d=1;d<=31;d++){
+        if (d>dm){ rc.push({bg:'transparent', ring:'none'}); continue; }
+        const p = this.cellPaint(this.info(m,d));
+        rc.push({bg: p.bg==='#fff' ? '#F1F4F1' : p.bg, ring: p.bg==='#fff' ? 'inset 0 0 0 1px '+C.line : 'none'});
+      }
+      yearRows.push({label:M3[m-1], cells:rc, labelColor: m===st.month ? C.ink : C.faint,
+        open: () => this.set({tab:'plan', month:m})});
+    }
+
+    const allBlocks = this.blocks();
+    const shared = this.sharedRuns().sort((a,b)=>b.len-a.len);
+    const tally = this.soloTally();
+    const top = shared[0] || null;
+    const topStrip = [];
+    if (top) for (let k=0;k<top.len;k++){
+      const dt = add(top.start,k), p = this.cellPaint(this.info(dt.getMonth()+1, dt.getDate()));
+      topStrip.push({bg: p.bg==='#fff' ? 'rgba(255,255,255,.28)' : p.bg});
+    }
+
+    const monthBlocks = allBlocks.filter(b=>b.m===st.month).map(b=>({
+      range:this.range(b.start,b.end), who:this.blockWho(b), len:b.len+' T.',
+      cost:this.blockCost(b), swatch:this.blockSwatch(b)}));
+
+    const fList = st.filter==='all' ? allBlocks
+      : allBlocks.filter(b=> b.scope==='both' || b.scope===st.filter);
+    const blockList = fList.map(b=>({
+      range:this.range(b.start,b.end), who:this.blockWho(b), len:b.len+' T.',
+      cost:this.blockCost(b), swatch:this.blockSwatch(b), open: () => this.set({tab:'plan', month:b.m})}));
+
+    const mkSeg = (opts, cur, pick) => opts.map(([v,label])=>({label, pick:()=>pick(v),
+      weight: v===cur ? 700 : 600, color: v===cur ? C.ink : C.soft,
+      bg: v===cur ? '#fff' : 'transparent', shadow: v===cur ? '0 1px 3px rgba(23,50,71,.14)' : 'none'}));
+
+    // sheet
+    const sh = st.sheet;
+    let sheetTitle='', sheetSub='', sheetRows=[], sheetModes=[], confirmLabel='', confirmBg=C.ink, canClear=false, sheetConfirm=null;
+    let vacDutyShow = false, vacDuty = {label:'', note:'', swatch:'transparent', mark:'', markBg:'transparent', markBorder:'none', pick:null};
+    if (sh && sh.kind==='vac'){
+      const ds = sh.keys.map(k=>{const [m,d]=k.split('-').map(Number); return new Date(y,m-1,d,12);}).sort((a,b)=>a-b);
+      sheetTitle = this.range(ds[0], ds[ds.length-1]);
+      const targets = sh.mode==='both' ? ['p1','p2'] : [sh.mode];
+      const simOff = (m,d) => { const i = this.info(m,d); if (i.kind!=='work') return true; if (sh.keys.includes(i.key)) return true; return targets.every(p=>p==='p1'?i.a:i.j); };
+      let a = ds[0], b = ds[ds.length-1], guard = 0;
+      while (guard++ < 40 && a.getFullYear()===y && simOff(add(a,-1).getMonth()+1, add(a,-1).getDate())) a = add(a,-1);
+      guard = 0;
+      while (guard++ < 40 && b.getFullYear()===y && simOff(add(b,1).getMonth()+1, add(b,1).getDate())) b = add(b,1);
+      const stretch = Math.round((b-a)/864e5)+1;
+      sheetSub = sh.keys.length+' Werktage · daraus '+stretch+' Tage frei am Stück';
+      sheetModes = mkSeg([['p1',n1],['both','Beide'],['p2',n2]], sh.mode, v=>this.setState({sheet:Object.assign({},sh,{mode:v})}));
+      sheetRows = ['U','R','S'].map(cat=>{
+        const rem = p => this.limits(p)[cat] - cnt[p][cat];
+        const note = targets.length===2 ? 'noch '+rem('p1')+' / '+rem('p2') : 'noch '+rem(targets[0]);
+        const enough = targets.every(p=>rem(p) >= sh.keys.length);
+        return {label: CATNAME[cat], note, swatch:`linear-gradient(135deg,${this.col('p1'+cat)} 50%,${this.col('p2'+cat)} 50%)`,
+          rowBg:'#fff', cursor:'pointer', opacity: enough ? 1 : .5,
+          mark: sh.cat===cat ? '✓' : '', markBg: sh.cat===cat ? C.ink : 'transparent',
+          markBorder: sh.cat===cat ? 'none' : '1.5px solid #C9D4CE',
+          pick: () => this.setState({sheet:Object.assign({},sh,{cat})})};
+      });
+      confirmLabel = sh.keys.length+' Tage eintragen';
+      sheetConfirm = () => this.applyVac();
+      canClear = sh.keys.some(k=>{const e=st.plan[k]||{}; return targets.some(p=>e[p]);});
+      if (sh.keys.length===1){
+        const [vm,vd] = sh.keys[0].split('-').map(Number), vp = sh.mode==='both' ? 'p1' : sh.mode;
+        if (this.brEligible(vp,vm,vd)){
+          const bk = this.brKey(vp,vm,vd), on = st.br[vp].indexOf(bk) >= 0;
+          const [bm3,bd3] = bk.split('-').map(Number), bs = new Date(y,bm3-1,bd3,12);
+          vacDutyShow = true;
+          vacDuty = {label:'Bereitschaft für '+(vp==='p1'?n1:n2), note:this.brSpanText(vp,bs), swatch:this.col(vp+'br'),
+            mark: on ? '✓' : '', markBg: on ? C.ink : 'transparent', markBorder: on ? 'none' : '1.5px solid #C9D4CE',
+            pick: () => this.toggleDuty('br', bk)};
+        }
+      }
+    } else if (sh && sh.kind==='duty'){
+      const {m,d} = sh.day, i = this.info(m,d), dt = new Date(y,m-1,d,12);
+      sheetTitle = this.fmtLong(dt) + (i.holLong ? ' · '+i.holLong : '');
+      sheetSub = i.kind==='hol' ? 'Feiertag in '+landName : 'Wochenende';
+      const p = sh.mode==='both' ? 'p1' : sh.mode;
+      sheetModes = mkSeg([['p1',n1],['p2',n2]], p, v=>this.setState({sheet:Object.assign({},sh,{mode:v})}));
+      const rows = [];
+      if (i.kind==='we'){
+        const wk = this.wdKey(p,m,d);
+        const [km,kd] = wk.split('-').map(Number), ws = new Date(y,km-1,kd,12);
+        rows.push({field:'wd', key:wk, label:'Wochenenddienst',
+          note: this.wdMode(p)==='pair' ? this.fmtLong(ws)+' + '+this.fmtLong(add(ws,1)) : 'nur dieser Tag',
+          color:this.col(p+'wd'), on: st.wd[p].indexOf(wk) >= 0});
+      }
+      if (i.kind==='hol') rows.push({field:'fd', key:i.key, label:'Feiertagsdienst', note:i.holShort, color:this.col(p+'fd'), on: st.fd[p].indexOf(i.key) >= 0});
+      if (this.brEligible(p,m,d)){
+        const bk = this.brKey(p,m,d);
+        const [bm2,bd2] = bk.split('-').map(Number), bs = new Date(y,bm2-1,bd2,12);
+        rows.push({field:'br', key:bk, label:'Bereitschaft',
+          note: this.brMode(p)==='week' ? this.brSpanText(p,bs) : 'einzelner Tag',
+          color:this.col(p+'br'), on: st.br[p].indexOf(bk) >= 0});
+      }
+      sheetRows = rows.map(r=>({label:r.label, note:r.note, swatch:r.color, rowBg:'#fff', cursor:'pointer', opacity:1,
+        mark: r.on ? '✓' : '', markBg: r.on ? C.ink : 'transparent', markBorder: r.on ? 'none' : '1.5px solid #C9D4CE',
+        pick: () => this.toggleDuty(r.field, r.key)}));
+      confirmLabel = 'Fertig';
+      sheetConfirm = () => this.setState({sheet:null});
+    }
+
+    // Dienste tab
+    const dutySections = ['p1','p2'].map((p,idx)=>{
+      const name = idx===0 ? n1 : n2, ps = st.people[p];
+      const rows = [];
+      st.wd[p].slice().sort((a,b)=>this.cmpKey(a,b)).forEach(k=>{
+        const [m,d] = k.split('-').map(Number), s = new Date(y,m-1,d,12), pair = this.wdMode(p)==='pair';
+        rows.push({range: pair ? this.fmtLong(s)+' – '+this.fmtLong(add(s,1)) : this.fmtLong(s),
+          kind: pair ? 'Wochenenddienst · Sa+So' : 'Wochenenddienst · einzelner Tag',
+          color:this.col(p+'wd'), remove:()=>this.removeDuty('wd',p,k)});
+      });
+      st.fd[p].slice().sort((a,b)=>this.cmpKey(a,b)).forEach(k=>{
+        const [m,d] = k.split('-').map(Number), s = new Date(y,m-1,d,12), hk = this.hol()[k];
+        rows.push({range:this.fmtLong(s), kind:'Feiertagsdienst'+(hk?' · '+HN[hk][1]:''), color:this.col(p+'fd'), remove:()=>this.removeDuty('fd',p,k)});
+      });
+      st.br[p].slice().sort((a,b)=>this.cmpKey(a,b)).forEach(k=>{
+        const [m,d] = k.split('-').map(Number), s = new Date(y,m-1,d,12);
+        rows.push({range:this.brSpanText(p,s), kind:this.brKindText(p,s), color:this.col(p+'br'), remove:()=>this.removeDuty('br',p,k)});
+      });
+      const stats = [
+        {label:'Wochenende', value:st.wd[p].length, of:'/ '+ps.wdTarget, pct:Math.round(pc(st.wd[p].length,ps.wdTarget)*100)+'%', color:this.col(p+'wd')},
+        {label:'Feiertag', value:st.fd[p].length, of:'/ '+ps.fdTarget, pct:Math.round(pc(st.fd[p].length,ps.fdTarget)*100)+'%', color:this.col(p+'fd')},
+        {label:'Bereitschaft', value:st.br[p].length, of:'/ '+ps.brTarget, pct:Math.round(pc(st.br[p].length,ps.brTarget)*100)+'%', color:this.col(p+'br')}
+      ];
+      return {name, color: this.col(p+'U'), stats, rows, empty: rows.length===0};
+    });
+
+    // Mehr
+    const menuGroups = [
+      {title:'Jahr & Region', rows:[
+        {icon:'▦', iconBg:'#EDF1EE', iconFg:C.ink, label:'Jahr', value:String(y), labelColor:C.ink, tap:()=>this.set({sub:'year'})},
+        {icon:'⌖', iconBg:'#EDF1EE', iconFg:C.ink, label:'Bundesland', value:st.land, labelColor:C.ink, tap:()=>this.set({sub:'land'})},
+        {icon:'☀', iconBg:'#FBF3E6', iconFg:C.hol, label:'Schulferien', value:this.ferien().length+' Zeiträume', labelColor:C.ink, tap:()=>this.set({sub:'ferien'})},
+        {icon:'✦', iconBg:'#FBF3E6', iconFg:C.hol, label:'Tarifliche Feiertage', value:TARIF.length+'', labelColor:C.ink, tap:()=>this.set({sub:'tarif'})}
+      ]},
+      {title:'Personen & Ereignisse', rows:[
+        {icon:n1.slice(0,1).toUpperCase(), iconBg:'#EAF1EC', iconFg:this.col('p1U'), label:n1, value:u1+' / '+q1, labelColor:C.ink, tap:()=>this.set({sub:'p1'})},
+        {icon:n2.slice(0,1).toUpperCase(), iconBg:'#E8EEF4', iconFg:this.col('p2U'), label:n2, value:u2+' / '+q2, labelColor:C.ink, tap:()=>this.set({sub:'p2'})},
+        {icon:'♥', iconBg:'#F7ECEF', iconFg:'#B5566B', label:'Ereignisse & Kategorien', value:st.events.length+' · '+st.cats.length, labelColor:C.ink, tap:()=>this.set({sub:'events'})}
+      ]},
+      {title:'Daten', rows:[
+        {icon:'⤓', iconBg:'#EDF1EE', iconFg:C.ink, label:'PDF-Export', value:'A4 Hochformat', labelColor:C.ink, tap:()=>this.set({sub:'pdf'})},
+        {icon:'⇄', iconBg:'#EDF1EE', iconFg:C.ink, label:'Daten sichern / laden', value:'', labelColor:C.ink, tap:()=>this.flash('Sicherung als Datei — im Prototyp nicht aktiv')},
+        {icon:'⟲', iconBg:'#F7ECEA', iconFg:'#A5432C', label:'Alles zurücksetzen', value:'', labelColor:'#A5432C', tap:()=>this.flash('Zurücksetzen braucht eine Bestätigung')}
+      ]}
+    ];
+
+    // sub sheets
+    const sub = st.sub;
+    let subTitle='', subSub='', subRows=[], subEmpty=false, subEmptyText='', subHasAdd=false, subAddTitle='', subAddChips=[], subNote=false, subNoteText='', subIsPdf=false, pdfMonths=[], pdfScopeName='', pdfBlocks=[], pdfDuties=[], pdfMeta='', pdfNoBlocks=false, pdfNoDuties=false, subRows2=[], subRows2Title='', hasRows2=false;
+    const plainRow = o => Object.assign({swatch:'transparent', swatchShow:'none', sub:'', subShow:'none', value:'', mark:'', markColor:C.faint, weight:500, color:C.ink,
+      swatchTap:null, markTap:null, mark2:'', mark2Show:'none', mark2Tap:null, choices:[], choicesShow:'none', tap:null}, o);
+    const stop = fn => (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); fn(); };
+    const chip = active => ({bg: active ? C.ink : '#fff', fg: active ? '#fff' : C.soft,
+      border: active ? '1px solid '+C.ink : '1px solid '+C.line, weight: active ? 700 : 600});
+    if (sub==='land'){
+      subTitle='Bundesland'; subSub='Feiertage werden automatisch berechnet';
+      subRows = STATES.map(([code,name])=>plainRow({label:name, value:code,
+        mark: code===st.land ? '✓' : '', markColor:C.ink, weight: code===st.land ? 700 : 500,
+        tap: () => this.set({land:code, sub:null}, ()=>this.flash(name+' · Feiertage aktualisiert'))}));
+      subNote = true; subNoteText='Feiertage werden berechnet, Schulferien sind für 2027 und 2028 in allen 16 Ländern hinterlegt (Quelle: KMK, ohne Gewähr). Januar-Zeiträume sind der Ausläufer der Weihnachtsferien des Vorjahres.';
+    } else if (sub==='year'){
+      subTitle='Jahr'; subSub='Feiertage und Ferien folgen automatisch';
+      subRows = Array.from({length: 2060-2027+1}, (_,i)=>2027+i).map(v=>plainRow({label:String(v),
+        sub: FER_DB[st.land] && FER_DB[st.land][v] ? 'Schulferien hinterlegt' : 'Schulferien selbst eintragen', subShow:'block',
+        mark: v===y ? '✓' : '', markColor:C.ink, weight: v===y ? 700 : 500,
+        tap: () => this.set({year:v, sub:null}, ()=>this.flash('Jahr '+v))}));
+    } else if (sub==='ferien'){
+      subTitle='Schulferien'; subSub=landName+' · '+y;
+      const list = this.ferien();
+      subRows = list.map(([a,b,label],idx)=>{
+        const [sm,sd] = a.split('-').map(Number), [em,ed] = b.split('-').map(Number);
+        return plainRow({label, swatch:C.fer, swatchShow:'block',
+          sub: this.rangeText(sm,sd,em,ed), subShow:'block',
+          mark:'✕', markColor:'#A5432C',
+          markTap: stop(() => { const k = st.land+'_'+y, next = list.filter((_,i)=>i!==idx);
+            this.set({ferienEdits: Object.assign({}, st.ferienEdits, {[k]:next})}, ()=>this.flash(label+' entfernt')); }),
+          tap: () => this.openEditor({kind:'ferien', idx, name:label, sm, sd, em, ed, field:'from'})});
+      });
+      subRows.push(plainRow({label:'Neuer Ferienzeitraum', color:'#2A5A80', weight:700, mark:'＋', markColor:'#2A5A80',
+        tap: () => this.openEditor({kind:'ferien', idx:null, name:'', sm:st.month, sd:1, em:st.month, ed:1, field:'from'})}));
+      subEmpty = false; subEmptyText='';
+      const edited = !!st.ferienEdits[st.land+'_'+y];
+      if (edited){
+        subHasAdd = true; subAddTitle='Selbst geändert';
+        subAddChips = [{label:'KMK-Termine wiederherstellen', swatch:C.fer,
+          tap: () => { const next = Object.assign({}, st.ferienEdits); delete next[st.land+'_'+y];
+            this._fk = null; this.set({ferienEdits: next}, ()=>this.flash('Original-Termine wiederhergestellt')); }}];
+      }
+    } else if (sub==='tarif'){
+      subTitle='Tarifliche Feiertage'; subSub='Halb oder ganz frei — je Person';
+      subRows = TARIF.map(([id,name,m,d])=>plainRow({label:name, swatch:'#C9A15A', swatchShow:'block',
+        sub:d+'.'+m+'.', subShow:'block', value:'ganzer Tag', mark:'›', markColor:C.faint,
+        tap: () => this.flash(name+' · Regel je Person im Prototyp fest')}));
+    } else if (sub==='p1' || sub==='p2'){
+      const p = sub, name = p==='p1' ? n1 : n2, ps = st.people[p], cc = cnt[p];
+      subTitle = name; subSub = 'Kontingente '+y;
+      const bump = (field, delta) => () => {
+        const next = Object.assign({}, ps, {[field]: Math.max(0, ps[field]+delta)});
+        this.set({people: Object.assign({}, st.people, {[p]:next})});
+      };
+      const slotRow = (slot, label, field, note) => plainRow({label,
+        swatch:this.col(p+slot), swatchShow:'block',
+        swatchTap: stop(() => this.set({picker:{slot:p+slot, label:name+' · '+SLOTLABEL[slot]}})),
+        sub:note, subShow:'block', value:String(ps[field]),
+        mark2:'－', mark2Show:'grid', mark2Tap: stop(bump(field,-1)),
+        mark:'＋', markColor:C.ink, markTap: stop(bump(field,1)), tap: null});
+      subRows = [
+        slotRow('U','Urlaubstage','urlaub', cc.U+' verplant'),
+        slotRow('R','Resturlaub Vorjahr','rest', cc.R+' verplant · verfällt 31.03.'),
+        slotRow('S','Gleittage','sonst', cc.S+' verplant'),
+        slotRow('wd','Vorgabe Wochenenddienste','wdTarget', st.wd[p].length+' geplant'),
+        slotRow('fd','Vorgabe Feiertagsdienste','fdTarget', st.fd[p].length+' geplant'),
+        slotRow('br','Vorgabe Bereitschaft','brTarget', st.br[p].length+' geplant')
+      ];
+      const setPeople = (patch, extra, msg) => {
+        const next = Object.assign({}, ps, patch);
+        this.set(Object.assign({people: Object.assign({}, st.people, {[p]:next})}, extra||{}), ()=>this.flash(msg));
+      };
+      const wm = this.wdMode(p), bm = this.brMode(p), bs = this.brStart(p), bd = this.brDays(p);
+      subRows.push(plainRow({label:'Wochenenddienste auswählen als', sub: st.wd[p].length+' geplant', subShow:'block', choicesShow:'flex',
+        choices: [['pair','Sa + So zusammen'],['single','einzelne Tage']].map(([v,label])=>Object.assign({label,
+          pick: () => { if (wm===v) return; setPeople({wdMode:v}, {wd: Object.assign({}, st.wd, {[p]:[]})}, 'Wochenenddienste: '+label+' · Auswahl zurückgesetzt'); }}, chip(wm===v)))}));
+      subRows.push(plainRow({label:'Bereitschaft auswählen als', sub: st.br[p].length+' geplant', subShow:'block', choicesShow:'flex',
+        choices: [['single','einzelne Tage'],['week','ganze Woche'],['weekday','nur Werktage'],['custom','spezifische Tage']].map(([v,label])=>Object.assign({label,
+          pick: () => { if (bm===v) return; setPeople({brMode:v}, {br: Object.assign({}, st.br, {[p]:[]})}, 'Bereitschaft: '+label+' · Auswahl zurückgesetzt'); }}, chip(bm===v)))}));
+      if (bm==='week') subRows.push(plainRow({label:'Wochenbeginn', sub:'Bereitschaft läuft '+WD3[bs]+' – '+WD3[(bs+6)%7], subShow:'block', choicesShow:'flex',
+        choices: WD3.map((wdn,idx)=>Object.assign({label: wdn+'–'+WD3[(idx+6)%7],
+          pick: () => { if (bs===idx) return; setPeople({brWeekStart:idx}, {br: Object.assign({}, st.br, {[p]:[]})}, 'Woche '+wdn+'–'+WD3[(idx+6)%7]+' · Auswahl zurückgesetzt'); }}, chip(bs===idx)))}));
+      if (bm==='custom') subRows.push(plainRow({label:'Erlaubte Wochentage', sub: bd.slice().sort((a,b)=>a-b).map(x=>WD3[x]).join(', ') || '—', subShow:'block', choicesShow:'flex',
+        choices: WD3.map((wdn,idx)=>Object.assign({label: wdn,
+          pick: () => {
+            const on = bd.indexOf(idx) >= 0;
+            if (on && bd.length<=1){ this.flash('Mindestens ein Wochentag muss aktiv bleiben'); return; }
+            const next = on ? bd.filter(x=>x!==idx) : bd.concat([idx]);
+            setPeople({brDays:next}, {br: Object.assign({}, st.br, {[p]:[]})}, (on?'':'')+WD3[idx]+(on?' entfernt':' hinzugefügt')+' · Auswahl zurückgesetzt');
+          }}, chip(bd.indexOf(idx) >= 0)))}));
+      subNote = true; subNoteText='Summe verfügbar: '+this.quota(p)+' Tage · verplant '+(p==='p1'?u1:u2)+' Tage. Farbquadrat antippen ändert die Farbe — jede Farbe kann nur einmal vergeben werden. Die Auswahl-Art gilt nur für '+name+'.';
+    } else if (sub==='events'){
+      subTitle='Ereignisse'; subSub='Erscheinen klein im Kalender, nicht im PDF';
+      subRows = st.events.slice().sort((a,b)=>(a.sm*100+a.sd)-(b.sm*100+b.sd)).map(e=>{
+        const cat = this.catById(e.catId);
+        return plainRow({label:e.label, swatch:cat.color, swatchShow:'block',
+          sub: cat.name + (e.yearly ? ' · jedes Jahr' : ' · nur '+y), subShow:'block',
+          value: this.rangeText(e.sm,e.sd,e.em,e.ed), mark:'✕', markColor:'#A5432C',
+          markTap: stop(() => this.set({events: st.events.filter(x=>x.id!==e.id)}, ()=>this.flash(e.label+' entfernt'))),
+          tap: () => this.openEditor({kind:'event', id:e.id, name:e.label, catId:e.catId, sm:e.sm, sd:e.sd, em:e.em, ed:e.ed, yearly:e.yearly, field:'from'})});
+      });
+      subRows.push(plainRow({label:'Neues Ereignis', color:'#2A5A80', weight:700, mark:'＋', markColor:'#2A5A80',
+        tap: () => this.openEditor({kind:'event', id:null, name:'', catId:(st.cats[0]||{id:''}).id, sm:st.month, sd:1, em:st.month, ed:1, yearly:false, field:'from'})}));
+      hasRows2 = true; subRows2Title='Kategorien · Quadrat antippen ändert die Farbe';
+      subRows2 = st.cats.map(c=>{
+        const inUse = st.events.filter(e=>e.catId===c.id).length;
+        return plainRow({label:c.name, swatch:c.color, swatchShow:'block',
+          swatchTap: stop(() => this.set({picker:{slot:'cat:'+c.id, label:'Kategorie '+c.name}})),
+          sub: inUse ? inUse+' Ereignis(se)' : 'nicht verwendet', subShow:'block',
+          mark:'✕', markColor:'#A5432C',
+          markTap: stop(() => {
+            if (st.cats.length<=1){ this.flash('Mindestens eine Kategorie muss bleiben'); return; }
+            this.set({cats: st.cats.filter(x=>x.id!==c.id), events: st.events.filter(e=>e.catId!==c.id)},
+              ()=>this.flash(inUse ? c.name+' und '+inUse+' Ereignis(se) entfernt' : c.name+' entfernt'));
+          }),
+          tap: () => this.openEditor({kind:'cat', id:c.id, name:c.name, color:c.color})});
+      });
+      subRows2.push(plainRow({label:'Neue Kategorie', color:'#2A5A80', weight:700, mark:'＋', markColor:'#2A5A80',
+        tap: () => this.openEditor({kind:'cat', id:null, name:'', color:this.freeColor()})}));
+    } else if (sub==='pdf'){
+      subIsPdf = true; subTitle='PDF-Export'; subSub='A4 Hochformat · 3 Monate nebeneinander';
+      pdfScopeName = st.pdfScope==='p1' ? n1 : st.pdfScope==='p2' ? n2 : n1+' & '+n2;
+      pdfMeta = landName+' · Wochen Montag bis Sonntag';
+      for (let m=1;m<=12;m++) pdfMonths.push({label:MON[m-1], weeks:this.pdfMonthWeeks(m, st.pdfScope)});
+      const scoped = st.pdfScope==='both' ? allBlocks : allBlocks.filter(b=>b.scope==='both'||b.scope===st.pdfScope);
+      pdfBlocks = scoped.map(b=>({
+        range: this.fmtShort(b.start)+' – '+this.fmtShort(b.end),
+        who: b.scope==='both' ? 'beide' : (b.scope==='p1' ? n1 : n2),
+        cost: st.pdfScope==='p1' ? b.c1+' T.' : st.pdfScope==='p2' ? b.c2+' T.' : (b.scope==='both' ? b.c1+' T. je Pers.' : (b.scope==='p1' ? b.c1 : b.c2)+' T.'),
+        len: b.len+' frei', swatch: this.blockSwatch(b)}));
+      pdfNoBlocks = pdfBlocks.length===0;
+      pdfDuties = this.pdfDutyRows(st.pdfScope);
+      pdfNoDuties = pdfDuties.length===0;
+      subRows = [['both','Beide Personen'],['p1','Nur '+n1],['p2','Nur '+n2]].map(([v,label])=>plainRow({label,
+        mark: st.pdfScope===v ? '✓' : '', markColor:C.ink, weight: st.pdfScope===v ? 700 : 500,
+        tap: () => this.set({pdfScope:v})}))
+        .concat([plainRow({label:'PDF erstellen', color:'#2A5A80', weight:700, mark:'⤓', markColor:'#2A5A80',
+          tap: () => this.set({sub:null}, ()=>this.flash('Urlaubsübersicht '+y+' — '+pdfScopeName+' · PDF erstellt'))})]);
+      subNote = true; subNoteText='Ereignisse werden im PDF bewusst weggelassen. Bei „nur '+n1+'“ bzw. „nur '+n2+'“ enthält das PDF ausschließlich die Tage und Dienste dieser Person.';
+    }
+
+    const legend = [
+      {label:n1, swatch:this.col('p1U')},
+      {label:n2, swatch:this.col('p2U')},
+      {label:'beide', swatch:`linear-gradient(135deg,${this.col('p1U')} 50%,${this.col('p2U')} 50%)`},
+      {label:'Feiertag', swatch:C.hol},
+      {label:'Schulferien', swatch:C.fer},
+      {label:'Dienst', swatch:this.col('p1wd')}
+    ];
+
+    // ── Editor (Ferien / Ereignis / Kategorie) ──
+    const ed = st.editor;
+    let editorOpen = !!ed, editorTitle='', editorSub='', editorName='', editorSetName=null,
+      editorTabs=[], editorMonths=[], editorDays=[], editorDayTitle='', editorRange='',
+      editorIsEvent=false, editorIsCat=false, editorHasDates=false, editorCats=[],
+      editorYearly=[], editorColor='#fff', editorPickColor=null, editorSave=null, editorCancel=null, editorWrap=false;
+    if (ed){
+      editorName = ed.name || '';
+      editorSetName = (e) => this.patchEditor({name: e.target.value});
+      editorCancel = () => this.setState({editor:null});
+      editorSave = () => this.saveEditor();
+      if (ed.kind==='cat'){
+        editorIsCat = true;
+        editorTitle = ed.id ? 'Kategorie bearbeiten' : 'Neue Kategorie';
+        editorSub = 'Name und Farbe festlegen';
+        editorColor = ed.color;
+        editorPickColor = () => this.set({picker:{slot:'editor', label:'Farbe der Kategorie'}});
+      } else {
+        editorHasDates = true;
+        editorIsEvent = ed.kind==='event';
+        editorTitle = editorIsEvent ? (ed.id ? 'Ereignis bearbeiten' : 'Neues Ereignis')
+                                    : (ed.idx!=null ? 'Ferienzeitraum bearbeiten' : 'Neuer Ferienzeitraum');
+        editorSub = editorIsEvent ? 'Bezeichnung, Kategorie und Zeitraum' : 'Bezeichnung und Zeitraum';
+        const fm = ed.field !== 'to';
+        editorTabs = [
+          Object.assign({label:'Von · '+this.dayText(ed.sm,ed.sd), pick:()=>this.patchEditor({field:'from'})}, chip(fm)),
+          Object.assign({label:'Bis · '+this.dayText(ed.em,ed.ed), pick:()=>this.patchEditor({field:'to'})}, chip(!fm))
+        ];
+        const curM = fm ? ed.sm : ed.em, curD = fm ? ed.sd : ed.ed;
+        editorDayTitle = fm ? 'Erster Tag' : 'Letzter Tag';
+        editorMonths = M3.map((mn,i)=>{
+          const mm = i+1;
+          return Object.assign({label:mn, pick: () => {
+            const dd = Math.min(curD, this.dim(mm));
+            this.patchEditor(fm ? {sm:mm, sd:dd} : {em:mm, ed:dd});
+          }}, chip(mm===curM));
+        });
+        editorDays = Array.from({length:this.dim(curM)}, (_,i)=>i+1).map(d=>{
+          const a = d===curD;
+          return {num:d, bg: a ? C.ink : '#fff', fg: a ? '#fff' : C.ink,
+            border: a ? '1px solid '+C.ink : '1px solid '+C.line, weight: a ? 700 : 500,
+            pick: () => this.patchEditor(fm ? {sd:d} : {ed:d})};
+        });
+        editorRange = this.rangeText(ed.sm,ed.sd,ed.em,ed.ed);
+        editorWrap = (ed.em*100+ed.ed) < (ed.sm*100+ed.sd);
+        if (editorIsEvent){
+          editorCats = st.cats.map(c=>Object.assign({label:c.name, swatch:c.color,
+            pick: () => this.patchEditor({catId:c.id})}, chip(c.id===ed.catId)));
+          editorYearly = [
+            Object.assign({label:'nur '+y, pick:()=>this.patchEditor({yearly:false})}, chip(!ed.yearly)),
+            Object.assign({label:'jedes Jahr', pick:()=>this.patchEditor({yearly:true})}, chip(!!ed.yearly))
+          ];
+        }
+      }
+    }
+
+    // ── Farbwähler ──
+    const pk = st.picker;
+    let pickerOpen = !!pk, pickerLabel='', pickerSwatches=[], pickerClose=null;
+    if (pk){
+      const used = this.usedColors();
+      const cur = pk.slot==='editor' ? ((st.editor||{}).color || '')
+        : pk.slot.indexOf('cat:')===0 ? this.catById(pk.slot.slice(4)).color : this.col(pk.slot);
+      pickerLabel = pk.label;
+      pickerClose = () => this.setState({picker:null});
+      pickerSwatches = PALETTE.map(c=>{
+        const owner = used[c.toUpperCase()];
+        const isCur = c.toUpperCase() === String(cur).toUpperCase();
+        const taken = !!owner && !isCur;
+        return {color:c, mark: isCur ? '✓' : (taken ? '✕' : ''),
+          opacity: taken ? 0.3 : 1,
+          ring: isCur ? '0 0 0 3px rgba(23,50,71,.9)' : 'inset 0 0 0 1px rgba(0,0,0,.14)',
+          pick: taken ? (() => this.flash('Schon vergeben: '+owner)) : (() => this.pickColor(c))};
+      });
+    }
+
+    const restLeft = st.people.p1.rest - cnt.p1.R;
+    return {
+      c1: this.col('p1U'), c2: this.col('p2U'), legend,
+      subRows2, subRows2Title, hasRows2,
+      editorOpen, editorTitle, editorSub, editorName, editorSetName, editorTabs, editorMonths, editorDays,
+      editorDayTitle, editorRange, editorIsEvent, editorIsCat, editorHasDates, editorCats, editorYearly,
+      editorColor, editorPickColor, editorSave, editorCancel, editorWrap,
+      pickerOpen, pickerLabel, pickerSwatches, pickerClose,
+      n1, n2, year:y, landName, monthName:MON[st.month-1],
+      isPlan: st.tab==='plan', isJahr: st.tab==='jahr', isBloecke: st.tab==='bloecke', isDienste: st.tab==='dienste', isMehr: st.tab==='mehr',
+      used1:u1, used2:u2, q1, q2, left1:q1-u1, left2:q2-u2,
+      pct1: Math.round(pc(u1,q1)*100)+'%', pct2: Math.round(pc(u2,q2)*100)+'%',
+      ring1:`conic-gradient(${this.col('p1U')} 0turn ${pc(u1,q1).toFixed(3)}turn, ${C.line} ${pc(u1,q1).toFixed(3)}turn 1turn)`,
+      ring2:`conic-gradient(${this.col('p2U')} 0turn ${pc(u2,q2).toFixed(3)}turn, ${C.line} ${pc(u2,q2).toFixed(3)}turn 1turn)`,
+      cells, yearRows, monthBlocks, noMonthBlocks: monthBlocks.length===0,
+      prevMonth: () => this.set({month: st.month>1 ? st.month-1 : 12}),
+      nextMonth: () => this.set({month: st.month<12 ? st.month+1 : 1}),
+      prevYear: () => this.set({year: y-1}), nextYear: () => this.set({year: y+1}),
+      goBloecke: () => this.set({tab:'bloecke'}),
+      topLen: top ? top.len : 0, topRange: top ? this.fmtShort(top.start)+' – '+this.fmtShort(top.end) : '—',
+      topCost: top ? (top.both+' Urlaubstage je Person · Rest Wochenende, Feiertage & Ferien') : 'Noch keine gemeinsamen Tage geplant',
+      topStrip,
+      sharedList: shared.slice(0,3).map(b=>({range:this.fmtShort(b.start)+' – '+this.fmtShort(b.end), len:b.len,
+        cost:b.both+' Urlaubstage je Person', open: () => this.set({tab:'plan', month:b.m})})),
+      noShared: shared.length===0,
+      blockCount: allBlocks.length, blockList, noBlocks: blockList.length===0,
+      filters: mkSeg([['all','Beide'],['p1',n1],['p2',n2]], st.filter, v=>this.set({filter:v})),
+      restWarn: restLeft > 0, restWarnText: restLeft+' Tage Resturlaub von '+n1+' verfallen am 31. März — noch kein Block dafür geplant.',
+      balance: [
+        {label:'Längste gemeinsame Strecke', value: top ? top.len+' Tage' : '—'},
+        {label:'Gemeinsame Urlaubstage', value: tally.both+' Tage'},
+        {label:n1+' allein', value: tally.only1+' Tage'},
+        {label:n2+' allein', value: tally.only2+' Tage'}
+      ],
+      dutySections, menuGroups,
+      tabs: [['plan','Plan'],['jahr','Jahr'],['bloecke','Blöcke'],['dienste','Dienste'],['mehr','Mehr']].map(([id,label])=>{
+        const active = st.tab===id, color = active ? C.ink : C.faint;
+        return {label, color, icon:this.tabIcon(id,color), pick: () => this.set({tab:id})};
+      }),
+      sheetOpen: !!sh, sheetTitle, sheetSub, sheetRows, sheetModes, confirmLabel, confirmBg, canClear, vacDutyShow, vacDuty,
+      sheetConfirm, sheetClear: () => this.clearVac(), closeSheet: () => this.setState({sheet:null}),
+      subOpen: !!sub, subTitle, subSub, subRows, subEmpty, subEmptyText, subHasAdd, subAddTitle, subAddChips,
+      subNote, subNoteText, subIsPdf, pdfMonths, pdfScopeName, pdfMeta, pdfBlocks, pdfDuties, pdfNoBlocks, pdfNoDuties,
+      closeSub: () => this.set({sub:null}),
+      toast: !!st.toast, toastText: st.toast || ''
+    };
+  }
+  cmpKey(a,b){ const [am,ad]=a.split('-').map(Number),[bm,bd]=b.split('-').map(Number); return (am*100+ad)-(bm*100+bd); }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Urlaubs- & Dienstplaner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F1F4F1; --card:#FFFFFF; --ink:#173247; --ink-soft:#4C6577; --ink-faint:#8FA3AD; --line:#D7DFDA;
+    --feiertag:#C97A33; --feiertag-text:#FFF9F1;
+    --ferien:#E9DFB6; --ferien-text:#6B5A2E; --ferien-border:#D8C98C;
+    --weekend:#DEE6E2; --weekend-text:#5C6E68;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{ background:var(--paper); color:var(--ink); font-family:'Inter',system-ui,sans-serif; padding:32px 20px 70px; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .wrap{max-width:1360px;margin:0 auto;}
+
+  header.top{text-align:center;margin-bottom:20px;}
+  header.top .eyebrow{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:#4C7C68;font-weight:700;margin-bottom:10px;}
+  header.top h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(28px,4.4vw,44px);margin:0 0 8px;color:var(--ink);letter-spacing:-0.01em;}
+  header.top p.sub{font-size:14px;color:var(--ink-soft);margin:0 auto;max-width:760px;line-height:1.55;}
+
+  .panel{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 22px; margin-bottom:16px; }
+  .panel h3{ font-family:'Fraunces',serif; font-size:16px; font-weight:600; margin:0 0 12px; color:var(--ink);}
+  .row{ display:flex; flex-wrap:wrap; gap:14px 22px; align-items:flex-end; }
+  .field{ display:flex; flex-direction:column; gap:5px; min-width:120px;}
+  .field label{ font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-faint);}
+  .field input[type=text], .field input[type=number], .field select{
+    font-family:'Inter',sans-serif; font-size:13.5px; padding:7px 9px; border-radius:8px;
+    border:1px solid var(--line); color:var(--ink); background:#fff; min-width:100px;
+  }
+  .field input[type=color]{ width:44px; height:32px; border:1px solid var(--line); border-radius:8px; padding:2px; background:#fff; }
+  .people-config{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:820px){ .people-config{grid-template-columns:1fr;} }
+  @media (max-width:760px){ .legend{grid-template-columns:1fr;} }
+  .person-block{ border:1px solid var(--line); border-radius:12px; padding:14px 16px; }
+  .person-block h4{ margin:0 0 10px; font-size:14px; font-weight:700; }
+  .colorrow{ display:flex; align-items:center; gap:8px; margin-top:6px; }
+  .colorrow span.lbl{ font-size:12px; color:var(--ink-soft); flex:1; }
+
+  .toggle-mode{ display:flex; gap:8px; justify-content:center; margin:4px 0 18px; }
+  .toggle-mode button{
+    font-family:'Inter',sans-serif; font-size:13px; font-weight:700; padding:9px 20px; border-radius:10px;
+    border:1.5px solid var(--line); background:#fff; color:var(--ink-soft); cursor:pointer;
+  }
+  .toggle-mode button.active{ border-color:var(--ink); color:var(--ink); background:#EEF3F0; }
+
+  .legend-wrap{ margin-bottom:18px; }
+  .legend-header{
+    display:flex; align-items:center; justify-content:space-between;
+    background:var(--card); border:1px solid var(--line); border-bottom:none;
+    border-radius:14px 14px 0 0; padding:10px 16px;
+  }
+  .legend-header span{ font-family:'Fraunces',serif; font-size:15px; font-weight:600; color:var(--ink); }
+  .legend{
+    display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px 22px;
+    padding:14px 16px; background:var(--card); border:1px solid var(--line); border-radius:0 0 14px 14px;
+  }
+  .legend-col{ display:flex; flex-direction:column; gap:8px; }
+  .legend-col .col-title{
+    font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; font-weight:700;
+    color:var(--ink-faint); margin-bottom:2px; border-bottom:1px solid var(--line); padding-bottom:5px;
+  }
+  .legend .item{ display:flex; align-items:center; gap:7px; font-size:12px; color:var(--ink-soft); font-weight:500;}
+  .sw{ width:14px;height:14px;border-radius:4px;flex:none;border:1px solid rgba(0,0,0,.08);}
+  .sw.feiertag{background:var(--feiertag);} .sw.ferien{background:var(--ferien);} .sw.weekend{background:var(--weekend);}
+  .sw.split{ background:linear-gradient(135deg, #2F6B4F 50%, #2A5A80 50%); }
+
+  .toolbar{ display:flex; justify-content:center; gap:10px; margin-bottom:20px; }
+  .btn{ font-family:'Inter',sans-serif; font-size:13px; font-weight:600; padding:9px 18px; border-radius:10px; border:1px solid var(--line); background:var(--card); color:var(--ink-soft); cursor:pointer; }
+  .btn:hover{ color:var(--ink); border-color:var(--ink-faint); }
+
+  .people{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:0 0 18px; }
+  @media (max-width:720px){ .people{grid-template-columns:1fr;} }
+  .person-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; }
+  .person-card h3{ font-family:'Fraunces',serif; font-size:18px; font-weight:600; margin:0 0 10px; color:var(--ink);}
+  .bar-row{margin-bottom:9px;} .bar-row:last-child{margin-bottom:0;}
+  .bar-label{ display:flex; justify-content:space-between; font-size:12px; color:var(--ink-soft); margin-bottom:4px;}
+  .bar-label b{color:var(--ink);font-weight:600;}
+  .bar{ height:9px; background:var(--paper); border-radius:6px; overflow:hidden; border:1px solid var(--line);}
+  .bar .fill{ height:100%; transition:width .2s ease; }
+  .warn{ font-size:11.5px; color:#a5432c; margin-top:6px; }
+
+  .calendar{ display:flex; flex-wrap:wrap; gap:16px; margin-bottom:22px; }
+  .month{ width:calc(25% - 12px); background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 12px 16px; }
+  @media (max-width:1150px){ .month{width:calc(33.33% - 11px);} }
+  @media (max-width:860px){ .month{width:calc(50% - 8px);} }
+  @media (max-width:520px){ .month{width:100%;} }
+  .month h2{ font-family:'Fraunces',serif; font-weight:600; font-size:17px; margin:0 0 10px 2px; color:var(--ink); }
+  table.calgrid{ width:100%; border-collapse:collapse; table-layout:fixed; }
+  table.calgrid th{ font-size:10px; color:var(--ink-faint); font-weight:700; text-transform:uppercase; padding:2px 0;}
+  table.calgrid td.day{
+    text-align:center; font-size:12px; font-weight:600; color:var(--ink); padding:4px 2px 3px; border-radius:5px; cursor:default; position:relative; vertical-align:top;
+  }
+  .daytop{ display:flex; align-items:center; justify-content:center; gap:2px; line-height:1.1; }
+  .daynum{ font-size:12px; font-weight:600; }
+  .eventdot{ width:5px; height:5px; border-radius:50%; display:inline-block; flex:none; }
+  .daylabel{
+    font-size:6.5px; line-height:1.15; font-weight:600; letter-spacing:.01em;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; opacity:.9; margin-top:1px; padding:0 1px;
+  }
+  .daylabel.event{ font-weight:700; }
+  .daybottom{ display:flex; align-items:center; justify-content:center; gap:2px; margin-top:1px; }
+  td.day.clickable{ cursor:pointer; }
+  td.day.clickable:hover{ outline:2px solid #9fb3ab; }
+  td.day.normal{ background:transparent; }
+  td.day.ferien{ background:var(--ferien); color:var(--ferien-text); }
+  td.day.weekend{ background:var(--weekend); color:var(--weekend-text); font-weight:500; }
+  td.day.feiertag{ background:var(--feiertag); color:var(--feiertag-text); }
+
+  .summary{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:22px 24px 18px; margin-bottom:18px; }
+  .summary h3{ font-family:'Fraunces',serif; font-size:19px; font-weight:600; margin:0 0 14px; color:var(--ink);}
+  table.blocks{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  table.blocks th{ text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-faint); border-bottom:1px solid var(--line); padding:6px 10px 7px 2px;}
+  table.blocks td{ padding:10px 10px 10px 2px; border-bottom:1px solid var(--line); color:var(--ink-soft);}
+  table.blocks td.strong{ color:var(--ink); font-weight:600;}
+  table.blocks tr:last-child td{border-bottom:none;}
+  table.blocks tfoot td{ padding-top:11px; font-weight:700; color:var(--ink); border-bottom:none; border-top:2px solid var(--ink);}
+  .empty-state{ color:var(--ink-faint); font-size:13.5px; padding:8px 2px; }
+
+  .ferien-manage{ display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; margin-bottom:12px; }
+  .ferien-list{ display:flex; flex-direction:column; gap:6px; }
+  .ferien-row{ display:flex; align-items:center; gap:10px; font-size:13px; color:var(--ink-soft); background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:6px 10px;}
+  .ferien-row .rm{ margin-left:auto; cursor:pointer; color:#a5432c; font-weight:700; border:none; background:none; font-size:14px; }
+
+  footer.foot{ text-align:center; font-size:12px; color:var(--ink-faint); margin-top:20px; line-height:1.7;}
+
+  .print-only{ display:none; }
+  .pdf-btn{ background:#EEF3F0; }
+
+  @media print{
+    body{ padding:0; background:#fff; font-size:10px; }
+    .no-print{ display:none !important; }
+    .print-only{
+      display:block; text-align:left; margin-bottom:8px;
+    }
+    .print-only h1{
+      font-family:'Fraunces',serif; font-weight:700; font-size:18px; margin:0 0 3px; color:var(--ink);
+    }
+    .print-only p{ font-size:9.5px; color:var(--ink-soft); margin:0; }
+
+    .legend-wrap{ margin-bottom:8px; }
+    .legend{ padding:6px 10px; gap:3px 12px; border-radius:10px !important; display:grid !important; }
+    .legend-col .col-title{ font-size:8px; padding-bottom:2px; }
+    .legend .item{ font-size:9px; }
+    .people{ margin-bottom:8px; gap:8px; }
+    .person-card{ padding:8px 10px; }
+    .person-card h3{ font-size:13px; margin-bottom:5px; }
+    .bar-row{ margin-bottom:5px; }
+    .bar-label{ font-size:9.5px; }
+
+    .calendar{ display:flex; flex-wrap:wrap; gap:4px; margin-bottom:0; page-break-inside:avoid; }
+    .month{ width:calc(25% - 3px) !important; padding:4px 4px 5px; page-break-inside:avoid; }
+    .month h2{ font-size:10.5px; margin:0 0 3px 1px; }
+    table.calgrid th{ font-size:6px; padding:0; }
+    table.calgrid td.day{ font-size:7.5px; padding:1.5px 0 1px; }
+    .daynum{ font-size:7.5px; }
+    .daylabel{ font-size:4.3px; }
+    .eventdot{ width:3px; height:3px; }
+
+    #summaryPage{ page-break-before:always; display:grid; grid-template-columns:1fr 1fr; gap:8px; align-content:start; }
+    .summary{ page-break-inside:avoid; padding:8px 10px 6px; margin-bottom:0; }
+    .summary h3{ font-size:12px; margin:0 0 6px; }
+    table.blocks{ font-size:8.5px; }
+    table.blocks th{ font-size:7px; padding:3px 5px 3px 1px; }
+    table.blocks td{ padding:3px 5px 3px 1px; }
+    .src-tag{ font-size:7px; padding:1px 5px; }
+
+    @page{ size:A4 landscape; margin:9mm; }
+  }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top no-print">
+    <h1>Urlaubs- &amp; Dienstplaner</h1>
+  </header>
+
+  <div class="panel no-print">
+    <h3 style="display:flex;align-items:center;justify-content:space-between;">
+      <span>ℹ️ Anleitung – so funktioniert das Tool</span>
+      <button class="btn" id="toggleHelpBtn" style="padding:5px 12px;font-size:12px;">▾ Einklappen</button>
+    </h3>
+    <div id="helpPanelBody" style="font-size:13px;color:var(--ink-soft);line-height:1.65;">
+      <p><b>1. Grundeinstellungen:</b> Jahr (2027–2057) und Bundesland wählen. Feiertage werden automatisch für dieses Bundesland berechnet. Schulferien legt jedes Bundesland selbst fest – bitte bei Bedarf im Block darunter eintragen.</p>
+      <p><b>2. Personen &amp; Urlaubskonten:</b> Namen, Urlaubstage, Resturlaub aus dem Vorjahr und sonstige Tage für beide Personen eintragen, dazu eigene Farben je Kategorie. Zusätzlich lassen sich tarifliche Feiertage (z. B. Heiligabend, Silvester, oder eigene Ergänzungen mit Datum und Namen) verwalten und je Person als halber oder ganzer Feiertag festlegen – das wird direkt im Kalender mit Name und eigener Farbe angezeigt und blockiert bei "ganzer Feiertag" das Einplanen von Urlaub für diese Person.</p>
+      <p><b>3. Eingabemodus (über dem Kalender):</b> "Nur Person 1" / "Beide gemeinsam" / "Nur Person 2" bestimmt, für wen ein Klick auf einen Tag gilt. Bei "Beide" wird bei beiden gleichzeitig dieselbe Kategorie gesetzt – praktisch für gemeinsamen Urlaub.</p>
+      <p><b>4. Klicken:</b> Werktage klicken, um Urlaub einzuplanen (Klick wechselt: Urlaub → Resturlaub → Sonstige → frei). Sind für eine Person Wochenenddienste bzw. Feiertagsdienste aktiviert, werden Wochenenden bzw. Feiertage ebenfalls klickbar. Für Bereitschaftsdienste gibt es einen eigenen Eingabemodus-Schalter direkt über dem Kalender.</p>
+      <p><b>5. Halb gefüllte Felder</b> (diagonal) zeigen an, dass an diesem Tag beide Personen etwas eingetragen haben – auch unterschiedliche Kategorien möglich.</p>
+      <p><b>6. Persönliche Ereignisse &amp; Termine:</b> Geburtstage, Reisen, Hochzeitstage etc. mit eigener Kategorie und Farbe eintragen – erscheinen klein beschriftet im Kalender, aber nicht im PDF-Export.</p>
+      <p><b>7. PDF-Export:</b> Drei Buttons für PDF mit beiden Personen oder nur einer Person. Öffnet den Druckdialog des Browsers – dort "Als PDF speichern" wählen.</p>
+      <p><b>8. Daten speichern/laden:</b> Sichert bzw. lädt den kompletten Stand (alle Jahre, Personen, Auswahl) als Datei. "Alles zurücksetzen" löscht wirklich alles.</p>
+    </div>
+  </div>
+
+  <div class="toolbar no-print">
+    <button class="btn" id="fullResetBtn">🔄 Alles auf Ursprung zurücksetzen</button>
+    <button class="btn" id="saveDataBtn">💾 Daten speichern</button>
+    <button class="btn" id="loadDataBtn">📂 Daten laden</button>
+    <input type="file" id="loadDataInput" accept="application/json" style="display:none;">
+    <button class="btn" id="resetBtn">🗓️ Kalenderauswahl zurücksetzen</button>
+    <button class="btn pdf-btn" id="pdfBothBtn">📄 PDF: Beide</button>
+    <button class="btn pdf-btn" id="pdfP1Btn">📄 PDF: nur Person 1</button>
+    <button class="btn pdf-btn" id="pdfP2Btn">📄 PDF: nur Person 2</button>
+  </div>
+
+  <div id="printTitle" class="print-only"></div>
+
+  <div class="panel no-print">
+    <h3>Grundeinstellungen</h3>
+    <div class="row">
+      <div class="field">
+        <label for="yearSelect">Jahr</label>
+        <select id="yearSelect"></select>
+      </div>
+      <div class="field">
+        <label for="stateSelect">Bundesland</label>
+        <select id="stateSelect"></select>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel no-print">
+    <h3 style="display:flex;align-items:center;justify-content:space-between;">
+      <span>Schulferien für dieses Bundesland &amp; Jahr</span>
+      <button class="btn" id="toggleFerienBtn" style="padding:5px 12px;font-size:12px;">▾ Einklappen</button>
+    </h3>
+    <div id="ferienPanelBody">
+    <p style="font-size:12.5px;color:var(--ink-soft);margin:0 0 10px;">Schulferien werden von jedem Bundesland eigenständig festgelegt und lassen sich nicht berechnen. Bitte bei Bedarf selbst eintragen (z. B. von der Website des zuständigen Kultusministeriums oder schulferien.org). Für Schleswig-Holstein und Mecklenburg-Vorpommern 2027 sind die Termine bereits hinterlegt.</p>
+    <div class="ferien-manage">
+      <div class="field"><label>Bezeichnung</label><input type="text" id="ferienLabel" placeholder="z. B. Sommerferien"></div>
+      <div class="field"><label>Von</label><input type="text" id="ferienStart" placeholder="TT.MM."></div>
+      <div class="field"><label>Bis</label><input type="text" id="ferienEnd" placeholder="TT.MM."></div>
+      <button class="btn" id="addFerienBtn">+ Hinzufügen</button>
+    </div>
+    <div class="ferien-list" id="ferienList"></div>
+    </div>
+  </div>
+
+  <div class="panel no-print">
+    <h3 style="display:flex;align-items:center;justify-content:space-between;">
+      <span>Personen &amp; Urlaubskonten</span>
+      <button class="btn" id="togglePeopleBtn" style="padding:5px 12px;font-size:12px;">▾ Einklappen</button>
+    </h3>
+    <div id="peopleConfigBody">
+    <div style="margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--line);">
+      <div style="font-size:12.5px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">Tarifliche Feiertage verwalten</div>
+      <div class="ferien-manage">
+        <div class="field"><label>Bezeichnung</label><input type="text" id="tarifName" placeholder="z. B. Rosenmontag"></div>
+        <div class="field"><label>Datum</label><input type="text" id="tarifDate" placeholder="TT.MM."></div>
+        <button class="btn" id="addTarifBtn">+ Hinzufügen</button>
+      </div>
+      <div class="ferien-list" id="tarifList" style="margin-top:8px;"></div>
+    </div>
+    <div class="people-config" id="peopleConfig"></div>
+    </div>
+  </div>
+
+  <div class="panel no-print">
+    <h3 style="display:flex;align-items:center;justify-content:space-between;">
+      <span>Persönliche Ereignisse &amp; Termine</span>
+      <button class="btn" id="toggleEventsBtn" style="padding:5px 12px;font-size:12px;">▾ Einklappen</button>
+    </h3>
+    <div id="eventsPanelBody">
+    <p style="font-size:12.5px;color:var(--ink-soft);margin:0 0 10px;">Geburtstage, Reisen, Hochzeitstage, Veranstaltungen &amp; Co. – auch über mehrere Tage. Erscheinen farblich markiert mit kleiner Beschriftung im Kalender, aber nicht im PDF-Export.</p>
+
+    <div class="ferien-manage">
+      <div class="field"><label>Bezeichnung</label><input type="text" id="eventLabel" placeholder="z. B. Geburtstag Max"></div>
+      <div class="field"><label>Kategorie</label><select id="eventCategory"></select></div>
+      <div class="field"><label>Von</label><input type="text" id="eventStart" placeholder="TT.MM."></div>
+      <div class="field"><label>Bis (optional)</label><input type="text" id="eventEnd" placeholder="TT.MM."></div>
+      <div class="field" style="flex-direction:row;align-items:center;gap:6px;min-width:auto;">
+        <input type="checkbox" id="eventRecurring" style="width:16px;height:16px;">
+        <label style="text-transform:none;font-weight:500;font-size:12.5px;">jedes Jahr wiederholen</label>
+      </div>
+      <button class="btn" id="addEventBtn">+ Hinzufügen</button>
+    </div>
+    <div class="ferien-list" id="eventList"></div>
+
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--line);">
+      <div style="font-size:12.5px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">Kategorien verwalten</div>
+      <div class="ferien-manage">
+        <div class="field"><label>Neue Kategorie</label><input type="text" id="categoryName" placeholder="z. B. Jubiläum"></div>
+        <div class="field"><label>Farbe</label><input type="color" id="categoryColor" value="#8A6642"></div>
+        <button class="btn" id="addCategoryBtn">+ Kategorie</button>
+      </div>
+      <div class="ferien-list" id="categoryList" style="margin-top:8px;"></div>
+    </div>
+    </div>
+  </div>
+
+  <div class="legend-wrap">
+    <div class="legend-header no-print">
+      <span>Legende</span>
+      <button class="btn" id="toggleLegendBtn" style="padding:5px 12px;font-size:12px;">▾ Einklappen</button>
+    </div>
+    <div class="legend" id="legend"></div>
+  </div>
+
+  <div class="people" id="people"></div>
+
+  <div class="toggle-mode no-print" id="modeToggle"></div>
+  <div class="toggle-mode no-print" id="clickTargetToggle"></div>
+
+  <div class="calendar" id="calendar"></div>
+
+  <div id="summaryPage">
+  <div class="summary">
+    <h3 id="blocksTitle">Ausgewählte Urlaubsblöcke</h3>
+    <div id="blocksContainer"></div>
+  </div>
+
+  <div class="summary" id="wdSummary" style="display:none;">
+    <h3>Wochenenddienste</h3>
+    <div id="wdSummaryContainer"></div>
+  </div>
+
+  <div class="summary" id="fdSummary" style="display:none;">
+    <h3>Feiertagsdienste</h3>
+    <div id="fdSummaryContainer"></div>
+  </div>
+
+  <div class="summary" id="brSummary" style="display:none;">
+    <h3>Bereitschaftsdienste</h3>
+    <div id="brSummaryContainer"></div>
+  </div>
+  </div>
+
+  <footer class="foot no-print">Feiertage werden für jedes Bundesland automatisch berechnet. Schulferien ohne Gewähr – bitte selbst prüfen. Eure Eingaben werden lokal im Browser gespeichert (localStorage).</footer>
+
+
+</div>
+
+<script>
+/* ======================= Bundesländer & Feiertags-Engine ======================= */
+const STATES = [
+  {code:'BW', name:'Baden-Württemberg'},
+  {code:'BY', name:'Bayern'},
+  {code:'BE', name:'Berlin'},
+  {code:'BB', name:'Brandenburg'},
+  {code:'HB', name:'Bremen'},
+  {code:'HH', name:'Hamburg'},
+  {code:'HE', name:'Hessen'},
+  {code:'MV', name:'Mecklenburg-Vorpommern'},
+  {code:'NI', name:'Niedersachsen'},
+  {code:'NW', name:'Nordrhein-Westfalen'},
+  {code:'RP', name:'Rheinland-Pfalz'},
+  {code:'SL', name:'Saarland'},
+  {code:'SN', name:'Sachsen'},
+  {code:'ST', name:'Sachsen-Anhalt'},
+  {code:'SH', name:'Schleswig-Holstein'},
+  {code:'TH', name:'Thüringen'},
+];
+
+// which extra (non-bundesweite) holiday keys apply per state
+const STATE_EXTRA = {
+  BW:['heiligeDreiKoenige','fronleichnam','allerheiligen'],
+  BY:['heiligeDreiKoenige','fronleichnam','mariaHimmelfahrt','allerheiligen'],
+  BE:['frauentag'],
+  BB:['reformationstag'],
+  HB:['reformationstag'],
+  HH:['reformationstag'],
+  HE:['fronleichnam'],
+  MV:['frauentag','reformationstag'],
+  NI:['reformationstag'],
+  NW:['fronleichnam','allerheiligen'],
+  RP:['fronleichnam','allerheiligen'],
+  SL:['fronleichnam','mariaHimmelfahrt','allerheiligen'],
+  SN:['fronleichnam','reformationstag','bussUndBettag'],
+  ST:['heiligeDreiKoenige','reformationstag'],
+  SH:['reformationstag'],
+  TH:['fronleichnam','reformationstag','weltkindertag'],
+};
+
+const HOLIDAY_NAMES = {
+  neujahr:'Neujahr', heiligeDreiKoenige:'Heilige Drei Könige', frauentag:'Internationaler Frauentag',
+  karfreitag:'Karfreitag', ostermontag:'Ostermontag', tagDerArbeit:'Tag der Arbeit',
+  christiHimmelfahrt:'Christi Himmelfahrt', pfingstmontag:'Pfingstmontag', fronleichnam:'Fronleichnam',
+  mariaHimmelfahrt:'Mariä Himmelfahrt', weltkindertag:'Weltkindertag', tagDerEinheit:'Tag der Deutschen Einheit',
+  reformationstag:'Reformationstag', allerheiligen:'Allerheiligen', bussUndBettag:'Buß- und Bettag',
+  weihnachten1:'1. Weihnachtsfeiertag', weihnachten2:'2. Weihnachtsfeiertag'
+};
+
+function easterSunday(year){
+  const a = year % 19, b = Math.floor(year/100), c = year % 100;
+  const d = Math.floor(b/4), e = b % 4, f = Math.floor((b+8)/25), g = Math.floor((b-f+1)/3);
+  const h = (19*a + b - d - g + 15) % 30;
+  const i = Math.floor(c/4), k = c % 4;
+  const l = (32 + 2*e + 2*i - h - k) % 7;
+  const m = Math.floor((a + 11*h + 22*l)/451);
+  const month = Math.floor((h + l - 7*m + 114)/31);
+  const day = ((h + l - 7*m + 114) % 31) + 1;
+  return new Date(year, month-1, day);
+}
+function addDays(date,n){ const d=new Date(date); d.setDate(d.getDate()+n); return d; }
+function bussUndBettag(year){
+  const nov23 = new Date(year,10,23);
+  const wd = (nov23.getDay()+6)%7; // Mon=0..Sun=6
+  let back = ((wd-2)+7)%7; if(back===0) back=7;
+  return addDays(nov23,-back);
+}
+
+function computeHolidays(year, stateCode){
+  const easter = easterSunday(year);
+  const all = {
+    neujahr: new Date(year,0,1),
+    heiligeDreiKoenige: new Date(year,0,6),
+    frauentag: new Date(year,2,8),
+    karfreitag: addDays(easter,-2),
+    ostermontag: addDays(easter,1),
+    tagDerArbeit: new Date(year,4,1),
+    christiHimmelfahrt: addDays(easter,39),
+    pfingstmontag: addDays(easter,50),
+    fronleichnam: addDays(easter,60),
+    mariaHimmelfahrt: new Date(year,7,15),
+    weltkindertag: new Date(year,8,20),
+    tagDerEinheit: new Date(year,9,3),
+    reformationstag: new Date(year,9,31),
+    allerheiligen: new Date(year,10,1),
+    bussUndBettag: bussUndBettag(year),
+    weihnachten1: new Date(year,11,25),
+    weihnachten2: new Date(year,11,26),
+  };
+  const keys = ['neujahr','karfreitag','ostermontag','tagDerArbeit','christiHimmelfahrt','pfingstmontag','tagDerEinheit','weihnachten1','weihnachten2']
+    .concat(STATE_EXTRA[stateCode]||[]);
+  const map = {}; // "m-d" -> name
+  keys.forEach(k=>{
+    const d = all[k];
+    map[(d.getMonth()+1)+'-'+d.getDate()] = HOLIDAY_NAMES[k];
+  });
+  return map;
+}
+
+function isLeap(y){ return (y%4===0 && y%100!==0) || y%400===0; }
+function daysInMonthFor(year,mi){ const d=[31, isLeap(year)?29:28,31,30,31,30,31,31,30,31,30,31]; return d[mi]; }
+function startOffsetFor(year,mi){ return (new Date(year,mi,1).getDay()+6)%7; } // Monday=0..Sunday=6
+
+/* ======================= Default Schulferien-Daten (bekannt) ======================= */
+const DEFAULT_FERIEN = {
+  'SH_2027':[
+    {start:'01-02', end:'01-06', label:'Weihnachtsferien (Rest)'},
+    {start:'03-30', end:'04-10', label:'Osterferien'},
+    {start:'05-07', end:'05-07', label:'Ferientag (Himmelfahrt)'},
+    {start:'07-03', end:'08-14', label:'Sommerferien'},
+    {start:'10-11', end:'10-23', label:'Herbstferien'},
+    {start:'12-23', end:'12-31', label:'Weihnachtsferien'},
+  ],
+  'MV_2027':[
+    {start:'01-02', end:'01-02', label:'Weihnachtsferien (Rest)'},
+    {start:'02-08', end:'02-19', label:'Winterferien'},
+    {start:'03-24', end:'04-02', label:'Osterferien'},
+    {start:'05-07', end:'05-07', label:'Ferientag'},
+    {start:'05-14', end:'05-18', label:'Pfingstferien'},
+    {start:'07-05', end:'08-14', label:'Sommerferien'},
+    {start:'10-14', end:'10-23', label:'Herbstferien'},
+    {start:'12-22', end:'12-31', label:'Weihnachtsferien'},
+  ]
+};
+
+/* ======================= Settings & selection state ======================= */
+const SETTINGS_KEY = 'urlaub_vorlage_settings_v1';
+const defaultSettings = {
+  year: 2027, state: 'SH', mode: 'BOTH',
+  p1: {name:'Person 1', urlaub:30, rest:0, sonst:0, sonstLabel:'Sonstige', cU:'#2F6B4F', cR:'#6B9E7C', cS:'#B7D2BE',
+       tarifStatus:{}, tarifColor:'#C9A15A',
+       wdEnabled:false, wdTarget:0, wdMode:'pair', wdColor:'#6B4C9A',
+       fdEnabled:false, fdTarget:0, fdColor:'#B23A3A',
+       brEnabled:false, brColor:'#2A8F8F', brMode:'single', brWeekStart:0},
+  p2: {name:'Person 2', urlaub:30, rest:0, sonst:0, sonstLabel:'Sonstige', cU:'#2A5A80', cR:'#5C87A6', cS:'#B9CEDD',
+       tarifStatus:{}, tarifColor:'#E0C68C',
+       wdEnabled:false, wdTarget:0, wdMode:'pair', wdColor:'#9B7BC7',
+       fdEnabled:false, fdTarget:0, fdColor:'#D97B7B',
+       brEnabled:false, brColor:'#7ED0D0', brMode:'single', brWeekStart:0},
+};
+function loadSettings(){
+  try{
+    const raw = localStorage.getItem(SETTINGS_KEY);
+    if(raw){
+      const parsed = JSON.parse(raw);
+      const merged = Object.assign({}, defaultSettings, parsed);
+      merged.p1 = Object.assign({}, defaultSettings.p1, parsed.p1||{});
+      merged.p2 = Object.assign({}, defaultSettings.p2, parsed.p2||{});
+      return merged;
+    }
+  }catch(e){}
+  return JSON.parse(JSON.stringify(defaultSettings));
+}
+function saveSettings(){ try{ localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); }catch(e){} }
+
+let settings = loadSettings();
+
+function selectionKey(){ return 'urlaub_vorlage_sel_'+settings.year+'_'+settings.state; }
+function loadSelection(){ try{ const raw = localStorage.getItem(selectionKey()); if(raw) return JSON.parse(raw); }catch(e){} return {}; }
+function saveSelection(){ try{ localStorage.setItem(selectionKey(), JSON.stringify(selection)); }catch(e){} }
+let selection = loadSelection();
+
+function ferienKey(){ return settings.state+'_'+settings.year; }
+function ferienStorageKey(){ return 'urlaub_vorlage_ferien_'+ferienKey(); }
+function loadFerien(){
+  try{ const raw = localStorage.getItem(ferienStorageKey()); if(raw) return JSON.parse(raw); }catch(e){}
+  return DEFAULT_FERIEN[ferienKey()] ? JSON.parse(JSON.stringify(DEFAULT_FERIEN[ferienKey()])) : [];
+}
+function saveFerien(){ try{ localStorage.setItem(ferienStorageKey(), JSON.stringify(ferien)); }catch(e){} }
+let ferien = loadFerien();
+
+const CATEGORIES_KEY = 'urlaub_vorlage_categories_v1';
+const DEFAULT_CATEGORIES = [
+  {id:'geburtstag', name:'Geburtstag', color:'#B5566B'},
+  {id:'reise', name:'Reise', color:'#3E6E8E'},
+  {id:'hochzeitstag', name:'Hochzeitstag', color:'#8A6642'},
+  {id:'event', name:'Event', color:'#6B4C9A'},
+];
+function loadCategories(){
+  try{ const raw = localStorage.getItem(CATEGORIES_KEY); if(raw) return JSON.parse(raw); }catch(e){}
+  return JSON.parse(JSON.stringify(DEFAULT_CATEGORIES));
+}
+function saveCategories(){ try{ localStorage.setItem(CATEGORIES_KEY, JSON.stringify(categories)); }catch(e){} }
+let categories = loadCategories();
+
+const TARIFLICH_KEY = 'urlaub_vorlage_tarifliste_v1';
+const DEFAULT_TARIFLICH = [
+  {id:'heiligabend', name:'Heiligabend', month:12, day:24},
+  {id:'silvester', name:'Silvester', month:12, day:31},
+];
+function loadTariflich(){
+  try{ const raw = localStorage.getItem(TARIFLICH_KEY); if(raw) return JSON.parse(raw); }catch(e){}
+  return JSON.parse(JSON.stringify(DEFAULT_TARIFLICH));
+}
+function saveTariflich(){ try{ localStorage.setItem(TARIFLICH_KEY, JSON.stringify(tariflicheFeiertage)); }catch(e){} }
+let tariflicheFeiertage = loadTariflich();
+function tariflichEntryAt(m,d){ return tariflicheFeiertage.find(t=>t.month===m && t.day===d) || null; }
+function categoryById(id){ return categories.find(c=>c.id===id) || {name:'Ereignis', color:'#B5566B'}; }
+
+const EVENTS_KEY = 'urlaub_vorlage_events_v1';
+function loadEvents(){
+  try{ const raw = localStorage.getItem(EVENTS_KEY); if(raw) return JSON.parse(raw); }catch(e){}
+  return [];
+}
+function saveEvents(){ try{ localStorage.setItem(EVENTS_KEY, JSON.stringify(events)); }catch(e){} }
+let events = loadEvents();
+
+// events: {label, categoryId, sm,sd, em,ed, year:null|number}  (start/end month-day, inclusive range)
+function eventsFor(m,d){
+  const cur = m*100+d;
+  return events.filter(e=>{
+    if(e.year!==null && e.year!==settings.year) return false;
+    const start = e.sm*100+e.sd, end = e.em*100+e.ed;
+    if(start<=end) return cur>=start && cur<=end;
+    return cur>=start || cur<=end; // wraps year boundary
+  });
+}
+
+/* ---- Wochenenddienst / Feiertagsdienst selections (per year+state) ---- */
+function wdStorageKey(){ return 'urlaub_vorlage_wd_'+settings.year+'_'+settings.state; }
+function loadWD(){ try{ const raw = localStorage.getItem(wdStorageKey()); if(raw) return JSON.parse(raw); }catch(e){} return {p1:{},p2:{}}; }
+function saveWD(){ try{ localStorage.setItem(wdStorageKey(), JSON.stringify(wdSelection)); }catch(e){} }
+let wdSelection = loadWD();
+
+function fdStorageKey(){ return 'urlaub_vorlage_fd_'+settings.year+'_'+settings.state; }
+function loadFD(){ try{ const raw = localStorage.getItem(fdStorageKey()); if(raw) return JSON.parse(raw); }catch(e){} return {p1:{},p2:{}}; }
+function saveFD(){ try{ localStorage.setItem(fdStorageKey(), JSON.stringify(fdSelection)); }catch(e){} }
+let fdSelection = loadFD();
+
+/* ---- Bereitschaftsdienst: Kalender-Klickauswahl (per Jahr, personenbezogen) ---- */
+function brStorageKey(){ return 'urlaub_vorlage_brsel_'+settings.year; }
+function loadBRSel(){ try{ const raw = localStorage.getItem(brStorageKey()); if(raw) return JSON.parse(raw); }catch(e){} return {p1:{},p2:{}}; }
+function saveBRSel(){ try{ localStorage.setItem(brStorageKey(), JSON.stringify(brSelection)); }catch(e){} }
+let brSelection = loadBRSel();
+
+const WEEKDAY_NAMES_FULL = ['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];
+
+function weekBlockFor(startWeekday, date){
+  const wd = (date.getDay()+6)%7; // Mon=0..Sun=6
+  const diff = (wd - startWeekday + 7) % 7;
+  const blockStart = addDays(date, -diff);
+  const blockEnd = addDays(blockStart, 6);
+  return {start:blockStart, end:blockEnd};
+}
+
+function weekendPartner(m,d,wd){
+  const date = new Date(settings.year, m-1, d);
+  const partnerDate = addDays(date, wd===5 ? 1 : -1);
+  return {m: partnerDate.getMonth()+1, d: partnerDate.getDate()};
+}
+function weekendGroupKey(m,d){
+  const wd = (startOffsetFor(settings.year, m-1) + d - 1) % 7;
+  const partner = weekendPartner(m,d,wd);
+  const partnerInfo = classify(partner.m, partner.d);
+  if(partnerInfo.kind==='weekend'){
+    return wd===5 ? keyFor(m,d) : keyFor(partner.m,partner.d);
+  }
+  return keyFor(m,d);
+}
+function wdKeyFor(person,m,d){
+  return settings[person].wdMode==='pair' ? weekendGroupKey(m,d) : keyFor(m,d);
+}
+
+function brKeyFor(person,m,d){
+  const mode = settings[person].brMode;
+  if(mode==='weekend') return weekendGroupKey(m,d);
+  if(mode==='week'){
+    const block = weekBlockFor(settings[person].brWeekStart, new Date(settings.year,m-1,d));
+    return keyFor(block.start.getMonth()+1, block.start.getDate());
+  }
+  return keyFor(m,d); // 'single' or 'weekday'
+}
+function brEligible(mode, kind){
+  if(mode==='weekday') return kind==='normal';
+  if(mode==='weekend') return kind==='weekend';
+  return true; // 'single' and 'week': any kind of day
+}
+function bereitschaftFor(m,d){
+  const info = classify(m,d);
+  const active = [];
+  ['p1','p2'].forEach(p=>{
+    if(!settings[p].brEnabled) return;
+    if(!brEligible(settings[p].brMode, info.kind)) return;
+    const key = brKeyFor(p,m,d);
+    if(brSelection[p] && brSelection[p][key]) active.push(p);
+  });
+  return active;
+}
+
+let printScope = null; // null = normal view, 'BOTH' | 'P1' | 'P2' = active print/PDF filter
+
+/* ======================= Classification ======================= */
+function keyFor(m,d){ return m+'-'+d; }
+
+function classify(m,d){
+  const mi = m-1;
+  const wd = (startOffsetFor(settings.year, mi) + d - 1) % 7;
+  const holidays = computeHolidays(settings.year, settings.state);
+  const key = keyFor(m,d);
+  if(holidays[key]) return {kind:'feiertag', name:holidays[key]};
+  if(wd===5||wd===6) return {kind:'weekend'};
+  // ferien lookup (MM-DD strings compared within same month range only, simple case: same-month ranges)
+  for(const f of ferien){
+    const [fsm,fsd] = f.start.split('-').map(Number);
+    const [fem,fed] = f.end.split('-').map(Number);
+    const cur = m*100+d, start = fsm*100+fsd, end = fem*100+fed;
+    if(start<=end){ if(cur>=start && cur<=end) return {kind:'normal', ferien:f.label}; }
+    else { if(cur>=start || cur<=end) return {kind:'normal', ferien:f.label}; } // wraps year boundary
+  }
+  return {kind:'normal', ferien:null};
+}
+
+/* ======================= Category cycling & counts ======================= */
+function rawCounts(person){
+  const c = {U:0,R:0,S:0};
+  Object.values(selection).forEach(entry=>{
+    const cat = entry[person];
+    if(cat && c[cat]!==undefined) c[cat]++;
+  });
+  return c;
+}
+function limitsFor(person){
+  const p = settings[person];
+  return {U:Number(p.urlaub)||0, R:Number(p.rest)||0, S:Number(p.sonst)||0};
+}
+function nextCatSingle(person, currentKeyState){
+  const counts = rawCounts(person);
+  if(currentKeyState && counts[currentKeyState]!==undefined) counts[currentKeyState]--;
+  const limits = limitsFor(person);
+  const order = ['U','R','S'];
+  const startIdx = (!currentKeyState || currentKeyState==='none') ? 0 : order.indexOf(currentKeyState)+1;
+  for(let i=startIdx;i<order.length;i++){
+    const cat = order[i];
+    if(counts[cat] < limits[cat]) return cat;
+  }
+  return null;
+}
+function nextCatBoth(cur1, cur2){
+  const current = (cur1===cur2) ? cur1 : null;
+  const c1 = rawCounts('p1'), c2 = rawCounts('p2');
+  if(current && c1[current]!==undefined) c1[current]--;
+  if(current && c2[current]!==undefined) c2[current]--;
+  const l1 = limitsFor('p1'), l2 = limitsFor('p2');
+  const order=['U','R','S'];
+  const startIdx = (!current || current==='none') ? 0 : order.indexOf(current)+1;
+  for(let i=startIdx;i<order.length;i++){
+    const cat=order[i];
+    if(c1[cat]<l1[cat] && c2[cat]<l2[cat]) return cat;
+  }
+  return null;
+}
+
+function colorFor(person, cat){
+  const p = settings[person];
+  if(cat==='U') return p.cU;
+  if(cat==='R') return p.cR;
+  if(cat==='S') return p.cS;
+  return null;
+}
+const CAT_NAMES = {U:'Urlaub', R:'Resturlaub', S:'Sonstige'};
+function catName(person, cat){
+  if(cat==='S') return settings[person].sonstLabel || 'Sonstige';
+  return CAT_NAMES[cat];
+}
+
+/* ======================= Click handling ======================= */
+function handleBereitschaftClick(m,d){
+  const info = classify(m,d);
+  const persons = activePersonsFor('brEnabled').filter(p => brEligible(settings[p].brMode, info.kind));
+  if(persons.length===0) return;
+  persons.forEach(p=> toggleIn(brSelection, p, brKeyFor(p,m,d)));
+  saveBRSel();
+  renderAll();
+}
+
+function tariflichStatus(person,m,d){
+  const entry = tariflichEntryAt(m,d);
+  if(!entry) return 'none';
+  return (settings[person].tarifStatus && settings[person].tarifStatus[entry.id]) || 'none';
+}
+const TARIFLICH_LABEL = {half:'halber Feiertag', full:'ganzer Feiertag'};
+
+function scopeIncludes(person){
+  if(!printScope || printScope==='BOTH') return true;
+  return printScope.toLowerCase()===person;
+}
+
+function activePersonsFor(enabledField){
+  const list = [];
+  if((settings.mode==='P1'||settings.mode==='BOTH') && settings.p1[enabledField]) list.push('p1');
+  if((settings.mode==='P2'||settings.mode==='BOTH') && settings.p2[enabledField]) list.push('p2');
+  return list;
+}
+
+function toggleIn(obj, person, key){
+  if(!obj[person]) obj[person]={};
+  if(obj[person][key]) delete obj[person][key]; else obj[person][key]=true;
+}
+
+function handleClick(m,d){
+  if(settings.clickTarget==='BEREITSCHAFT'){
+    handleBereitschaftClick(m,d);
+    return;
+  }
+  const info = classify(m,d);
+
+  if(info.kind==='feiertag'){
+    const persons = activePersonsFor('fdEnabled');
+    if(persons.length===0) return;
+    const key = keyFor(m,d);
+    persons.forEach(p=> toggleIn(fdSelection, p, key));
+    saveFD();
+    renderAll();
+    return;
+  }
+  if(info.kind==='weekend'){
+    const persons = activePersonsFor('wdEnabled');
+    if(persons.length===0) return;
+    persons.forEach(p=> toggleIn(wdSelection, p, wdKeyFor(p,m,d)));
+    saveWD();
+    renderAll();
+    return;
+  }
+
+  const key = keyFor(m,d);
+  const entry = selection[key] || {p1:null,p2:null};
+  const p1Blocked = tariflichStatus('p1',m,d)==='full';
+  const p2Blocked = tariflichStatus('p2',m,d)==='full';
+
+  if(settings.mode==='BOTH'){
+    if(!p1Blocked && !p2Blocked){
+      const next = nextCatBoth(entry.p1, entry.p2);
+      entry.p1 = next; entry.p2 = next;
+    } else {
+      if(!p1Blocked) entry.p1 = nextCatSingle('p1', entry.p1||'none');
+      if(!p2Blocked) entry.p2 = nextCatSingle('p2', entry.p2||'none');
+    }
+  } else if(settings.mode==='P1'){
+    if(!p1Blocked) entry.p1 = nextCatSingle('p1', entry.p1||'none');
+  } else {
+    if(!p2Blocked) entry.p2 = nextCatSingle('p2', entry.p2||'none');
+  }
+
+  if(!entry.p1 && !entry.p2) delete selection[key]; else selection[key]=entry;
+  saveSelection();
+  renderAll();
+}
+
+/* ======================= Rendering: settings panels ======================= */
+function renderYearAndState(){
+  const ySel = document.getElementById('yearSelect');
+  const years = Array.from({length: 2057-2027+1}, (_,i)=> 2027+i);
+  ySel.innerHTML = years.map(y=>`<option value="${y}" ${y===settings.year?'selected':''}>${y}</option>`).join('');
+  ySel.onchange = ()=>{ settings.year=Number(ySel.value); onContextChange(); };
+
+  const sSel = document.getElementById('stateSelect');
+  sSel.innerHTML = STATES.map(s=>`<option value="${s.code}" ${s.code===settings.state?'selected':''}>${s.name}</option>`).join('');
+  sSel.onchange = ()=>{ settings.state=sSel.value; onContextChange(); };
+}
+
+function onContextChange(){
+  saveSettings();
+  selection = loadSelection();
+  ferien = loadFerien();
+  wdSelection = loadWD();
+  fdSelection = loadFD();
+  brSelection = loadBRSel();
+  renderFerienList();
+  renderPeopleConfig();
+  renderAll();
+}
+
+function renderPeopleConfig(){
+  const el = document.getElementById('peopleConfig');
+  function block(person){
+    const p = settings[person];
+    const label = person==='p1' ? 'Person 1' : 'Person 2';
+    return `<div class="person-block">
+      <h4>${label}</h4>
+      <div class="field"><label>Name</label><input type="text" data-p="${person}" data-f="name" value="${p.name}"></div>
+      <div class="row" style="margin-top:8px;">
+        <div class="field"><label>Urlaubstage</label><input type="number" min="0" data-p="${person}" data-f="urlaub" value="${p.urlaub}"></div>
+        <div class="field"><label>Resturlaub Vorjahr</label><input type="number" min="0" data-p="${person}" data-f="rest" value="${p.rest}"></div>
+        <div class="field"><label>Sonstige Tage</label><input type="number" min="0" data-p="${person}" data-f="sonst" value="${p.sonst}"></div>
+        <div class="field"><label>Bezeichnung dafür</label><input type="text" data-p="${person}" data-f="sonstLabel" value="${p.sonstLabel||'Sonstige'}" placeholder="z. B. Gleittage"></div>
+      </div>
+      <div class="colorrow"><span class="lbl">Farbe Urlaub</span><input type="color" data-p="${person}" data-f="cU" value="${p.cU}"></div>
+      <div class="colorrow"><span class="lbl">Farbe Resturlaub</span><input type="color" data-p="${person}" data-f="cR" value="${p.cR}"></div>
+      <div class="colorrow"><span class="lbl">Farbe ${p.sonstLabel||'Sonstige'}</span><input type="color" data-p="${person}" data-f="cS" value="${p.cS}"></div>
+
+      <hr style="border:none;border-top:1px solid var(--line);margin:14px 0 10px;">
+      <div style="font-size:12.5px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">Tarifliche Feiertage</div>
+      <div class="colorrow" style="margin-bottom:8px;"><span class="lbl">Farbe tarifliche Feiertage</span><input type="color" data-p="${person}" data-f="tarifColor" value="${p.tarifColor}"></div>
+      ${tariflicheFeiertage.map(t=>`
+        <div class="row" style="margin-bottom:6px;align-items:center;">
+          <div style="min-width:150px;font-size:13px;color:var(--ink);">${t.name} <span style="color:var(--ink-faint);font-size:11.5px;">(${pad2(t.day)}.${pad2(t.month)}.)</span></div>
+          <select data-p="${person}" data-tarif="${t.id}">
+            <option value="none" ${(p.tarifStatus[t.id]||'none')==='none'?'selected':''}>Kein Feiertag</option>
+            <option value="half" ${p.tarifStatus[t.id]==='half'?'selected':''}>Halber Feiertag</option>
+            <option value="full" ${p.tarifStatus[t.id]==='full'?'selected':''}>Ganzer Feiertag</option>
+          </select>
+        </div>`).join('')}
+
+      <hr style="border:none;border-top:1px solid var(--line);margin:14px 0 10px;">
+      <div style="font-size:12.5px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">Dienste</div>
+
+      <div class="colorrow"><input type="checkbox" data-p="${person}" data-f="wdEnabled" data-type="checkbox" ${p.wdEnabled?'checked':''} style="width:16px;height:16px;"><span class="lbl">Wochenenddienste nötig</span></div>
+      ${p.wdEnabled ? `
+      <div class="row" style="margin-top:6px;">
+        <div class="field"><label>Vorgabe (Anzahl)</label><input type="number" min="0" data-p="${person}" data-f="wdTarget" value="${p.wdTarget}"></div>
+        <div class="field"><label>Art</label>
+          <select data-p="${person}" data-f="wdMode">
+            <option value="pair" ${p.wdMode==='pair'?'selected':''}>Sa+So zusammenhängend</option>
+            <option value="single" ${p.wdMode==='single'?'selected':''}>Einzelne Tage (Sa oder So)</option>
+          </select>
+        </div>
+      </div>
+      <div class="colorrow"><span class="lbl">Farbe Wochenenddienst</span><input type="color" data-p="${person}" data-f="wdColor" value="${p.wdColor}"></div>
+      ` : ''}
+
+      <div class="colorrow" style="margin-top:10px;"><input type="checkbox" data-p="${person}" data-f="fdEnabled" data-type="checkbox" ${p.fdEnabled?'checked':''} style="width:16px;height:16px;"><span class="lbl">Feiertagsdienste nötig</span></div>
+      ${p.fdEnabled ? `
+      <div class="row" style="margin-top:6px;">
+        <div class="field"><label>Vorgabe (Anzahl)</label><input type="number" min="0" data-p="${person}" data-f="fdTarget" value="${p.fdTarget}"></div>
+      </div>
+      <div class="colorrow"><span class="lbl">Farbe Feiertagsdienst</span><input type="color" data-p="${person}" data-f="fdColor" value="${p.fdColor}"></div>
+      ` : ''}
+
+      <div class="colorrow" style="margin-top:10px;"><input type="checkbox" data-p="${person}" data-f="brEnabled" data-type="checkbox" ${p.brEnabled?'checked':''} style="width:16px;height:16px;"><span class="lbl">Bereitschaftsdienste nötig</span></div>
+      ${p.brEnabled ? `
+      <div class="row" style="margin-top:6px;">
+        <div class="field" style="min-width:220px;"><label>Welche Zeiträume?</label>
+          <select data-p="${person}" data-f="brMode">
+            <option value="single" ${p.brMode==='single'?'selected':''}>Einzelne Tage (beliebig)</option>
+            <option value="weekday" ${p.brMode==='weekday'?'selected':''}>Wochentage (Mo–Fr, einzeln)</option>
+            <option value="weekend" ${p.brMode==='weekend'?'selected':''}>Wochenende (Sa+So zusammen)</option>
+            <option value="week" ${p.brMode==='week'?'selected':''}>Ganze Woche (7 Tage)</option>
+          </select>
+        </div>
+        ${p.brMode==='week' ? `
+        <div class="field"><label>Wochenbeginn</label>
+          <select data-p="${person}" data-f="brWeekStart">
+            ${WEEKDAY_NAMES_FULL.map((n,idx)=>`<option value="${idx}" ${p.brWeekStart===idx?'selected':''}>${n}</option>`).join('')}
+          </select>
+        </div>` : ''}
+      </div>
+      <div class="colorrow"><span class="lbl">Farbe Bereitschaftsdienst</span><input type="color" data-p="${person}" data-f="brColor" value="${p.brColor}"></div>
+      <p style="font-size:11.5px;color:var(--ink-faint);margin:4px 0 0;">Auswahl erfolgt direkt im Kalender über den Eingabemodus-Schalter "Bereitschaft" oberhalb des Kalenders.</p>
+      ` : ''}
+    </div>`;
+  }
+  el.innerHTML = block('p1') + block('p2');
+
+  el.querySelectorAll('input[data-type="checkbox"]').forEach(inp=>{
+    inp.addEventListener('change', ()=>{
+      settings[inp.dataset.p][inp.dataset.f] = inp.checked;
+      saveSettings();
+      renderPeopleConfig();
+      renderAll();
+    });
+  });
+  el.querySelectorAll('input:not([data-type="checkbox"]):not([data-tarif]), select:not([data-tarif])').forEach(inp=>{
+    inp.addEventListener('input', ()=>{
+      const person = inp.dataset.p, field = inp.dataset.f;
+      let val = inp.value;
+      if(['urlaub','rest','sonst','wdTarget','fdTarget'].includes(field)) val = Number(val)||0;
+      if(field==='brWeekStart') val = Number(val);
+      settings[person][field] = val;
+      saveSettings();
+      if(field==='brMode'){ renderPeopleConfig(); }
+      renderPeople(); renderCalendar(); renderBlocks(); renderLegend(); renderModeToggle(); renderDutySummaries(); renderPdfButtonLabels();
+    });
+  });
+  el.querySelectorAll('select[data-tarif]').forEach(sel=>{
+    sel.addEventListener('input', ()=>{
+      const person = sel.dataset.p, tarifId = sel.dataset.tarif;
+      if(!settings[person].tarifStatus) settings[person].tarifStatus = {};
+      settings[person].tarifStatus[tarifId] = sel.value;
+      saveSettings();
+      renderPeople(); renderCalendar(); renderBlocks(); renderLegend();
+    });
+  });
+}
+
+function renderTarifList(){
+  const el = document.getElementById('tarifList');
+  if(tariflicheFeiertage.length===0){ el.innerHTML = '<div class="empty-state">Keine tariflichen Feiertage eingetragen.</div>'; return; }
+  const sorted = tariflicheFeiertage.map((t,idx)=>({...t,idx})).sort((a,b)=> a.month-b.month || a.day-b.day);
+  el.innerHTML = sorted.map(t=>`<div class="ferien-row"><b>${t.name}</b>&nbsp; ${pad2(t.day)}.${pad2(t.month)}. <button class="rm" data-idx="${t.idx}">✕</button></div>`).join('');
+  el.querySelectorAll('.rm').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const removed = tariflicheFeiertage[Number(btn.dataset.idx)];
+      tariflicheFeiertage.splice(Number(btn.dataset.idx),1);
+      saveTariflich();
+      ['p1','p2'].forEach(p=>{ if(settings[p].tarifStatus) delete settings[p].tarifStatus[removed.id]; });
+      saveSettings();
+      renderTarifList(); renderPeopleConfig(); renderCalendar(); renderLegend();
+    });
+  });
+}
+document.getElementById('addTarifBtn').addEventListener('click', ()=>{
+  const name = document.getElementById('tarifName').value.trim();
+  const dateRaw = document.getElementById('tarifDate').value.trim();
+  const parsed = parseDMY(dateRaw);
+  if(!name){ alert('Bitte eine Bezeichnung eingeben.'); return; }
+  if(!parsed){ alert('Bitte Datum im Format TT.MM. eingeben (z. B. 24.12.).'); return; }
+  const [mm,dd] = parsed.split('-').map(Number);
+  const id = name.toLowerCase().replace(/[^a-z0-9äöüß]+/g,'-')+'-'+Date.now();
+  tariflicheFeiertage.push({id, name, month:mm, day:dd});
+  saveTariflich();
+  document.getElementById('tarifName').value='';
+  document.getElementById('tarifDate').value='';
+  renderTarifList(); renderPeopleConfig(); renderCalendar(); renderLegend();
+});
+
+function renderModeToggle(){
+  const el = document.getElementById('modeToggle');
+  const label1 = settings.p1.name || 'Person 1';
+  const label2 = settings.p2.name || 'Person 2';
+  el.innerHTML = `
+    <button data-m="P1">Nur ${label1}</button>
+    <button data-m="BOTH">Beide gemeinsam</button>
+    <button data-m="P2">Nur ${label2}</button>
+  `;
+  el.querySelectorAll('button').forEach(b=>{
+    if(b.dataset.m===settings.mode) b.classList.add('active');
+    b.addEventListener('click', ()=>{ settings.mode=b.dataset.m; saveSettings(); renderModeToggle(); });
+  });
+  renderClickTargetToggle();
+}
+
+function renderClickTargetToggle(){
+  const el = document.getElementById('clickTargetToggle');
+  const anyBR = settings.p1.brEnabled || settings.p2.brEnabled;
+  if(!anyBR){ el.innerHTML=''; el.style.display='none'; return; }
+  el.style.display='flex';
+  if(!settings.clickTarget) settings.clickTarget='VACATION';
+  el.innerHTML = `
+    <button data-t="VACATION">🗓️ Urlaub &amp; Dienste eintragen</button>
+    <button data-t="BEREITSCHAFT">📟 Bereitschaft eintragen</button>
+  `;
+  el.querySelectorAll('button').forEach(b=>{
+    if(b.dataset.t===settings.clickTarget) b.classList.add('active');
+    b.addEventListener('click', ()=>{ settings.clickTarget=b.dataset.t; saveSettings(); renderClickTargetToggle(); });
+  });
+}
+
+function renderLegend(){
+  const el = document.getElementById('legend');
+  const n1 = settings.p1.name||'Person 1', n2 = settings.p2.name||'Person 2';
+  function personItems(person, name){
+    const p = settings[person];
+    let html = `
+      <div class="item"><span class="sw" style="background:${p.cU}"></span>${name}: Urlaub</div>
+      <div class="item"><span class="sw" style="background:${p.cR}"></span>${name}: Resturlaub</div>
+      <div class="item"><span class="sw" style="background:${p.cS}"></span>${name}: ${p.sonstLabel||'Sonstige'}</div>`;
+    if(p.wdEnabled) html += `<div class="item"><span class="sw" style="background:${p.wdColor}"></span>${name}: Wochenenddienst</div>`;
+    if(p.fdEnabled) html += `<div class="item"><span class="sw" style="background:${p.fdColor}"></span>${name}: Feiertagsdienst</div>`;
+    if(p.brEnabled) html += `<div class="item"><span class="sw" style="background:${p.brColor}"></span>${name}: Bereitschaft</div>`;
+    if(tariflicheFeiertage.length) html += `<div class="item"><span class="sw" style="background:${p.tarifColor}"></span>${name}: Tarifliche Feiertage</div>`;
+    return html;
+  }
+  const generalItems = `
+    <div class="item"><span class="sw feiertag"></span>Feiertag</div>
+    <div class="item"><span class="sw ferien"></span>Schulferien</div>
+    <div class="item"><span class="sw weekend"></span>Wochenende</div>
+    <div class="item"><span class="sw split"></span>Gemeinsamer Tag (diagonal)</div>`;
+
+  const showP1 = scopeIncludes('p1'), showP2 = scopeIncludes('p2');
+  let cols = `<div class="legend-col"><div class="col-title">Allgemein</div>${generalItems}</div>`;
+  if(showP1) cols += `<div class="legend-col"><div class="col-title">${n1}</div>${personItems('p1',n1)}</div>`;
+  if(showP2) cols += `<div class="legend-col"><div class="col-title">${n2}</div>${personItems('p2',n2)}</div>`;
+  el.innerHTML = cols;
+}
+
+/* ======================= Rendering: people summary cards ======================= */
+function pct(v,max){ if(max<=0) return 0; return Math.min(100, v/max*100); }
+function renderPeople(){
+  const el = document.getElementById('people');
+  function card(person){
+    const p = settings[person];
+    const c = rawCounts(person);
+    const limits = limitsFor(person);
+    const usedTotal = c.U+c.R+c.S;
+    const availTotal = limits.U+limits.R+limits.S;
+    const remaining = availTotal - usedTotal;
+    const wdCount = Object.keys((wdSelection[person]||{})).length;
+    const fdCount = Object.keys((fdSelection[person]||{})).length;
+    return `<div class="person-card">
+      <h3>${p.name||(person==='p1'?'Person 1':'Person 2')}</h3>
+      <div class="bar-row">
+        <div class="bar-label"><span>Urlaub</span><b>${c.U} / ${limits.U}</b></div>
+        <div class="bar"><div class="fill" style="width:${pct(c.U,limits.U)}%;background:${p.cU}"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>Resturlaub Vorjahr</span><b>${c.R} / ${limits.R}</b></div>
+        <div class="bar"><div class="fill" style="width:${pct(c.R,limits.R)}%;background:${p.cR}"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>${p.sonstLabel||'Sonstige'}</span><b>${c.S} / ${limits.S}</b></div>
+        <div class="bar"><div class="fill" style="width:${pct(c.S,limits.S)}%;background:${p.cS}"></div></div>
+      </div>
+      ${p.wdEnabled ? `<div class="bar-row">
+        <div class="bar-label"><span>Wochenenddienst</span><b>${wdCount} / ${p.wdTarget}</b></div>
+        <div class="bar"><div class="fill" style="width:${pct(wdCount,p.wdTarget)}%;background:${p.wdColor}"></div></div>
+      </div>` : ''}
+      ${p.fdEnabled ? `<div class="bar-row">
+        <div class="bar-label"><span>Feiertagsdienst</span><b>${fdCount} / ${p.fdTarget}</b></div>
+        <div class="bar"><div class="fill" style="width:${pct(fdCount,p.fdTarget)}%;background:${p.fdColor}"></div></div>
+      </div>` : ''}
+      <div style="font-size:12px;color:var(--ink-soft);margin-top:8px;">Gesamt: <b style="color:var(--ink)">${usedTotal}</b> / ${availTotal} geplant &middot; übrig <b style="color:var(--ink)">${remaining}</b></div>
+      ${remaining<0 ? '<div class="warn">Mehr Tage geplant als verfügbar.</div>' : ''}
+    </div>`;
+  }
+  el.innerHTML = printScope==='P1' ? card('p1') : printScope==='P2' ? card('p2') : (card('p1') + card('p2'));
+}
+
+/* ======================= Rendering: Ferien management ======================= */
+function renderFerienList(){
+  const el = document.getElementById('ferienList');
+  if(ferien.length===0){ el.innerHTML = '<div class="empty-state">Noch keine Schulferien für dieses Bundesland/Jahr hinterlegt.</div>'; return; }
+  el.innerHTML = ferien.map((f,idx)=>{
+    const [sm,sd]=f.start.split('-'); const [em,ed]=f.end.split('-');
+    return `<div class="ferien-row"><b>${f.label}</b>&nbsp; ${sd}.${sm}. – ${ed}.${em}. <button class="rm" data-idx="${idx}">✕</button></div>`;
+  }).join('');
+  el.querySelectorAll('.rm').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      ferien.splice(Number(btn.dataset.idx),1);
+      saveFerien();
+      renderFerienList(); renderCalendar();
+    });
+  });
+}
+function pad2(n){ return String(n).padStart(2,'0'); }
+function parseDMY(str){
+  const m = str.match(/^(\d{1,2})\.(\d{1,2})\.?$/);
+  if(!m) return null;
+  return pad2(m[2])+'-'+pad2(m[1]);
+}
+document.getElementById('toggleLegendBtn').addEventListener('click', ()=>{
+  const body = document.getElementById('legend');
+  const btn = document.getElementById('toggleLegendBtn');
+  const collapsed = body.style.display === 'none';
+  body.style.display = collapsed ? '' : 'none';
+  btn.textContent = collapsed ? '▾ Einklappen' : '▸ Ausklappen';
+});
+document.getElementById('toggleHelpBtn').addEventListener('click', ()=>{
+  const body = document.getElementById('helpPanelBody');
+  const btn = document.getElementById('toggleHelpBtn');
+  const collapsed = body.style.display === 'none';
+  body.style.display = collapsed ? '' : 'none';
+  btn.textContent = collapsed ? '▾ Einklappen' : '▸ Ausklappen';
+});
+document.getElementById('togglePeopleBtn').addEventListener('click', ()=>{
+  const body = document.getElementById('peopleConfigBody');
+  const btn = document.getElementById('togglePeopleBtn');
+  const collapsed = body.style.display === 'none';
+  body.style.display = collapsed ? '' : 'none';
+  btn.textContent = collapsed ? '▾ Einklappen' : '▸ Ausklappen';
+});
+document.getElementById('toggleFerienBtn').addEventListener('click', ()=>{
+  const body = document.getElementById('ferienPanelBody');
+  const btn = document.getElementById('toggleFerienBtn');
+  const collapsed = body.style.display === 'none';
+  body.style.display = collapsed ? '' : 'none';
+  btn.textContent = collapsed ? '▾ Einklappen' : '▸ Ausklappen';
+});
+
+document.getElementById('addFerienBtn').addEventListener('click', ()=>{
+  const label = document.getElementById('ferienLabel').value.trim() || 'Ferien';
+  const startRaw = document.getElementById('ferienStart').value.trim();
+  const endRaw = document.getElementById('ferienEnd').value.trim();
+  const start = parseDMY(startRaw), end = parseDMY(endRaw);
+  if(!start || !end){ alert('Bitte Datum im Format TT.MM. eingeben (z. B. 04.07.).'); return; }
+  ferien.push({start,end,label});
+  saveFerien();
+  document.getElementById('ferienLabel').value='';
+  document.getElementById('ferienStart').value='';
+  document.getElementById('ferienEnd').value='';
+  renderFerienList(); renderCalendar();
+});
+
+document.getElementById('toggleEventsBtn').addEventListener('click', ()=>{
+  const body = document.getElementById('eventsPanelBody');
+  const btn = document.getElementById('toggleEventsBtn');
+  const collapsed = body.style.display === 'none';
+  body.style.display = collapsed ? '' : 'none';
+  btn.textContent = collapsed ? '▾ Einklappen' : '▸ Ausklappen';
+});
+
+/* ======================= Rendering: Persönliche Ereignisse & Kategorien ======================= */
+function populateEventCategoryDropdown(){
+  const sel = document.getElementById('eventCategory');
+  sel.innerHTML = categories.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+}
+
+function renderCategoryList(){
+  const el = document.getElementById('categoryList');
+  el.innerHTML = categories.map((c,idx)=>`<div class="ferien-row"><span class="sw" style="background:${c.color};width:11px;height:11px;"></span>&nbsp;${c.name} <button class="rm" data-idx="${idx}">✕</button></div>`).join('');
+  el.querySelectorAll('.rm').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const idx = Number(btn.dataset.idx);
+      const removed = categories[idx];
+      if(events.some(e=>e.categoryId===removed.id)){
+        if(!confirm(`Kategorie "${removed.name}" wird bei ${events.filter(e=>e.categoryId===removed.id).length} Ereignis(sen) verwendet. Trotzdem löschen?`)) return;
+      }
+      categories.splice(idx,1);
+      saveCategories();
+      populateEventCategoryDropdown(); renderCategoryList(); renderEventList(); renderCalendar();
+    });
+  });
+}
+document.getElementById('addCategoryBtn').addEventListener('click', ()=>{
+  const name = document.getElementById('categoryName').value.trim();
+  const color = document.getElementById('categoryColor').value;
+  if(!name){ alert('Bitte einen Namen für die Kategorie eingeben.'); return; }
+  const id = name.toLowerCase().replace(/[^a-z0-9äöüß]+/g,'-')+'-'+Date.now();
+  categories.push({id, name, color});
+  saveCategories();
+  document.getElementById('categoryName').value='';
+  populateEventCategoryDropdown(); renderCategoryList();
+});
+
+function renderEventList(){
+  const el = document.getElementById('eventList');
+  if(events.length===0){ el.innerHTML = '<div class="empty-state">Noch keine Ereignisse eingetragen.</div>'; return; }
+  const sorted = events.map((e,idx)=>({...e,idx})).sort((a,b)=> a.sm-b.sm || a.sd-b.sd);
+  el.innerHTML = sorted.map(e=>{
+    const rep = e.year===null ? ' · jedes Jahr' : ` · nur ${e.year}`;
+    const cat = categoryById(e.categoryId);
+    const range = (e.sm===e.em && e.sd===e.ed) ? `${pad2(e.sd)}.${pad2(e.sm)}.` : `${pad2(e.sd)}.${pad2(e.sm)}. – ${pad2(e.ed)}.${pad2(e.em)}.`;
+    return `<div class="ferien-row"><span class="sw" style="background:${cat.color};width:11px;height:11px;"></span>&nbsp;<b>${e.label}</b>&nbsp; (${cat.name}) &nbsp;${range}${rep} <button class="rm" data-idx="${e.idx}">✕</button></div>`;
+  }).join('');
+  el.querySelectorAll('.rm').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      events.splice(Number(btn.dataset.idx),1);
+      saveEvents();
+      renderEventList(); renderCalendar();
+    });
+  });
+}
+document.getElementById('addEventBtn').addEventListener('click', ()=>{
+  const label = document.getElementById('eventLabel').value.trim();
+  const categoryId = document.getElementById('eventCategory').value;
+  const startRaw = document.getElementById('eventStart').value.trim();
+  const endRaw = document.getElementById('eventEnd').value.trim();
+  const recurring = document.getElementById('eventRecurring').checked;
+  const start = parseDMY(startRaw);
+  const end = endRaw ? parseDMY(endRaw) : start;
+  if(!label){ alert('Bitte eine Bezeichnung eingeben.'); return; }
+  if(!start || !end){ alert('Bitte mindestens "Von" im Format TT.MM. eingeben (z. B. 12.09.).'); return; }
+  const [sm,sd] = start.split('-').map(Number);
+  const [em,ed] = end.split('-').map(Number);
+  events.push({label, categoryId, sm,sd,em,ed, year: recurring ? null : settings.year});
+  saveEvents();
+  document.getElementById('eventLabel').value='';
+  document.getElementById('eventStart').value='';
+  document.getElementById('eventEnd').value='';
+  renderEventList(); renderCalendar();
+});
+
+/* ======================= Rendering: calendar ======================= */
+const monthNames = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+const weekdayLabels = ['Mo','Di','Mi','Do','Fr','Sa','So'];
+
+function renderCalendar(){
+  const cal = document.getElementById('calendar');
+  cal.innerHTML='';
+  for(let mi=0; mi<12; mi++){
+    const m = mi+1;
+    const days = daysInMonthFor(settings.year, mi);
+    const offset = startOffsetFor(settings.year, mi);
+
+    const card = document.createElement('div'); card.className='month';
+    const h2=document.createElement('h2'); h2.textContent=monthNames[mi]; card.appendChild(h2);
+    const table = document.createElement('table'); table.className='calgrid';
+    const thead = document.createElement('tr');
+    weekdayLabels.forEach(l=>{ const th=document.createElement('th'); th.textContent=l; thead.appendChild(th); });
+    table.appendChild(thead);
+
+    let row = document.createElement('tr');
+    for(let e=0;e<offset;e++){ row.appendChild(document.createElement('td')); }
+
+    for(let d=1; d<=days; d++){
+      if(row.children.length===7){ table.appendChild(row); row=document.createElement('tr'); }
+      const info = classify(m,d);
+      const tarifEntry = tariflichEntryAt(m,d);
+      const td = document.createElement('td');
+      td.className='day';
+      let title='';
+
+      if(info.kind==='feiertag'){
+        const key = keyFor(m,d);
+        let p1on = settings.p1.fdEnabled && fdSelection.p1 && fdSelection.p1[key];
+        let p2on = settings.p2.fdEnabled && fdSelection.p2 && fdSelection.p2[key];
+        if(printScope==='P1') p2on=false; if(printScope==='P2') p1on=false;
+        if(p1on && p2on){
+          td.style.background = `linear-gradient(135deg, ${settings.p1.fdColor} 50%, ${settings.p2.fdColor} 50%)`;
+          td.style.color = '#fff';
+          title = `${info.name} — Feiertagsdienst: ${settings.p1.name} + ${settings.p2.name}`;
+        } else if(p1on){
+          td.style.background = settings.p1.fdColor; td.style.color='#fff';
+          title = `${info.name} — Feiertagsdienst: ${settings.p1.name}`;
+        } else if(p2on){
+          td.style.background = settings.p2.fdColor; td.style.color='#fff';
+          title = `${info.name} — Feiertagsdienst: ${settings.p2.name}`;
+        } else {
+          td.classList.add('feiertag'); title=info.name;
+        }
+        const brOk = settings.clickTarget==='BEREITSCHAFT' && activePersonsFor('brEnabled').some(p=>brEligible(settings[p].brMode,'feiertag'));
+        if(activePersonsFor('fdEnabled').length || brOk){
+          td.classList.add('clickable');
+          td.addEventListener('click', ()=>handleClick(m,d));
+          td.tabIndex=0;
+          td.addEventListener('keydown',(ev)=>{ if(ev.key==='Enter'||ev.key===' '){ ev.preventDefault(); handleClick(m,d); } });
+        }
+      } else if(info.kind==='weekend'){
+        let p1on = settings.p1.wdEnabled && wdSelection.p1 && wdSelection.p1[wdKeyFor('p1',m,d)];
+        let p2on = settings.p2.wdEnabled && wdSelection.p2 && wdSelection.p2[wdKeyFor('p2',m,d)];
+        if(printScope==='P1') p2on=false; if(printScope==='P2') p1on=false;
+        if(p1on && p2on){
+          td.style.background = `linear-gradient(135deg, ${settings.p1.wdColor} 50%, ${settings.p2.wdColor} 50%)`;
+          td.style.color = '#fff';
+          title = `Wochenenddienst: ${settings.p1.name} + ${settings.p2.name}`;
+        } else if(p1on){
+          td.style.background = settings.p1.wdColor; td.style.color='#fff';
+          title = `Wochenenddienst: ${settings.p1.name}`;
+        } else if(p2on){
+          td.style.background = settings.p2.wdColor; td.style.color='#fff';
+          title = `Wochenenddienst: ${settings.p2.name}`;
+        } else {
+          td.classList.add('weekend'); title='Wochenende';
+        }
+        const brOkW = settings.clickTarget==='BEREITSCHAFT' && activePersonsFor('brEnabled').some(p=>brEligible(settings[p].brMode,'weekend'));
+        if(activePersonsFor('wdEnabled').length || brOkW){
+          td.classList.add('clickable');
+          td.addEventListener('click', ()=>handleClick(m,d));
+          td.tabIndex=0;
+          td.addEventListener('keydown',(ev)=>{ if(ev.key==='Enter'||ev.key===' '){ ev.preventDefault(); handleClick(m,d); } });
+        }
+      } else {
+        const key = keyFor(m,d);
+        const entry = selection[key];
+        let p1cat = entry && entry.p1, p2cat = entry && entry.p2;
+        if(printScope==='P1') p2cat = null;
+        if(printScope==='P2') p1cat = null;
+        td.classList.add('clickable');
+
+        function effectiveInfo(person, cat){
+          if(cat) return {color: colorFor(person,cat), partial:false};
+          if(tarifEntry && scopeIncludes(person)){
+            const st = tariflichStatus(person,m,d);
+            if(st==='full') return {color: settings[person].tarifColor, partial:false};
+            if(st==='half') return {color: settings[person].tarifColor, partial:true};
+          }
+          return null;
+        }
+        const p1Info = effectiveInfo('p1',p1cat), p2Info = effectiveInfo('p2',p2cat);
+
+        if(p1Info && p2Info){
+          td.style.background = `linear-gradient(135deg, ${p1Info.color} 50%, ${p2Info.color} 50%)`;
+          td.style.color = '#fff';
+          const t1 = p1cat ? `${settings.p1.name}: ${catName('p1',p1cat)}` : '';
+          const t2 = p2cat ? `${settings.p2.name}: ${catName('p2',p2cat)}` : '';
+          title = [t1,t2].filter(Boolean).join(' + ');
+        } else if(p1Info){
+          td.style.background = p1Info.partial ? `linear-gradient(135deg, ${p1Info.color} 50%, transparent 50%)` : p1Info.color;
+          td.style.color = p1Info.partial ? 'var(--ink)' : '#fff';
+          title = p1cat ? `${settings.p1.name}: ${catName('p1',p1cat)}` : '';
+        } else if(p2Info){
+          td.style.background = p2Info.partial ? `linear-gradient(135deg, ${p2Info.color} 50%, transparent 50%)` : p2Info.color;
+          td.style.color = p2Info.partial ? 'var(--ink)' : '#fff';
+          title = p2cat ? `${settings.p2.name}: ${catName('p2',p2cat)}` : '';
+        } else if(info.ferien){
+          td.classList.add('ferien'); title = info.ferien;
+        } else {
+          td.classList.add('normal');
+        }
+        td.addEventListener('click', ()=>handleClick(m,d));
+        td.tabIndex=0;
+        td.addEventListener('keydown',(ev)=>{ if(ev.key==='Enter'||ev.key===' '){ ev.preventDefault(); handleClick(m,d); } });
+      }
+
+      const dayEvents = printScope ? [] : eventsFor(m,d);
+      const brActive = bereitschaftFor(m,d).filter(p=>scopeIncludes(p));
+      const numRow = document.createElement('div'); numRow.className='daytop';
+      const numSpan = document.createElement('span'); numSpan.className='daynum'; numSpan.textContent=d;
+      numRow.appendChild(numSpan);
+      dayEvents.forEach(ev=>{
+        const dot = document.createElement('span'); dot.className='eventdot'; dot.style.background=categoryById(ev.categoryId).color;
+        numRow.appendChild(dot);
+      });
+      td.appendChild(numRow);
+
+      if(info.kind==='feiertag'){
+        const lbl = document.createElement('div'); lbl.className='daylabel'; lbl.textContent=info.name;
+        td.appendChild(lbl);
+      }
+      if(dayEvents.length){
+        const lbl = document.createElement('div'); lbl.className='daylabel event';
+        lbl.textContent = dayEvents.map(e=>e.label).join(', ');
+        lbl.style.color = categoryById(dayEvents[0].categoryId).color;
+        td.appendChild(lbl);
+      }
+      if(tarifEntry){
+        const nameLbl = document.createElement('div'); nameLbl.className='daylabel';
+        nameLbl.textContent = tarifEntry.name;
+        nameLbl.style.color = 'var(--ink-faint)';
+        td.appendChild(nameLbl);
+        ['p1','p2'].forEach(p=>{
+          if(!scopeIncludes(p)) return;
+          const status = tariflichStatus(p,m,d);
+          if(status==='none') return;
+          const lbl = document.createElement('div'); lbl.className='daylabel';
+          lbl.textContent = `${settings[p].name}: ${TARIFLICH_LABEL[status]}`;
+          lbl.style.color = settings[p].tarifColor;
+          td.appendChild(lbl);
+        });
+      }
+      if(brActive.length){
+        const dots = document.createElement('div'); dots.className='daybottom';
+        brActive.forEach(p=>{
+          const dot = document.createElement('span'); dot.className='eventdot';
+          dot.style.background = settings[p].brColor;
+          dots.appendChild(dot);
+        });
+        td.appendChild(dots);
+        title = (title? title+' — ':'') + 'Bereitschaft: ' + brActive.map(p=>settings[p].name).join(' + ');
+      }
+
+      let tariflichNote = '';
+      if(tarifEntry){
+        const parts = ['p1','p2'].filter(p=>scopeIncludes(p)).map(p=>{
+          const status = tariflichStatus(p,m,d);
+          return status==='none' ? null : `${settings[p].name}: ${TARIFLICH_LABEL[status]}`;
+        }).filter(Boolean);
+        tariflichNote = [tarifEntry.name, ...parts].join(', ');
+      }
+      if(title) td.title = title + (dayEvents.length? ' — '+dayEvents.map(e=>e.label).join(', ') : '') + (tariflichNote? ' — '+tariflichNote : '');
+      else if(dayEvents.length || tariflichNote) td.title = [dayEvents.map(e=>e.label).join(', '), tariflichNote].filter(Boolean).join(' — ');
+      row.appendChild(td);
+    }
+    while(row.children.length<7){ row.appendChild(document.createElement('td')); }
+    table.appendChild(row);
+    card.appendChild(table);
+    cal.appendChild(card);
+  }
+}
+
+/* ======================= Rendering: blocks summary ======================= */
+function renderBlocks(){
+  document.getElementById('blocksTitle').textContent =
+    printScope==='P1' ? `Urlaubsblöcke – ${settings.p1.name}` :
+    printScope==='P2' ? `Urlaubsblöcke – ${settings.p2.name}` :
+    'Ausgewählte Urlaubsblöcke';
+
+  const dayList = [];
+  for(let m=1;m<=12;m++){
+    const dim = daysInMonthFor(settings.year, m-1);
+    for(let d=1; d<=dim; d++){
+      const info = classify(m,d);
+      const key = keyFor(m,d);
+      let cat=null; // 'P1','BOTH','P2'
+      let off=false;
+      if(info.kind==='feiertag' || info.kind==='weekend'){ off=true; }
+      else{
+        const entry = selection[key];
+        let hasP1 = entry && entry.p1, hasP2 = entry && entry.p2;
+        if(printScope==='P1') hasP2 = false;
+        if(printScope==='P2') hasP1 = false;
+        if(hasP1 && hasP2){ cat='BOTH'; off=true; }
+        else if(hasP1){ cat='P1'; off=true; }
+        else if(hasP2){ cat='P2'; off=true; }
+      }
+      dayList.push({date:new Date(settings.year,m-1,d), cat, off});
+    }
+  }
+
+  const blocks=[]; let i=0;
+  while(i<dayList.length){
+    if(!dayList[i].off){ i++; continue; }
+    let j=i, hasSel=false;
+    while(j<dayList.length && dayList[j].off){ if(dayList[j].cat) hasSel=true; j++; }
+    if(hasSel){
+      const run = dayList.slice(i,j);
+      blocks.push({
+        start:run[0].date, end:run[run.length-1].date, total:run.length,
+        p1: run.filter(x=>x.cat==='P1').length,
+        both: run.filter(x=>x.cat==='BOTH').length,
+        p2: run.filter(x=>x.cat==='P2').length,
+      });
+    }
+    i=j;
+  }
+
+  const container = document.getElementById('blocksContainer');
+  if(blocks.length===0){ container.innerHTML='<div class="empty-state">Noch keine Urlaubstage ausgewählt – klickt auf Werktage im Kalender oben.</div>'; return; }
+  const fmt = dt => dt.toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'});
+
+  if(printScope==='P1' || printScope==='P2'){
+    let total=0;
+    const rows = blocks.map(b=>{
+      const own = printScope==='P1' ? b.p1 : b.p2;
+      total += own;
+      const sameDay = b.start.getTime()===b.end.getTime();
+      const range = sameDay ? fmt(b.start) : `${fmt(b.start)} – ${fmt(b.end)}`;
+      return `<tr><td class="strong">${range}</td><td class="strong">${own}</td></tr>`;
+    }).join('');
+    container.innerHTML = `<table class="blocks">
+      <thead><tr><th>Zeitraum</th><th>Urlaubstage</th></tr></thead>
+      <tbody>${rows}</tbody>
+      <tfoot><tr><td>Gesamt</td><td>${total} Tage</td></tr></tfoot>
+    </table>`;
+    return;
+  }
+
+  let totP1=0,totBoth=0,totP2=0,totOff=0;
+  const rows = blocks.map(b=>{
+    totP1+=b.p1; totBoth+=b.both; totP2+=b.p2; totOff+=b.total;
+    const sameDay = b.start.getTime()===b.end.getTime();
+    const range = sameDay ? fmt(b.start) : `${fmt(b.start)} – ${fmt(b.end)}`;
+    return `<tr><td class="strong">${range}</td><td>${b.p1}</td><td>${b.both}</td><td>${b.p2}</td><td class="strong">${b.total}</td></tr>`;
+  }).join('');
+  container.innerHTML = `<table class="blocks">
+    <thead><tr><th>Zeitraum</th><th>${settings.p1.name} allein</th><th>Gemeinsam</th><th>${settings.p2.name} allein</th><th>Tage am Stück frei</th></tr></thead>
+    <tbody>${rows}</tbody>
+    <tfoot><tr><td>Gesamt</td><td>${totP1}</td><td>${totBoth}</td><td>${totP2}</td><td>${totOff}</td></tr></tfoot>
+  </table>`;
+}
+
+function renderDutySummaries(){
+  const fmt = dt => dt.toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'});
+
+  // Wochenenddienste
+  const wdShow = (scopeIncludes('p1') && settings.p1.wdEnabled) || (scopeIncludes('p2') && settings.p2.wdEnabled);
+  document.getElementById('wdSummary').style.display = wdShow ? '' : 'none';
+  if(wdShow){
+    let rows = '';
+    ['p1','p2'].forEach(person=>{
+      if(!settings[person].wdEnabled) return;
+      if(!scopeIncludes(person)) return;
+      const keys = Object.keys(wdSelection[person]||{});
+      const entries = keys.map(k=>{
+        const [m,d] = k.split('-').map(Number);
+        return {m,d};
+      }).sort((a,b)=> new Date(settings.year,a.m-1,a.d) - new Date(settings.year,b.m-1,b.d));
+      const count = entries.length;
+      const target = settings[person].wdTarget;
+      const list = entries.map((e,idx)=>{
+        const d1 = new Date(settings.year,e.m-1,e.d);
+        if(settings[person].wdMode==='pair'){
+          const wd=(startOffsetFor(settings.year,e.m-1)+e.d-1)%7;
+          const part = weekendPartner(e.m,e.d,wd);
+          const d2 = new Date(settings.year,part.m-1,part.d);
+          const lo = d1<d2?d1:d2, hi = d1<d2?d2:d1;
+          return `<tr><td class="strong">${idx+1}.</td><td>${settings[person].name}</td><td>${fmt(lo)} – ${fmt(hi)}</td></tr>`;
+        }
+        return `<tr><td class="strong">${idx+1}.</td><td>${settings[person].name}</td><td>${fmt(d1)}</td></tr>`;
+      }).join('');
+      rows += list;
+      rows += `<tr><td colspan="3" style="color:var(--ink-faint);font-size:12px;">${settings[person].name}: ${count} von ${target} geplant${count<target?' — noch '+(target-count)+' offen':''}</td></tr>`;
+    });
+    document.getElementById('wdSummaryContainer').innerHTML = rows
+      ? `<table class="blocks"><thead><tr><th>#</th><th>Person</th><th>Wochenende</th></tr></thead><tbody>${rows}</tbody></table>`
+      : '<div class="empty-state">Noch keine Wochenenddienste geplant.</div>';
+  }
+
+  // Feiertagsdienste
+  const fdShow = (scopeIncludes('p1') && settings.p1.fdEnabled) || (scopeIncludes('p2') && settings.p2.fdEnabled);
+  document.getElementById('fdSummary').style.display = fdShow ? '' : 'none';
+  if(fdShow){
+    let rows = '';
+    ['p1','p2'].forEach(person=>{
+      if(!settings[person].fdEnabled) return;
+      if(!scopeIncludes(person)) return;
+      const keys = Object.keys(fdSelection[person]||{});
+      const entries = keys.map(k=>{ const [m,d]=k.split('-').map(Number); return {m,d,name:computeHolidays(settings.year,settings.state)[k]||''}; })
+        .sort((a,b)=> new Date(settings.year,a.m-1,a.d) - new Date(settings.year,b.m-1,b.d));
+      const count = entries.length;
+      const target = settings[person].fdTarget;
+      rows += entries.map((e,idx)=>`<tr><td class="strong">${idx+1}.</td><td>${settings[person].name}</td><td>${fmt(new Date(settings.year,e.m-1,e.d))}</td><td>${e.name}</td></tr>`).join('');
+      rows += `<tr><td colspan="4" style="color:var(--ink-faint);font-size:12px;">${settings[person].name}: ${count} von ${target} geplant${count<target?' — noch '+(target-count)+' offen':''}</td></tr>`;
+    });
+    document.getElementById('fdSummaryContainer').innerHTML = rows
+      ? `<table class="blocks"><thead><tr><th>#</th><th>Person</th><th>Datum</th><th>Feiertag</th></tr></thead><tbody>${rows}</tbody></table>`
+      : '<div class="empty-state">Noch keine Feiertagsdienste geplant.</div>';
+  }
+
+  // Bereitschaftsdienste
+  const brShow = (scopeIncludes('p1') && settings.p1.brEnabled) || (scopeIncludes('p2') && settings.p2.brEnabled);
+  document.getElementById('brSummary').style.display = brShow ? '' : 'none';
+  if(brShow){
+    let rows = '';
+    ['p1','p2'].forEach(person=>{
+      if(!settings[person].brEnabled) return;
+      if(!scopeIncludes(person)) return;
+      const mode = settings[person].brMode;
+      const keys = Object.keys(brSelection[person]||{});
+      const entries = keys.map(k=>{
+        const [m,d] = k.split('-').map(Number);
+        const start = new Date(settings.year, m-1, d);
+        let end = start, rangeLabel;
+        if(mode==='weekend'){
+          const wd=(startOffsetFor(settings.year,m-1)+d-1)%7;
+          const part = weekendPartner(m,d,wd);
+          end = new Date(settings.year, part.m-1, part.d);
+          if(end<start){ const t=end; end=start; }
+        } else if(mode==='week'){
+          end = addDays(start,6);
+        }
+        rangeLabel = start.getTime()===end.getTime() ? fmt(start) : `${fmt(start)} – ${fmt(end)}`;
+        return {start, rangeLabel};
+      }).sort((a,b)=> a.start-b.start);
+      rows += entries.map((e,idx)=>`<tr><td class="strong">${idx+1}.</td><td>${settings[person].name}</td><td>${e.rangeLabel}</td></tr>`).join('');
+    });
+    document.getElementById('brSummaryContainer').innerHTML = rows
+      ? `<table class="blocks"><thead><tr><th>#</th><th>Person</th><th>Zeitraum</th></tr></thead><tbody>${rows}</tbody></table>`
+      : '<div class="empty-state">Noch keine Bereitschaftszeiten ausgewählt – im Kalender über den Eingabemodus "Bereitschaft" auswählen.</div>';
+  }
+}
+
+/* ======================= PDF export (via browser print) ======================= */
+function renderPdfButtonLabels(){
+  document.getElementById('pdfBothBtn').textContent = `📄 PDF: Beide (${settings.p1.name} & ${settings.p2.name})`;
+  document.getElementById('pdfP1Btn').textContent = `📄 PDF: nur ${settings.p1.name}`;
+  document.getElementById('pdfP2Btn').textContent = `📄 PDF: nur ${settings.p2.name}`;
+}
+
+function renderAll(){ renderPeople(); renderCalendar(); renderBlocks(); renderLegend(); renderDutySummaries(); renderPdfButtonLabels(); }
+
+function printTitleText(scope){
+  const y = settings.year;
+  if(scope==='P1') return `Urlaubsübersicht ${y} – ${settings.p1.name}`;
+  if(scope==='P2') return `Urlaubsübersicht ${y} – ${settings.p2.name}`;
+  return `Urlaubsübersicht ${y} – ${settings.p1.name} &amp; ${settings.p2.name}`;
+}
+
+function exportPDF(scope){
+  printScope = scope;
+  document.getElementById('printTitle').innerHTML =
+    `<h1>${printTitleText(scope)}</h1><p>${STATES.find(s=>s.code===settings.state).name} · erstellt mit dem Interaktiven Urlaubsplaner</p>`;
+  renderAll();
+  window.print();
+}
+
+window.addEventListener('afterprint', ()=>{
+  printScope = null;
+  renderAll();
+});
+
+document.getElementById('pdfBothBtn').addEventListener('click', ()=>exportPDF('BOTH'));
+document.getElementById('pdfP1Btn').addEventListener('click', ()=>exportPDF('P1'));
+document.getElementById('pdfP2Btn').addEventListener('click', ()=>exportPDF('P2'));
+
+/* ======================= Vollständiger Reset & Daten speichern/laden ======================= */
+function allAppKeys(){
+  const keys = [];
+  for(let i=0;i<localStorage.length;i++){
+    const k = localStorage.key(i);
+    if(k && k.startsWith('urlaub_vorlage_')) keys.push(k);
+  }
+  return keys;
+}
+
+document.getElementById('fullResetBtn').addEventListener('click', ()=>{
+  if(!confirm('Wirklich alles zurücksetzen? Alle Jahre, Bundesländer, Personen, Auswahl, Schulferien und Ereignisse werden unwiderruflich gelöscht.')) return;
+  allAppKeys().forEach(k=> localStorage.removeItem(k));
+  location.reload();
+});
+
+document.getElementById('saveDataBtn').addEventListener('click', ()=>{
+  const dump = {};
+  allAppKeys().forEach(k=>{ dump[k] = localStorage.getItem(k); });
+  const blob = new Blob([JSON.stringify(dump, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const dateStr = new Date().toISOString().slice(0,10);
+  a.href = url; a.download = `urlaubsplaner-daten-${dateStr}.json`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById('loadDataBtn').addEventListener('click', ()=>{
+  document.getElementById('loadDataInput').click();
+});
+document.getElementById('loadDataInput').addEventListener('change', (ev)=>{
+  const file = ev.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const data = JSON.parse(reader.result);
+      allAppKeys().forEach(k=> localStorage.removeItem(k));
+      Object.keys(data).forEach(k=>{
+        if(k.startsWith('urlaub_vorlage_')) localStorage.setItem(k, data[k]);
+      });
+      location.reload();
+    }catch(e){
+      alert('Diese Datei konnte nicht gelesen werden. Bitte eine zuvor über "Daten speichern" exportierte JSON-Datei auswählen.');
+    }
+  };
+  reader.readAsText(file);
+});
+
+/* ======================= Reset & init ======================= */
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  selection = {}; saveSelection();
+  renderAll();
+});
+
+renderYearAndState();
+renderTarifList();
+renderPeopleConfig();
+renderModeToggle();
+renderLegend();
+renderFerienList();
+populateEventCategoryDropdown();
+renderCategoryList();
+renderEventList();
+renderAll();
+</script>
+</body>
+</html>
