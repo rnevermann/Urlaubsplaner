@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet"><style>body{margin:0;background:#e8ebe7;font-family:-apple-system,system-ui,sans-serif}a{color:#2A5A80}a:hover{color:#173247}.dv-turn{padding:40px 44px 32px;border-bottom:1px solid rgba(0,0,0,.08);scroll-margin-top:16px}.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 8px}.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#173247;color:#fff;border-radius:4px;text-decoration:none}.dv-tname{font:600 13px/1.2 system-ui,sans-serif;color:#173247}.dv-intro{margin:0 0 26px;max-width:760px;font:13px/1.65 system-ui,sans-serif;color:#4C6577}.dv-opts{display:flex;flex-wrap:wrap;gap:30px;align-items:flex-start}.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px;width:402px}.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(23,50,71,.1);color:#173247;border-radius:5px;text-decoration:none}.dv-olabel{display:flex;align-items:baseline;gap:8px;font:600 12px/1.3 system-ui,sans-serif;color:#173247}.dv-card{max-width:100%;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden}.dv-cap{margin:2px 0 0;font:12px/1.6 system-ui,sans-serif;color:#4C6577}.dv-cap b{color:#173247;font-weight:600}.dv-opt:target .dv-oid{background:#2A5A80;color:#fff}.dv-next{margin:26px 0 0;font:12px/1.5 system-ui,sans-serif;color:rgba(23,50,71,.55)}</style></helmet>
+
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Vier Richtungen für die Startfläche</span></div>
+<p class="dv-intro">Annahmen aus dem Web-Tool übernommen: zwei Personen (Anna &amp; Jonas), Schleswig-Holstein 2027, automatische Feiertage, manuelle Schulferien, Kontingente mit Limit, Diagonal-Split bei gemeinsamen Tagen, lokale Daten. Alle vier Richtungen tragen dieselbe Tab-Struktur (Plan · Jahr · Dienste · Mehr) und dieselbe Eingabe: <b>über Tage ziehen → ein Sheet zum Zuordnen</b>. Sie unterscheiden sich darin, <b>was die App zuerst zeigt</b> — und damit, worin sie besser ist als das Tool.</p>
+<div class="dv-opts">
+
+<div class="dv-opt" id="1a">
+<div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Monatsraster — die direkte Portierung</div>
+<div class="dv-card">
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div style="height:100%;display:flex;flex-direction:column;background:#F1F4F1;font-family:-apple-system,system-ui,sans-serif;color:#173247;position:relative;overflow:hidden">
+  <div style="padding:58px 16px 0;flex:none">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px">
+      <div>
+        <div style="font-family:Newsreader,Georgia,serif;font-size:30px;font-weight:600;line-height:1.05;letter-spacing:-.01em">Mai 2027</div>
+        <div style="font-size:12px;color:#8FA3AD;margin-top:3px;font-weight:500">Schleswig-Holstein</div>
+      </div>
+      <div style="display:flex;gap:6px">
+        <div style="width:34px;height:34px;border-radius:11px;background:#fff;border:1px solid #D7DFDA;display:grid;place-items:center;font-size:15px;color:#4C6577">‹</div>
+        <div style="width:34px;height:34px;border-radius:11px;background:#fff;border:1px solid #D7DFDA;display:grid;place-items:center;font-size:15px;color:#4C6577">›</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+      <div style="background:#fff;border:1px solid #D7DFDA;border-radius:12px;padding:9px 11px 10px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:6px">
+          <span style="font-size:12px;font-weight:600;color:#2F6B4F">{{ n1 }}</span>
+          <span style="font-size:11px;color:#4C6577"><b style="color:#173247">{{ used1 }}</b> / {{ q1 }}</span>
+        </div>
+        <div style="height:6px;border-radius:4px;background:#EDF1EE;margin-top:7px;overflow:hidden"><span style="display:block;height:100%;width:{{ pct1 }};background:#2F6B4F"></span></div>
+      </div>
+      <div style="background:#fff;border:1px solid #D7DFDA;border-radius:12px;padding:9px 11px 10px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:6px">
+          <span style="font-size:12px;font-weight:600;color:#2A5A80">{{ n2 }}</span>
+          <span style="font-size:11px;color:#4C6577"><b style="color:#173247">{{ used2 }}</b> / {{ q2 }}</span>
+        </div>
+        <div style="height:6px;border-radius:4px;background:#EDF1EE;margin-top:7px;overflow:hidden"><span style="display:block;height:100%;width:{{ pct2 }};background:#2A5A80"></span></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin:16px 0 5px">
+      <span style="font-size:10px;font-weight:700;color:#8FA3AD;text-align:center;letter-spacing:.04em">MO</span>
+      <span style="font-size:10px;font-weight:700;color:#8FA3AD;text-align:center;letter-spacing:.04em">DI</span>
+      <span style="font-size:10px;font-weight:700;color:#8FA3AD;text-align:center;letter-spacing:.04em">MI</span>
+      <span style="font-size:10px;font-weight:700;color:#8FA3AD;text-align:center;letter-spacing:.04em">DO</span>
+      <span style="font-size:10px;font-weight:700;color:#8FA3AD;text-align:center;letter-spacing:.04em">FR</span>
+      <span style="font-size:10px;font-weight:700;color:#8FA3AD;text-align:center;letter-spacing:.04em">SA</span>
+      <span style="font-size:10px;font-weight:700;color:#8FA3AD;text-align:center;letter-spacing:.04em">SO</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px">
+      <sc-for list="{{ mayCells }}" as="c" hint-placeholder-count="42">
+        <div style="height:52px;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:{{ c.bg }};color:{{ c.fg }};border:{{ c.border }};box-sizing:border-box">
+          <span style="font-size:15px;font-weight:600;line-height:1">{{ c.num }}</span>
+          <span style="font-size:7.5px;font-weight:700;line-height:1.15;letter-spacing:.02em;text-align:center;padding:0 1px">{{ c.tag }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="flex:1;min-height:0;padding:14px 16px 0;opacity:.5">
+    <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#8FA3AD;text-transform:uppercase">Blöcke im Mai</div>
+    <div style="background:#fff;border:1px solid #D7DFDA;border-radius:12px;padding:11px 12px;margin-top:8px;display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:13px;font-weight:600">Do 6. – So 16. Mai</span>
+      <span style="font-size:12px;color:#4C6577">11 Tage frei</span>
+    </div>
+  </div>
+  <div style="flex:none;display:flex;align-items:flex-start;padding:9px 6px 26px;background:rgba(247,249,247,.9);backdrop-filter:blur(18px);border-top:1px solid rgba(23,50,71,.1)">
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#173247" stroke-width="1.7" stroke-linecap="round"><rect x="3.2" y="4.8" width="17.6" height="15.4" rx="3.2"></rect><path d="M3.2 9.6h17.6M8 3.4v2.6M16 3.4v2.6"></path><rect x="7" y="12.6" width="4" height="3.4" rx="1" fill="#173247" stroke="none"></rect></svg>
+      <span style="font-size:10px;font-weight:600;color:#173247">Plan</span>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="#8FA3AD"><rect x="3.4" y="4.4" width="5.2" height="4.4" rx="1.2"></rect><rect x="9.4" y="4.4" width="5.2" height="4.4" rx="1.2"></rect><rect x="15.4" y="4.4" width="5.2" height="4.4" rx="1.2"></rect><rect x="3.4" y="9.8" width="5.2" height="4.4" rx="1.2"></rect><rect x="9.4" y="9.8" width="5.2" height="4.4" rx="1.2"></rect><rect x="15.4" y="9.8" width="5.2" height="4.4" rx="1.2"></rect><rect x="3.4" y="15.2" width="5.2" height="4.4" rx="1.2"></rect><rect x="9.4" y="15.2" width="5.2" height="4.4" rx="1.2"></rect><rect x="15.4" y="15.2" width="5.2" height="4.4" rx="1.2"></rect></svg>
+      <span style="font-size:10px;font-weight:600;color:#8FA3AD">Jahr</span>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8FA3AD" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.4"></circle><path d="M12 7.4V12l3.4 2.2"></path></svg>
+      <span style="font-size:10px;font-weight:600;color:#8FA3AD">Dienste</span>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="#8FA3AD"><circle cx="5.6" cy="12" r="1.9"></circle><circle cx="12" cy="12" r="1.9"></circle><circle cx="18.4" cy="12" r="1.9"></circle></svg>
+      <span style="font-size:10px;font-weight:600;color:#8FA3AD">Mehr</span>
+    </div>
+  </div>
+  <div style="position:absolute;inset:0;background:rgba(23,50,71,.32);backdrop-filter:blur(1px)"></div>
+  <div style="position:absolute;left:0;right:0;bottom:0;background:#F7F9F7;border-radius:22px 22px 0 0;box-shadow:0 -14px 40px rgba(23,50,71,.22);padding:9px 16px 30px;display:flex;flex-direction:column;gap:13px">
+    <span style="width:38px;height:5px;border-radius:3px;background:#C9D4CE;align-self:center"></span>
+    <div>
+      <div style="font-family:Newsreader,Georgia,serif;font-size:21px;font-weight:600;line-height:1.15">Mo 10. – Fr 14. Mai</div>
+      <div style="font-size:12.5px;color:#4C6577;margin-top:3px">5 Werktage · mit Himmelfahrt &amp; Brückentag <b style="color:#173247">11 Tage frei am Stück</b></div>
+    </div>
+    <div style="display:flex;gap:5px;background:#E7ECE8;border-radius:11px;padding:3px">
+      <span style="flex:1;text-align:center;font-size:12.5px;font-weight:600;color:#4C6577;padding:8px 0;border-radius:9px">{{ n1 }}</span>
+      <span style="flex:1;text-align:center;font-size:12.5px;font-weight:700;color:#173247;padding:8px 0;border-radius:9px;background:#fff;box-shadow:0 1px 3px rgba(23,50,71,.14)">Beide</span>
+      <span style="flex:1;text-align:center;font-size:12.5px;font-weight:600;color:#4C6577;padding:8px 0;border-radius:9px">{{ n2 }}</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1px;background:#D7DFDA;border-radius:13px;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:11px;background:#fff;padding:12px 13px">
+        <span style="width:16px;height:16px;border-radius:5px;background:linear-gradient(135deg,#2F6B4F 50%,#2A5A80 50%);flex:none"></span>
+        <span style="flex:1;font-size:14.5px;font-weight:600">Urlaub</span>
+        <span style="font-size:12.5px;color:#8FA3AD">noch 9 / 8 frei</span>
+        <span style="width:20px;height:20px;border-radius:50%;background:#173247;color:#fff;font-size:12px;display:grid;place-items:center;flex:none">✓</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:11px;background:#fff;padding:12px 13px">
+        <span style="width:16px;height:16px;border-radius:5px;background:linear-gradient(135deg,#6B9E7C 50%,#5C87A6 50%);flex:none"></span>
+        <span style="flex:1;font-size:14.5px;font-weight:600">Resturlaub 2026</span>
+        <span style="font-size:12.5px;color:#8FA3AD">noch 4 / 0 frei</span>
+        <span style="width:20px;height:20px;border-radius:50%;border:1.5px solid #C9D4CE;flex:none"></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:11px;background:#fff;padding:12px 13px">
+        <span style="width:16px;height:16px;border-radius:5px;background:linear-gradient(135deg,#B7D2BE 50%,#B9CEDD 50%);flex:none"></span>
+        <span style="flex:1;font-size:14.5px;font-weight:600">Gleittage</span>
+        <span style="font-size:12.5px;color:#8FA3AD">noch 3 / 5 frei</span>
+        <span style="width:20px;height:20px;border-radius:50%;border:1.5px solid #C9D4CE;flex:none"></span>
+      </div>
+    </div>
+    <div style="background:#173247;color:#fff;border-radius:13px;padding:14px;text-align:center;font-size:15.5px;font-weight:600">5 Tage eintragen</div>
+  </div>
+</div>
+</x-import>
+</div>
+<p class="dv-cap"><b>Was sie besser macht:</b> vertraut aus dem Tool, kein Umlernen. Ziehen über die Tage ersetzt das Klick-Durchtoggeln, das Sheet zeigt vor dem Bestätigen, wie lang der Block wirklich frei ist. <b>Risiko:</b> ein Monat auf einmal — die Jahresübersicht, das eigentliche Argument des Tools, liegt einen Tab weiter weg.</p>
+</div>
+
+<div class="dv-opt" id="1b">
+<div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Jahresband — das ganze Jahr als Startbild</div>
+<div class="dv-card">
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div style="height:100%;display:flex;flex-direction:column;background:#F1F4F1;font-family:-apple-system,system-ui,sans-serif;color:#173247;position:relative;overflow:hidden">
+  <div style="padding:58px 16px 0;flex:none">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between">
+      <div>
+        <div style="font-family:Newsreader,Georgia,serif;font-size:30px;font-weight:600;line-height:1.05">Jahr 2027</div>
+        <div style="font-size:12px;color:#8FA3AD;margin-top:3px;font-weight:500">{{ n1 }} &amp; {{ n2 }} · Schleswig-Holstein</div>
+      </div>
+      <div style="width:34px;height:34px;border-radius:11px;background:#fff;border:1px solid #D7DFDA;display:grid;place-items:center;font-size:14px;color:#4C6577">⇅</div>
+    </div>
+    <div style="background:#173247;color:#fff;border-radius:16px;padding:14px 16px 15px;margin-top:14px">
+      <div style="font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#9FB6C4">Längste gemeinsame Strecke</div>
+      <div style="display:flex;align-items:baseline;gap:9px;margin-top:6px">
+        <span style="font-family:Newsreader,Georgia,serif;font-size:38px;font-weight:600;line-height:1">{{ topLen }}</span>
+        <span style="font-size:14px;font-weight:600;padding-bottom:4px">Tage frei</span>
+        <span style="flex:1"></span>
+        <span style="font-size:13px;color:#C6D5DE;padding-bottom:4px">{{ topRange }}</span>
+      </div>
+      <div style="display:flex;gap:2px;margin-top:12px">
+        <sc-for list="{{ topStrip }}" as="s" hint-placeholder-count="11">
+          <span style="flex:1;height:8px;border-radius:2px;background:{{ s.bg }}"></span>
+        </sc-for>
+      </div>
+      <div style="font-size:11px;color:#9FB6C4;margin-top:8px">6 Urlaubstage von {{ n1 }} · 6 von {{ n2 }} · Rest Wochenende &amp; Ferien</div>
+    </div>
+  </div>
+  <div style="flex:1;min-height:0;overflow:hidden;padding:16px 16px 0">
+    <div style="background:#fff;border:1px solid #D7DFDA;border-radius:16px;padding:13px 12px 14px;display:flex;flex-direction:column;gap:5px">
+      <sc-for list="{{ yearRows }}" as="r" hint-placeholder-count="12">
+        <div style="display:flex;align-items:center;gap:7px">
+          <span style="width:24px;font-size:9.5px;font-weight:700;color:#8FA3AD;letter-spacing:.04em">{{ r.label }}</span>
+          <div style="display:flex;gap:1.5px">
+            <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="31">
+              <span style="width:9px;height:15px;border-radius:2px;background:{{ c.bg }};box-shadow:{{ c.ring }}"></span>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:12px">
+      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#4C6577;font-weight:500"><span style="width:11px;height:11px;border-radius:3px;background:#2F6B4F"></span>{{ n1 }}</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#4C6577;font-weight:500"><span style="width:11px;height:11px;border-radius:3px;background:#2A5A80"></span>{{ n2 }}</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#4C6577;font-weight:500"><span style="width:11px;height:11px;border-radius:3px;background:linear-gradient(135deg,#2F6B4F 50%,#2A5A80 50%)"></span>Beide</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#4C6577;font-weight:500"><span style="width:11px;height:11px;border-radius:3px;background:#C97A33"></span>Feiertag</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#4C6577;font-weight:500"><span style="width:11px;height:11px;border-radius:3px;background:#E9DFB6"></span>Schulferien</span>
+    </div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#8FA3AD;text-transform:uppercase;margin:16px 0 8px">Gemeinsam frei</div>
+    <div style="display:flex;flex-direction:column;gap:1px;background:#D7DFDA;border-radius:13px;overflow:hidden">
+      <sc-for list="{{ sharedList }}" as="b" hint-placeholder-count="3">
+        <div style="display:flex;align-items:center;gap:11px;background:#fff;padding:11px 13px">
+          <span style="width:6px;height:26px;border-radius:3px;background:linear-gradient(#2F6B4F,#2A5A80);flex:none"></span>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13.5px;font-weight:600">{{ b.range }}</div>
+            <div style="font-size:11px;color:#8FA3AD;margin-top:1px">{{ b.cost }}</div>
+          </div>
+          <span style="font-family:Newsreader,Georgia,serif;font-size:19px;font-weight:600">{{ b.len }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="flex:none;display:flex;align-items:flex-start;padding:9px 6px 26px;background:rgba(247,249,247,.9);backdrop-filter:blur(18px);border-top:1px solid rgba(23,50,71,.1)">
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8FA3AD" stroke-width="1.7" stroke-linecap="round"><rect x="3.2" y="4.8" width="17.6" height="15.4" rx="3.2"></rect><path d="M3.2 9.6h17.6M8 3.4v2.6M16 3.4v2.6"></path></svg>
+      <span style="font-size:10px;font-weight:600;color:#8FA3AD">Plan</span>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="#173247"><rect x="3.4" y="4.4" width="5.2" height="4.4" rx="1.2"></rect><rect x="9.4" y="4.4" width="5.2" height="4.4" rx="1.2"></rect><rect x="15.4" y="4.4" width="5.2" height="4.4" rx="1.2"></rect><rect x="3.4" y="9.8" width="5.2" height="4.4" rx="1.2"></rect><rect x="9.4" y="9.8" width="5.2" height="4.4" rx="1.2"></rect><rect x="15.4" y="9.8" width="5.2" height="4.4" rx="1.2"></rect><rect x="3.4" y="15.2" width="5.2" height="4.4" rx="1.2"></rect><rect x="9.4" y="15.2" width="5.2" height="4.4" rx="1.2"></rect><rect x="15.4" y="15.2" width="5.2" height="4.4" rx="1.2"></rect></svg>
+      <span style="font-size:10px;font-weight:600;color:#173247">Jahr</span>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8FA3AD" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.4"></circle><path d="M12 7.4V12l3.4 2.2"></path></svg>
+      <span style="font-size:10px;font-weight:600;color:#8FA3AD">Dienste</span>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="#8FA3AD"><circle cx="5.6" cy="12" r="1.9"></circle><circle cx="12" cy="12" r="1.9"></circle><circle cx="18.4" cy="12" r="1.9"></circle></svg>
+      <span style="font-size:10px;font-weight:600;color:#8FA3AD">Mehr</span>
+    </div>
+  </div>
+</div>
+</x-import>
+</div>
+<p class="dv-cap"><b>Was sie besser macht:</b> beantwortet die Kernfrage des Tools sofort — <i>wo im Jahr sind wir gleichzeitig weg, und was kostet das an Tagen?</i> Das Band ist ein Bild, kein Raster: Feiertage und Ferien liegen als Farbe darunter, Brückentage fallen ins Auge. <b>Risiko:</b> 9-px-Zellen sind Übersicht, keine Eingabefläche — man tippt einen Monat an und landet in <a class="dv-oid" href="#1a">1a</a>.</p>
+</div>
+
+<div class="dv-opt" id="1c">
+<div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Zwei Spuren — Wochen als Timeline</div>
+<div class="dv-card">
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div style="height:100%;display:flex;flex-direction:column;background:#F1F4F1;font-family:-apple-system,system-ui,sans-serif;color:#173247;position:relative;overflow:hidden">
+  <div style="padding:58px 16px 0;flex:none">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between">
+      <div>
+        <div style="font-family:Newsreader,Georgia,serif;font-size:30px;font-weight:600;line-height:1.05">Mai – Juni</div>
+        <div style="font-size:12px;color:#8FA3AD;margin-top:3px;font-weight:500">KW 18 – 23 · zwei Spuren</div>
+      </div>
+      <div style="display:flex;gap:7px;align-items:center">
+        <span style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:#2F6B4F"><span style="width:10px;height:10px;border-radius:3px;background:#2F6B4F"></span>{{ n1 }}</span>
+        <span style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:#2A5A80"><span style="width:10px;height:10px;border-radius:3px;background:#2A5A80"></span>{{ n2 }}</span>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin:16px 0 0;padding-left:34px">
+      <span style="font-size:10px;font-weight:700;color:#8FA3AD;text-align:center">MO</span>
+      <span style="font-size:10px;font-weight:700;color:#8FA3AD;text-align:center">DI</span>
+      <span style="font-size:10px;font-weight:700;color:#8FA3AD;text-align:center">MI</span>
+      <span style="font-size:10px;font-weight:700;color:#8FA3AD;text-align:center">DO</span>
+      <span style="font-size:10px;font-weight:700;color:#8FA3AD;text-align:center">FR</span>
+      <span style="font-size:10px;font-weight:700;color:#8FA3AD;text-align:center">SA</span>
+      <span style="font-size:10px;font-weight:700;color:#8FA3AD;text-align:center">SO</span>
+    </div>
+  </div>
+  <div style="flex:1;min-height:0;padding:10px 16px 0;display:flex;flex-direction:column;gap:9px">
+    <sc-for list="{{ weeks }}" as="w" hint-placeholder-count="6">
+      <div style="background:#fff;border:1px solid {{ w.border }};border-radius:14px;padding:9px 10px 11px;display:flex;gap:8px;align-items:stretch">
+        <div style="width:26px;flex:none;display:flex;flex-direction:column;justify-content:center;gap:2px">
+          <span style="font-size:12px;font-weight:700;line-height:1">{{ w.kw }}</span>
+          <span style="font-size:9px;color:#8FA3AD;line-height:1.15">{{ w.month }}</span>
+        </div>
+        <div style="flex:1;min-width:0;display:grid;grid-template-columns:repeat(7,1fr);gap:3px">
+          <sc-for list="{{ w.days }}" as="d" hint-placeholder-count="7">
+            <div style="display:flex;flex-direction:column;gap:3px">
+              <span style="font-size:10px;font-weight:600;text-align:center;color:{{ d.numColor }};line-height:1.2">{{ d.num }}</span>
+              <span style="height:13px;border-radius:4px;background:{{ d.aBg }};border:{{ d.aBorder }};box-sizing:border-box"></span>
+              <span style="height:13px;border-radius:4px;background:{{ d.jBg }};border:{{ d.jBorder }};box-sizing:border-box"></span>
+              <span style="font-size:6.5px;font-weight:700;text-align:center;color:{{ d.tagColor }};line-height:1.2;min-height:8px">{{ d.tag }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+    <div style="display:flex;align-items:center;gap:9px;background:#E7ECE8;border:1px dashed #B8C7BF;border-radius:12px;padding:10px 12px">
+      <span style="font-size:15px">↔</span>
+      <span style="font-size:11.5px;line-height:1.45;color:#4C6577">Auf einer Spur ziehen trägt für <b style="color:#173247">eine</b> Person ein — über beide Spuren ziehen für <b style="color:#173247">beide</b>.</span>
+    </div>
+  </div>
+  <div style="flex:none;display:flex;align-items:flex-start;padding:9px 6px 26px;background:rgba(247,249,247,.9);backdrop-filter:blur(18px);border-top:1px solid rgba(23,50,71,.1)">
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#173247" stroke-width="1.7" stroke-linecap="round"><rect x="3.2" y="4.8" width="17.6" height="15.4" rx="3.2"></rect><path d="M3.2 9.6h17.6M8 3.4v2.6M16 3.4v2.6"></path><rect x="7" y="12.6" width="4" height="3.4" rx="1" fill="#173247" stroke="none"></rect></svg>
+      <span style="font-size:10px;font-weight:600;color:#173247">Plan</span>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="#8FA3AD"><rect x="3.4" y="4.4" width="5.2" height="4.4" rx="1.2"></rect><rect x="9.4" y="4.4" width="5.2" height="4.4" rx="1.2"></rect><rect x="15.4" y="4.4" width="5.2" height="4.4" rx="1.2"></rect><rect x="3.4" y="9.8" width="5.2" height="4.4" rx="1.2"></rect><rect x="9.4" y="9.8" width="5.2" height="4.4" rx="1.2"></rect><rect x="15.4" y="9.8" width="5.2" height="4.4" rx="1.2"></rect><rect x="3.4" y="15.2" width="5.2" height="4.4" rx="1.2"></rect><rect x="9.4" y="15.2" width="5.2" height="4.4" rx="1.2"></rect><rect x="15.4" y="15.2" width="5.2" height="4.4" rx="1.2"></rect></svg>
+      <span style="font-size:10px;font-weight:600;color:#8FA3AD">Jahr</span>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8FA3AD" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.4"></circle><path d="M12 7.4V12l3.4 2.2"></path></svg>
+      <span style="font-size:10px;font-weight:600;color:#8FA3AD">Dienste</span>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="#8FA3AD"><circle cx="5.6" cy="12" r="1.9"></circle><circle cx="12" cy="12" r="1.9"></circle><circle cx="18.4" cy="12" r="1.9"></circle></svg>
+      <span style="font-size:10px;font-weight:600;color:#8FA3AD">Mehr</span>
+    </div>
+  </div>
+</div>
+</x-import>
+</div>
+<p class="dv-cap"><b>Was sie besser macht:</b> löst die Schwäche des Rasters — im Tool muss man den Diagonal-Split lesen, um zu sehen, wer wann weg ist. Hier hat jede Person eine eigene Spur, Überlappung ist sichtbar als zwei Balken übereinander, und die Geste ist unmissverständlich. Dienste laufen als dritte Spur mit. <b>Risiko:</b> weniger Zeitraum pro Bildschirm, ungewohnter als ein Kalender.</p>
+</div>
+
+<div class="dv-opt" id="1d">
+<div class="dv-olabel"><a class="dv-oid" href="#1d">1d</a>Konto zuerst — Urlaub als Budget</div>
+<div class="dv-card">
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div style="height:100%;display:flex;flex-direction:column;background:#F1F4F1;font-family:-apple-system,system-ui,sans-serif;color:#173247;position:relative;overflow:hidden">
+  <div style="padding:58px 16px 0;flex:none">
+    <div style="font-family:Newsreader,Georgia,serif;font-size:30px;font-weight:600;line-height:1.05">Urlaubskonto</div>
+    <div style="font-size:12px;color:#8FA3AD;margin-top:3px;font-weight:500">2027 · Stand 7. September</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px">
+      <div style="background:#fff;border:1px solid #D7DFDA;border-radius:16px;padding:14px 12px 13px;display:flex;flex-direction:column;align-items:center;gap:10px">
+        <div style="width:118px;height:118px;border-radius:50%;background:{{ ring1 }};display:grid;place-items:center">
+          <div style="width:88px;height:88px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0">
+            <span style="font-family:Newsreader,Georgia,serif;font-size:30px;font-weight:600;line-height:1;color:#173247">{{ left1 }}</span>
+            <span style="font-size:9.5px;font-weight:700;letter-spacing:.06em;color:#8FA3AD;text-transform:uppercase">offen</span>
+          </div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:14px;font-weight:700;color:#2F6B4F">{{ n1 }}</div>
+          <div style="font-size:11px;color:#4C6577;margin-top:2px">{{ used1 }} von {{ q1 }} verplant</div>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid #D7DFDA;border-radius:16px;padding:14px 12px 13px;display:flex;flex-direction:column;align-items:center;gap:10px">
+        <div style="width:118px;height:118px;border-radius:50%;background:{{ ring2 }};display:grid;place-items:center">
+          <div style="width:88px;height:88px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center">
+            <span style="font-family:Newsreader,Georgia,serif;font-size:30px;font-weight:600;line-height:1;color:#173247">{{ left2 }}</span>
+            <span style="font-size:9.5px;font-weight:700;letter-spacing:.06em;color:#8FA3AD;text-transform:uppercase">offen</span>
+          </div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:14px;font-weight:700;color:#2A5A80">{{ n2 }}</div>
+          <div style="font-size:11px;color:#4C6577;margin-top:2px">{{ used2 }} von {{ q2 }} verplant</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="flex:1;min-height:0;padding:14px 16px 0;display:flex;flex-direction:column;gap:10px;overflow:hidden">
+    <div style="display:flex;align-items:center;gap:11px;background:#FBF3E6;border:1px solid #E4CFA6;border-radius:14px;padding:12px 13px">
+      <span style="width:26px;height:26px;border-radius:8px;background:#C97A33;color:#FFF9F1;font-size:14px;font-weight:700;display:grid;place-items:center;flex:none">!</span>
+      <span style="font-size:12px;line-height:1.45;color:#6B5A2E">4 Tage <b>Resturlaub 2026</b> von {{ n1 }} verfallen am 31. März. Noch kein Block dafür geplant.</span>
+    </div>
+    <div style="display:flex;align-items:baseline;justify-content:space-between">
+      <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#8FA3AD;text-transform:uppercase">Geplante Blöcke</span>
+      <span style="font-size:11.5px;font-weight:600;color:#2A5A80">Alle 9</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1px;background:#D7DFDA;border-radius:14px;overflow:hidden">
+      <sc-for list="{{ blockList }}" as="b" hint-placeholder-count="4">
+        <div style="display:flex;align-items:center;gap:11px;background:#fff;padding:12px 13px">
+          <span style="width:6px;height:30px;border-radius:3px;background:{{ b.swatch }};flex:none"></span>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13.5px;font-weight:600">{{ b.range }}</div>
+            <div style="font-size:11px;color:#8FA3AD;margin-top:2px">{{ b.who }}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:13px;font-weight:700">{{ b.cost }}</div>
+            <div style="font-size:10.5px;color:#8FA3AD;margin-top:1px">{{ b.free }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="background:#173247;color:#fff;border-radius:14px;padding:14px;text-align:center;font-size:15px;font-weight:600;margin-top:2px">+ Block planen</div>
+  </div>
+  <div style="flex:none;display:flex;align-items:flex-start;padding:9px 6px 26px;background:rgba(247,249,247,.9);backdrop-filter:blur(18px);border-top:1px solid rgba(23,50,71,.1)">
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#173247" stroke-width="1.7" stroke-linecap="round"><rect x="3.2" y="4.8" width="17.6" height="15.4" rx="3.2"></rect><path d="M3.2 9.6h17.6M8 3.4v2.6M16 3.4v2.6"></path><rect x="7" y="12.6" width="4" height="3.4" rx="1" fill="#173247" stroke="none"></rect></svg>
+      <span style="font-size:10px;font-weight:600;color:#173247">Plan</span>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="#8FA3AD"><rect x="3.4" y="4.4" width="5.2" height="4.4" rx="1.2"></rect><rect x="9.4" y="4.4" width="5.2" height="4.4" rx="1.2"></rect><rect x="15.4" y="4.4" width="5.2" height="4.4" rx="1.2"></rect><rect x="3.4" y="9.8" width="5.2" height="4.4" rx="1.2"></rect><rect x="9.4" y="9.8" width="5.2" height="4.4" rx="1.2"></rect><rect x="15.4" y="9.8" width="5.2" height="4.4" rx="1.2"></rect><rect x="3.4" y="15.2" width="5.2" height="4.4" rx="1.2"></rect><rect x="9.4" y="15.2" width="5.2" height="4.4" rx="1.2"></rect><rect x="15.4" y="15.2" width="5.2" height="4.4" rx="1.2"></rect></svg>
+      <span style="font-size:10px;font-weight:600;color:#8FA3AD">Jahr</span>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8FA3AD" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.4"></circle><path d="M12 7.4V12l3.4 2.2"></path></svg>
+      <span style="font-size:10px;font-weight:600;color:#8FA3AD">Dienste</span>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="#8FA3AD"><circle cx="5.6" cy="12" r="1.9"></circle><circle cx="12" cy="12" r="1.9"></circle><circle cx="18.4" cy="12" r="1.9"></circle></svg>
+      <span style="font-size:10px;font-weight:600;color:#8FA3AD">Mehr</span>
+    </div>
+  </div>
+</div>
+</x-import>
+</div>
+<p class="dv-cap"><b>Was sie besser macht:</b> im Tool sind die Kontingent-Balken ein Nebenprodukt — hier sind sie die Startfrage. Warnt aktiv vor verfallendem Resturlaub und zeigt je Block, was er kostet und was er bringt (5 Tage → 11 frei). <b>Risiko:</b> der Kalender rückt einen Tab weg; gut für „planen“, schwächer für „nachschauen“.</p>
+</div>
+
+</div>
+<p class="dv-next">Weiter: „baue <a class="dv-oid" href="#1b">1b</a> aus, mit dem Sheet aus <a class="dv-oid" href="#1a">1a</a>“ · „<a class="dv-oid" href="#1c">1c</a> mit Dienst-Spur und Bereitschaft“ · „zeig mir Dienste, Ereignisse und PDF-Export für die gewählte Richtung“</p>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;p1Name&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Anna&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Personen&quot;},&quot;p2Name&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Jonas&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Personen&quot;},&quot;year&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:2027,&quot;min&quot;:2027,&quot;max&quot;:2035,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Personen&quot;}}">
+const HOL = { // SH 2027
+  '1-1':'Neujahr','3-26':'Karfreitag','3-29':'Ostermontag','5-1':'1. Mai',
+  '5-6':'Himmelfahrt','5-17':'Pfingsten','10-3':'Einheit','10-31':'Reformation',
+  '12-25':'1. Weihn.','12-26':'2. Weihn.'
+};
+const QUOTA = { p1: 34, p2: 30 };
+const FER = [['1-2','1-6'],['3-30','4-10'],['5-7','5-7'],['7-3','8-14'],['10-11','10-23'],['12-23','12-31']];
+const BOTH = [['5-7','5-7'],['5-10','5-14'],['7-19','7-23'],['12-27','12-30']];
+const P1 = [['3-15','3-19'],['5-24','5-28'],['10-11','10-15']];
+const P2 = [['2-8','2-12'],['5-18','5-21'],['9-6','9-8']];
+const WD1 = ['5-8','5-9','8-21','8-22'];      // Wochenenddienst Anna
+const FD2 = ['5-17','12-26'];                  // Feiertagsdienst Jonas
+const C = {paper:'#F1F4F1',card:'#fff',ink:'#173247',faint:'#8FA3AD',line:'#D7DFDA',
+  hol:'#C97A33',holT:'#FFF9F1',fer:'#E9DFB6',ferT:'#6B5A2E',we:'#DEE6E2',weT:'#5C6E68',wd:'#6B4C9A',fd:'#B23A3A'};
+const MON = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+const MON3 = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+
+class Component extends DCLogic {
+  y(){ return this.props.year ?? 2027; }
+  c1(){ return '#2F6B4F'; }
+  c2(){ return '#2A5A80'; }
+
+  expand(ranges){
+    const y = this.y(), out = new Set();
+    ranges.forEach(([a, b]) => {
+      const [sm, sd] = a.split('-').map(Number), [em, ed] = b.split('-').map(Number);
+      let d = new Date(y, sm - 1, sd, 12), end = new Date(y, em - 1, ed, 12);
+      while (d <= end) { out.add((d.getMonth() + 1) + '-' + d.getDate()); d = new Date(d.getTime() + 864e5); }
+    });
+    return out;
+  }
+  sets(){
+    if (!this._s) this._s = { fer: this.expand(FER), both: this.expand(BOTH), p1: this.expand(P1), p2: this.expand(P2) };
+    return this._s;
+  }
+  info(m, d) {
+    const s = this.sets(), k = m + '-' + d, wd = (new Date(this.y(), m - 1, d).getDay() + 6) % 7;
+    const kind = HOL[k] ? 'hol' : wd >= 5 ? 'we' : 'work';
+    const a = kind === 'work' && (s.both.has(k) || s.p1.has(k));
+    const j = kind === 'work' && (s.both.has(k) || s.p2.has(k));
+    return { k, wd, kind, name: HOL[k] || '', fer: s.fer.has(k), a, j,
+      wd1: WD1.includes(k), fd2: FD2.includes(k), off: kind !== 'work' || (a && j) };
+  }
+  cellBg(i) {
+    if (i.a && i.j) return { bg: `linear-gradient(135deg,${this.c1()} 50%,${this.c2()} 50%)`, fg: '#fff' };
+    if (i.a) return { bg: this.c1(), fg: '#fff' };
+    if (i.j) return { bg: this.c2(), fg: '#fff' };
+    if (i.kind === 'hol') return { bg: i.fd2 ? C.fd : C.hol, fg: C.holT };
+    if (i.kind === 'we') return { bg: i.wd1 ? C.wd : C.we, fg: i.wd1 ? '#fff' : C.weT };
+    if (i.fer) return { bg: C.fer, fg: C.ferT };
+    return { bg: '#fff', fg: C.ink };
+  }
+  dim(m) { return new Date(this.y(), m, 0).getDate(); }
+  fmt(dt) { return dt.getDate() + '. ' + MON3[dt.getMonth()]; }
+
+  monthCells(m) {
+    const off = (new Date(this.y(), m - 1, 1).getDay() + 6) % 7, dim = this.dim(m), out = [];
+    for (let e = 0; e < off; e++) out.push({ num: '', tag: '', bg: 'transparent', fg: 'transparent', border: 'none' });
+    for (let d = 1; d <= dim; d++) {
+      const i = this.info(m, d), s = this.cellBg(i);
+      const sel = i.a && i.j && d >= 10 && d <= 14;
+      let tag = '';
+      if (i.fd2) tag = 'Dienst'; else if (i.wd1) tag = 'WE-Dienst'; else if (i.kind === 'hol') tag = i.name;
+      else if (i.a && i.j) tag = 'beide'; else if (i.a || i.j) tag = i.a ? 'A' : 'J';
+      out.push({ num: d, tag, bg: s.bg, fg: s.fg,
+        border: sel ? '2px solid #173247' : (s.bg === '#fff' ? '1px solid ' + C.line : '1px solid transparent') });
+    }
+    while (out.length % 7) out.push({ num: '', tag: '', bg: 'transparent', fg: 'transparent', border: 'none' });
+    return out;
+  }
+  yearRows() {
+    const rows = [];
+    for (let m = 1; m <= 12; m++) {
+      const cells = [], dim = this.dim(m);
+      for (let d = 1; d <= 31; d++) {
+        if (d > dim) { cells.push({ bg: 'transparent', ring: 'none' }); continue; }
+        const i = this.info(m, d), s = this.cellBg(i);
+        cells.push({ bg: s.bg === '#fff' ? '#F1F4F1' : s.bg, ring: s.bg === '#fff' ? 'inset 0 0 0 1px ' + C.line : 'none' });
+      }
+      rows.push({ label: MON3[m - 1], cells });
+    }
+    return rows;
+  }
+  runs() {
+    const days = [];
+    for (let m = 1; m <= 12; m++) for (let d = 1; d <= this.dim(m); d++) days.push({ m, d, ...this.info(m, d) });
+    const out = [];
+    let i = 0;
+    while (i < days.length) {
+      if (!days[i].off) { i++; continue; }
+      let j = i, planned = 0, a = 0, jj = 0;
+      while (j < days.length && days[j].off) { if (days[j].a && days[j].j) planned++; if (days[j].a) a++; if (days[j].j) jj++; j++; }
+      if (planned > 0) {
+        const s = days[i], e = days[j - 1];
+        out.push({ len: j - i, planned, a, j: jj,
+          start: new Date(this.y(), s.m - 1, s.d), end: new Date(this.y(), e.m - 1, e.d) });
+      }
+      i = j;
+    }
+    return out.sort((x, z) => z.len - x.len);
+  }
+  weeks() {
+    const out = [];
+    let cur = new Date(this.y(), 4, 3, 12); // Mo 3. Mai 2027
+    for (let w = 0; w < 6; w++) {
+      const days = [];
+      let hasBoth = false;
+      for (let k = 0; k < 7; k++) {
+        const dt = new Date(cur.getTime() + k * 864e5), m = dt.getMonth() + 1, d = dt.getDate();
+        const i = this.info(m, d);
+        if (i.a && i.j) hasBoth = true;
+        const base = i.kind === 'hol' ? C.hol : i.kind === 'we' ? C.we : i.fer ? C.fer : '#F4F7F5';
+        days.push({ num: d,
+          numColor: i.kind === 'hol' ? C.hol : i.kind === 'we' ? C.faint : C.ink,
+          aBg: i.a ? this.c1() : i.wd1 ? C.wd : base,
+          jBg: i.j ? this.c2() : i.fd2 ? C.fd : base,
+          aBorder: i.a || i.wd1 ? 'none' : '1px solid rgba(23,50,71,.07)',
+          jBorder: i.j || i.fd2 ? 'none' : '1px solid rgba(23,50,71,.07)',
+          tag: i.kind === 'hol' ? i.name : i.wd1 ? 'Dienst' : i.fer && i.wd === 4 ? 'Ferien' : '',
+          tagColor: i.kind === 'hol' ? C.hol : i.wd1 ? C.wd : C.ferT });
+      }
+      const end = new Date(cur.getTime() + 6 * 864e5);
+      out.push({ kw: 'KW ' + (18 + w), month: cur.getMonth() === end.getMonth() ? MON3[cur.getMonth()] : MON3[cur.getMonth()] + '/' + MON3[end.getMonth()],
+        border: hasBoth ? 'rgba(23,50,71,.28)' : C.line, days });
+      cur = new Date(cur.getTime() + 7 * 864e5);
+    }
+    return out;
+  }
+
+  renderVals() {
+    const s = this.sets();
+    const n1 = this.props.p1Name ?? 'Anna', n2 = this.props.p2Name ?? 'Jonas';
+    let u1 = 0, u2 = 0;
+    for (let m = 1; m <= 12; m++) for (let d = 1; d <= this.dim(m); d++) { const i = this.info(m, d); if (i.a) u1++; if (i.j) u2++; }
+    const runs = this.runs(), top = runs[0] || { len: 0, a: 0, j: 0, start: new Date(), end: new Date() };
+    const topStrip = [];
+    for (let k = 0; k < top.len; k++) {
+      const dt = new Date(top.start.getTime() + k * 864e5), i = this.info(dt.getMonth() + 1, dt.getDate());
+      const b = this.cellBg(i);
+      topStrip.push({ bg: b.bg === '#fff' ? 'rgba(255,255,255,.28)' : b.bg });
+    }
+    const sharedList = runs.slice(0, 3).map(r => ({
+      range: this.fmt(r.start) + ' – ' + this.fmt(r.end), len: r.len,
+      cost: r.planned + ' Urlaubstage je Person' }));
+    const blockList = [
+      { range: 'Fr 7. – So 16. Mai', who: n1 + ' & ' + n2 + ' · Himmelfahrt', cost: '6 Tage', free: '10 frei', swatch: `linear-gradient(${this.c1()},${this.c2()})` },
+      { range: 'Di 18. – Fr 21. Mai', who: n2 + ' allein', cost: '4 Tage', free: '6 frei', swatch: this.c2() },
+      { range: 'Mo 24. – Fr 28. Mai', who: n1 + ' allein', cost: '5 Tage', free: '9 frei', swatch: this.c1() },
+      { range: 'Mo 19. – Fr 23. Juli', who: n1 + ' & ' + n2 + ' · Sommerferien', cost: '5 Tage', free: '9 frei', swatch: `linear-gradient(${this.c1()},${this.c2()})` }
+    ];
+    const pc = (v, t) => Math.min(1, v / t);
+    return {
+      n1, n2, used1: u1, used2: u2, q1: QUOTA.p1, q2: QUOTA.p2,
+      left1: QUOTA.p1 - u1, left2: QUOTA.p2 - u2,
+      pct1: Math.round(pc(u1, QUOTA.p1) * 100) + '%', pct2: Math.round(pc(u2, QUOTA.p2) * 100) + '%',
+      ring1: `conic-gradient(${this.c1()} 0turn ${pc(u1, QUOTA.p1).toFixed(3)}turn, ${C.line} ${pc(u1, QUOTA.p1).toFixed(3)}turn 1turn)`,
+      ring2: `conic-gradient(${this.c2()} 0turn ${pc(u2, QUOTA.p2).toFixed(3)}turn, ${C.line} ${pc(u2, QUOTA.p2).toFixed(3)}turn 1turn)`,
+      mayCells: this.monthCells(5), yearRows: this.yearRows(), weeks: this.weeks(),
+      topLen: top.len, topRange: this.fmt(top.start) + ' – ' + this.fmt(top.end), topStrip,
+      sharedList, blockList
+    };
+  }
+}
+
+</script>
+</body>
+</html>
